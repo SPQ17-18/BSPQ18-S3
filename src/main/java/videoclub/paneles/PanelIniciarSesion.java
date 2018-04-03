@@ -143,7 +143,7 @@ public class PanelIniciarSesion extends JPanel {
 			//Inicializamos nueva JFrame VentanaPrincipal pero con distintos parámetros de entrada:
 			VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(1080+6,720+35);//800 (anchura del PanelUsuario), 600 (altura del PanelUsuario)
 			ventanaPrincipal.frame.setVisible(true);
-			ventanaPrincipal.cargarPanelUsuario(new Cliente());
+			ventanaPrincipal.cargarPanelUsuario(null);
 			
 			//Mostramos mensaje:
 			JOptionPane.showMessageDialog(null, "BIENVENIDO "+textField.getText());
