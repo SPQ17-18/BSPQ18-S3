@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,12 +19,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.JToggleButton;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import videoclub.client.utiles.Temas;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Pelicula;
+import javax.swing.DefaultComboBoxModel;
 
 public class PanelUsuario extends JPanel {
 
@@ -92,6 +97,7 @@ public class PanelUsuario extends JPanel {
 		comboBoxAño = new JComboBox<Integer>();
 		scrollPane_1 = new JScrollPane();
 		textPaneDescripcion = new JTextPane();
+		comboBoxTema = new JComboBox();
 	}
 
 	private void componentes() {
@@ -154,6 +160,9 @@ public class PanelUsuario extends JPanel {
 		panel.setBackground(Color.DARK_GRAY);
 		scrollPane_1.setBounds(124, 511, 402, 140);
 		scrollPane_1.setBorder(new LineBorder(SystemColor.textHighlight));
+		comboBoxTema.setModel(new DefaultComboBoxModel(new String[] {"Tema Raven", "Tema Autum"}));
+		comboBoxTema.setBounds(865, 685, 203, 22);
+		
 
 	}
 
@@ -180,6 +189,7 @@ public class PanelUsuario extends JPanel {
 		add(lblNewLabel);
 		add(labelDinero);
 		add(comboBoxAño);
+		add(comboBoxTema);
 
 		scrollPane_1.setViewportView(textPaneDescripcion);
 		scrollPane.setViewportView(panel);
@@ -193,6 +203,8 @@ public class PanelUsuario extends JPanel {
 	@SuppressWarnings("unused")
 	private List<String> arrayNombresPeliculasEncontradas = new ArrayList<String>();
 	private JScrollPane scrollPane_1;
+	private JComboBox comboBoxTema;
+	private Temas tema;
 
 	private void eventos() {
 		comboBoxAño.addActionListener(new ActionListener() {
@@ -216,6 +228,21 @@ public class PanelUsuario extends JPanel {
 				
 			}
 		});
+		comboBoxTema.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			   try {
+				tema = new Temas((String) comboBoxTema.getSelectedItem());
+				// Actualizamos componentes:
+				SwingUtilities.updateComponentTreeUI(getRootPane());
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			}
+		});
 	}
 	
 	// Clase para guardar los objetos tipo "BotonPelicula" que contendrán el id
@@ -236,5 +263,4 @@ public class PanelUsuario extends JPanel {
 		}
 
 	}
-
 }
