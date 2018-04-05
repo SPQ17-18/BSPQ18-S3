@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,6 +18,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import videoclub.client.gui.ventanas.ClientFrame;
+import videoclub.server.gui.ICollector;
 import videoclub.server.jdo.Cliente;
 
 public class PanelIniciarSesion extends JPanel {
@@ -32,12 +34,15 @@ public class PanelIniciarSesion extends JPanel {
 	private JButton BotonAcceder;
 	public JButton BotonRegistrarse;
 	private JButton BotonContraseñaOlvidada;
+	private ICollector collector; //Pasamos collector desde el "ClientFrame"
+	public static Cliente clienteActual;
 
 	/**
 	 * Create the panel.
 	 */
-	public PanelIniciarSesion(JFrame frame) {
+	public PanelIniciarSesion(JFrame frame, ICollector collector) {
 
+		this.collector = collector;
 		inicializar();
 		componentes();
 		añadirComponentes();
@@ -126,9 +131,17 @@ public class PanelIniciarSesion extends JPanel {
 			if(textField.getText().equals("ADMIN")&&String.valueOf(passwordField.getPassword()).equals("12345")){
 				dev = "ADMIN";
 		    //USER LOCAL SIN CONECTAR A BD:
-			}else if(textField.getText().equals("USER")&&String.valueOf(passwordField.getPassword()).equals("12345")){
-				dev = "USER";
-			}
+			} else
+				try {
+					if(collector.login(textField.getText(), String.valueOf(passwordField.getPassword()))==true){
+						dev = "USER";
+					}else{
+						JOptionPane.showMessageDialog(null, "USUARIO & CONTRASEÑA INCORRECTOS!.", "¡ERROR!",JOptionPane.ERROR_MESSAGE);
+					}
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}				
 		
 		return dev;
@@ -141,9 +154,9 @@ public class PanelIniciarSesion extends JPanel {
 			//Primero cerramos la ventana actual de las credenciales:
 			frame.dispose();
 			//Inicializamos nueva JFrame VentanaPrincipal pero con distintos parámetros de entrada:
-			ClientFrame ventanaPrincipal = new ClientFrame(1080+6,720+35);//800 (anchura del PanelUsuario), 600 (altura del PanelUsuario)
+			ClientFrame ventanaPrincipal = new ClientFrame(1080+6,720+35, collector);//800 (anchura del PanelUsuario), 600 (altura del PanelUsuario)
 			ventanaPrincipal.setVisible(true);
-			ventanaPrincipal.cargarPanelUsuario(null);
+			ventanaPrincipal.cargarPanelUsuario(clienteActual);
 			
 			//Mostramos mensaje:
 			JOptionPane.showMessageDialog(null, "BIENVENIDO "+textField.getText());
@@ -152,7 +165,7 @@ public class PanelIniciarSesion extends JPanel {
 			//Primero cerramos la ventana actual de las credenciales:
 			frame.dispose();
 			//Inicializamos nueva JFrame VentanaPrincipal pero con distintos parámetros de entrada:
-			ClientFrame ventanaPrincipal = new ClientFrame(1080+6,720+35);//800 (anchura del PanelAdministrador), 600 (altura del PanelAdministrador)
+			ClientFrame ventanaPrincipal = new ClientFrame(1080+6,720+35, collector);//800 (anchura del PanelAdministrador), 600 (altura del PanelAdministrador)
 			ventanaPrincipal.setVisible(true);
 			ventanaPrincipal.cargarPanelAdministrador();
 			

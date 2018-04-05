@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -19,10 +20,10 @@ import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
 
+import videoclub.server.gui.ICollector;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Direccion;
 import videoclub.server.jdo.Usuario;
-
 
 public class PanelRegistro extends JPanel {
 
@@ -43,11 +44,13 @@ public class PanelRegistro extends JPanel {
 	private JTextField textFieldNombre;
 	private JTextField textFieldApellidos;
 	private JTextField textFieldCiudad;
+	private ICollector collector; // Pasamos collector desde el "ClientFrame"
 
 	/**
 	 * Create the panel.
 	 */
-	public PanelRegistro() {
+	public PanelRegistro(ICollector collector) {
+		this.collector = collector;
 		inicializar();
 		componentes();
 		añadirComponentes();
@@ -157,14 +160,14 @@ public class PanelRegistro extends JPanel {
 	}
 
 	private void eventos() {
-		
+
 		btnRegistrase.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				registrarUsuario();
 			}
 		});
 	}
-	
+
 	private void registrarUsuario() {
 		String nombreUser = textFieldUser.getText();
 		String contra = String.valueOf(passwordFieldContra.getPassword());
@@ -206,17 +209,26 @@ public class PanelRegistro extends JPanel {
 		} else if (textFieldNombre.getText().equals("")) {
 			JOptionPane.showMessageDialog(null, "NO HAS INTRODUCIDO NINGUN NOMBRE", "¡ERROR!",
 					JOptionPane.ERROR_MESSAGE);
-		} else {			
+		} else {
 			try {
-//				JDO jdo = new JDO();
-//				jdo.makePersistenObject(new Usuario(nombreUser, contra, correo));
-//				jdo.makePersistenObject(new Cliente(textFieldNombre.getText(), textFieldApellidos.getText(), dateChooser.getDate(),
-//							            new Direccion(textFieldCalle.getText(), textFieldCiudad.getText(), (String) comboBox.getSelectedItem())));
-				JOptionPane.showMessageDialog(null, "NUEVO USUARIO REGISTRADO EN LA PLATAFORMA VIDEOTHEK");
+
+				String nombre = textFieldNombre.getText();
+				String apellidos = textFieldApellidos.getText();
+				Date fechaNacimiento = dateChooser.getDate();
+				String calle = textFieldCalle.getText();
+				String ciudad = textFieldCiudad.getText();
+				String pais = (String) comboBox.getSelectedItem();
+				
+				if (collector.registerUser(nombreUser, contra, correo, nombre, apellidos, fechaNacimiento, calle, ciudad, pais) == true) {
+					JOptionPane.showMessageDialog(null, "ESE USUARIO YA ESTÁ REGISTRADO!", "¡ERROR!",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null, "NUEVO USUARIO REGISTRADO EN LA PLATAFORMA VIDEOTHEK");
+				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "ERROR AL CREAR USUARIO!","¡ERROR!",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "ERROR AL CREAR USUARIO!", "¡ERROR!", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}

@@ -17,7 +17,7 @@ public class ServerFrame extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	public JTextArea textArea;
+	public static JTextArea textArea;
 	private JScrollPane scrollPane;
 
 	/**

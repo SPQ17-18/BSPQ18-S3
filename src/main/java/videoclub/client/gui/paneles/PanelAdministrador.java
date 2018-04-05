@@ -20,6 +20,8 @@ import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import videoclub.server.gui.ICollector;
+
 public class PanelAdministrador extends JPanel {
 
 	/**
@@ -51,11 +53,14 @@ public class PanelAdministrador extends JPanel {
 	private DefaultTableModel tableModel = new DefaultTableModel();
 	private JTable table_1;
 	private JScrollPane scrollPane_1;
+	
+	private ICollector collector;  //Collector implementado desde "ClienfFrame"
 
 	/**
 	 * Create the panel.
 	 */
-	public PanelAdministrador() {
+	public PanelAdministrador(ICollector collector) {
+		this.collector = collector;
 		inicializar();
 		componentes();
 		añadirComponentes();

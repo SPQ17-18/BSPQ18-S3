@@ -21,7 +21,7 @@ public class Client{
 			public void run() {
 				try {
 					UIManager.setLookAndFeel((LookAndFeel) new SubstanceRavenLookAndFeel());
-					ClientFrame frame = new ClientFrame(525, 325);
+					ClientFrame frame = new ClientFrame(525, 325, collector);
 					frame.setVisible(true);
 					frame.cargarPanelIniciarSesion();
 				} catch (Exception e) {

@@ -25,6 +25,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import videoclub.client.utiles.Temas;
+import videoclub.server.gui.ICollector;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Pelicula;
 import javax.swing.DefaultComboBoxModel;
@@ -63,11 +64,14 @@ public class PanelUsuario extends JPanel {
 
 	@SuppressWarnings("unused")
 	private Cliente cliente;
+	
+	private ICollector collector; //Collector implementado desde "ClienfFrame"
 
 	/**
 	 * Create the panel.
 	 */
-	public PanelUsuario(Cliente cliente) {
+	public PanelUsuario(Cliente cliente, ICollector collector) {
+		this.collector = collector;
 		this.cliente = cliente;
 		inicializar();
 		componentes();

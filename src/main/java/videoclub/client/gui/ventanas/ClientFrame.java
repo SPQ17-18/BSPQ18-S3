@@ -13,6 +13,7 @@ import videoclub.client.gui.paneles.PanelAdministrador;
 import videoclub.client.gui.paneles.PanelIniciarSesion;
 import videoclub.client.gui.paneles.PanelRegistro;
 import videoclub.client.gui.paneles.PanelUsuario;
+import videoclub.server.gui.ICollector;
 import videoclub.server.jdo.Cliente;
 
 public class ClientFrame extends JFrame {
@@ -21,23 +22,26 @@ public class ClientFrame extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+    private ICollector collector; //Pasamos collector desde el "Client"
+    
 	private JPanel contentPane;
 	private JScrollPane contenedorDePaneles;
 	private int anchura;
 	private int altura;
-	private PanelIniciarSesion panelIniciarSesion = new PanelIniciarSesion(this);
+	private PanelIniciarSesion panelIniciarSesion;
 	private PanelUsuario panelUsuario;
 	private PanelAdministrador panelAdministrador;
-	private PanelRegistro panelRegistro = new PanelRegistro();
+	private PanelRegistro panelRegistro;
 
 	/**
 	 * Create the frame.
 	 */
-	public ClientFrame(int anchura, int altura) {
+	public ClientFrame(int anchura, int altura, ICollector collector) {
 		
 		//Antes de llamar a los métodos debemos asignar la anchura y altura al JFrame:
 		this.anchura = anchura;
 		this.altura = altura;
+		this.collector = collector;
 		
 		inicializar();
 		componentes();
@@ -47,6 +51,8 @@ public class ClientFrame extends JFrame {
 	
 	private void inicializar()
 	{
+		panelIniciarSesion = new PanelIniciarSesion(this, this.collector);
+		panelRegistro = new PanelRegistro(this.collector);
 		contentPane = new JPanel();
 		contenedorDePaneles = new JScrollPane();
 	}
@@ -101,7 +107,7 @@ public class ClientFrame extends JFrame {
 	public void cargarPanelUsuario(Cliente cliente)
 	{
 		//Inicializamos el panel:
-		panelUsuario = new PanelUsuario(cliente);
+		panelUsuario = new PanelUsuario(cliente, this.collector);
 		//Cargamos el panel en el scrollPane: contenedorDePaneles
 		contenedorDePaneles.setViewportView(panelUsuario);
 	}
@@ -110,7 +116,7 @@ public class ClientFrame extends JFrame {
 	public void cargarPanelAdministrador()
 	{
 		//Inicializamos el panel:
-		panelAdministrador = new PanelAdministrador();
+		panelAdministrador = new PanelAdministrador(this.collector);
 		//Cargamos el panel en el scrollPane: contenedorDePaneles
 		contenedorDePaneles.setViewportView(panelAdministrador);
 	}

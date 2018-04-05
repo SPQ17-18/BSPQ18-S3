@@ -10,12 +10,14 @@ public class Usuario {
 	private String nombreUsuario;
 	private String contraseña;
 	private String correo;
+	private Cliente cliente;
 	
-	public Usuario(String nombreUsuario, String contraseña, String correo)
+	public Usuario(String nombreUsuario, String contraseña, String correo, Cliente cliente)
 	{
 		this.nombreUsuario = nombreUsuario;
 		this.contraseña = contraseña;
 		this.correo = correo;
+		this.setCliente(cliente);
 	}
 
 	public String getNombreUsuario() {
@@ -40,6 +42,14 @@ public class Usuario {
 
 	public void setCorreo(String correo) {
 		this.correo = correo;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 	
 	
