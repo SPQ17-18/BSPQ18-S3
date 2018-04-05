@@ -1,4 +1,4 @@
-package videoclub.datos;
+package videoclub.server.jdo;
 
 import javax.jdo.annotations.Inheritance;
 import javax.jdo.annotations.PersistenceCapable;

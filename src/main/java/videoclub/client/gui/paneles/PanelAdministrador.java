@@ -1,4 +1,4 @@
-package videoclub.paneles;
+package videoclub.client.gui.paneles;
 
 import java.awt.Color;
 import java.awt.Font;

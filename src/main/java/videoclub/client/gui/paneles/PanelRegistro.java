@@ -1,4 +1,4 @@
-package videoclub.paneles;
+package videoclub.client.gui.paneles;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -17,6 +18,10 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
+
+import videoclub.server.jdo.Cliente;
+import videoclub.server.jdo.Direccion;
+import videoclub.server.jdo.Usuario;
 
 
 public class PanelRegistro extends JPanel {
@@ -34,7 +39,7 @@ public class PanelRegistro extends JPanel {
 	private JTextField textFieldCorreo;
 	private JTextField textFieldCalle;
 	private JComboBox<String> comboBox;
-	//private JDateChooser dateChooser;
+	private JDateChooser dateChooser;
 	private JTextField textFieldNombre;
 	private JTextField textFieldApellidos;
 	private JTextField textFieldCiudad;
@@ -57,7 +62,7 @@ public class PanelRegistro extends JPanel {
 		textFieldCorreo = new JTextField();
 		textFieldCalle = new JTextField();
 		comboBox = new JComboBox<String>();
-		//dateChooser = new JDateChooser();
+		dateChooser = new JDateChooser();
 		textFieldNombre = new JTextField();
 		textFieldApellidos = new JTextField();
 	}
@@ -101,8 +106,8 @@ public class PanelRegistro extends JPanel {
 				TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 120, 215)));
 		textFieldCalle.setBackground(Color.DARK_GRAY);
 		textFieldCalle.setBounds(12, 160, 234, 50);
-		//dateChooser.setBorder(new LineBorder(SystemColor.textHighlight));
-		//dateChooser.setBounds(258, 66, 233, 35);
+		dateChooser.setBorder(new LineBorder(SystemColor.textHighlight));
+		dateChooser.setBounds(258, 66, 233, 35);
 		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "Espa\u00F1a", "Francia", "Alemania",
 				"Holanda", "B\u00E9lgica", "Portugal", "Italia" }));
 		comboBox.setBorder(new LineBorder(SystemColor.textHighlight));
@@ -135,7 +140,7 @@ public class PanelRegistro extends JPanel {
 		add(btnVolver);
 		add(textFieldCorreo);
 		add(textFieldCalle);
-		//add(dateChooser);
+		add(dateChooser);
 		add(comboBox);
 		add(textFieldNombre);
 		add(textFieldApellidos);
@@ -155,9 +160,64 @@ public class PanelRegistro extends JPanel {
 		
 		btnRegistrase.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				registrarUsuario();
 			}
 		});
+	}
+	
+	private void registrarUsuario() {
+		String nombreUser = textFieldUser.getText();
+		String contra = String.valueOf(passwordFieldContra.getPassword());
+		String correo = textFieldCorreo.getText();
 
+		if (nombreUser.equals("") && contra.equals("")) {
+			JOptionPane.showMessageDialog(null, "NO HAS INTRODUCIDO NINGUN NOMBRE DE USUARIO NI NINGUNA CONTRASEÑA.",
+					"¡ERROR!", JOptionPane.ERROR_MESSAGE);
+		} else if (nombreUser.equals("")) {
+			JOptionPane.showMessageDialog(null, "NO HAS INTRODUCIDO NINGUN NOMBRE DE USUARIO", "¡ERROR!",
+					JOptionPane.ERROR_MESSAGE);
+		} else if (nombreUser.equals("") && correo.equals("")) {
+			JOptionPane.showMessageDialog(null, "NO HAS INTRODUCIDO NINGUN NOMBRE DE USUARIO NI CORREO", "¡ERROR!",
+					JOptionPane.ERROR_MESSAGE);
+		} else if (contra.equals("") && correo.equals("")) {
+			JOptionPane.showMessageDialog(null, "NO HAS INTRODUCIDO NINGUNA CONTRASEÑA NI CORREO", "¡ERROR!",
+					JOptionPane.ERROR_MESSAGE);
+		} else if (contra.equals("")) {
+			JOptionPane.showMessageDialog(null, "NO HAS INTRODUCIDO NINGUNA CONTRASEÑA", "¡ERROR!",
+					JOptionPane.ERROR_MESSAGE);
+		} else if (correo.equals("")) {
+			JOptionPane.showMessageDialog(null, "NO HAS INTRODUCIDO NINGUN CORREO", "¡ERROR!",
+					JOptionPane.ERROR_MESSAGE);
+		} else if (nombreUser.equals("") && correo.equals("") && contra.equals("")) {
+			JOptionPane.showMessageDialog(null, "NO HAS INTRODUCIDO NINGUN NOMBRE DE USUARIO NI CORREO NI CONTRASEÑA",
+					"¡ERROR!", JOptionPane.ERROR_MESSAGE);
+		} else if (dateChooser.getDate() == null) {
+			JOptionPane.showMessageDialog(null, "NO HAS INTRODUCIDO NINGUNA FECHA DE NACIMIENTO", "¡ERROR!",
+					JOptionPane.ERROR_MESSAGE);
+		} else if (textFieldCalle.getText().equals("")) {
+			JOptionPane.showMessageDialog(null, "NO HAS INTRODUCIDO NINGUNA CALLE", "¡ERROR!",
+					JOptionPane.ERROR_MESSAGE);
+		} else if (textFieldApellidos.getText().equals("")) {
+			JOptionPane.showMessageDialog(null, "NO HAS INTRODUCIDO NINGUN APELLIDO", "¡ERROR!",
+					JOptionPane.ERROR_MESSAGE);
+		} else if (textFieldCiudad.getText().equals("")) {
+			JOptionPane.showMessageDialog(null, "NO HAS INTRODUCIDO NINGUNA CIUDAD", "¡ERROR!",
+					JOptionPane.ERROR_MESSAGE);
+		} else if (textFieldNombre.getText().equals("")) {
+			JOptionPane.showMessageDialog(null, "NO HAS INTRODUCIDO NINGUN NOMBRE", "¡ERROR!",
+					JOptionPane.ERROR_MESSAGE);
+		} else {			
+			try {
+//				JDO jdo = new JDO();
+//				jdo.makePersistenObject(new Usuario(nombreUser, contra, correo));
+//				jdo.makePersistenObject(new Cliente(textFieldNombre.getText(), textFieldApellidos.getText(), dateChooser.getDate(),
+//							            new Direccion(textFieldCalle.getText(), textFieldCiudad.getText(), (String) comboBox.getSelectedItem())));
+				JOptionPane.showMessageDialog(null, "NUEVO USUARIO REGISTRADO EN LA PLATAFORMA VIDEOTHEK");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "ERROR AL CREAR USUARIO!","¡ERROR!",JOptionPane.ERROR_MESSAGE);
+			}
+		}
 	}
 }

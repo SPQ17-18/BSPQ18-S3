@@ -1,97 +1,77 @@
-package videoclub.ventanas;
+package videoclub.client.gui.ventanas;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.LookAndFeel;
-import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 
-import org.pushingpixels.substance.api.skin.SubstanceRavenLookAndFeel;
+import videoclub.client.gui.paneles.PanelAdministrador;
+import videoclub.client.gui.paneles.PanelIniciarSesion;
+import videoclub.client.gui.paneles.PanelRegistro;
+import videoclub.client.gui.paneles.PanelUsuario;
+import videoclub.server.jdo.Cliente;
 
-import videoclub.datos.Cliente;
-import videoclub.paneles.PanelAdministrador;
-import videoclub.paneles.PanelIniciarSesion;
-import videoclub.paneles.PanelRegistro;
-import videoclub.paneles.PanelUsuario;
-import java.awt.SystemColor;
+public class ClientFrame extends JFrame {
 
-public class VentanaPrincipal {
-
-	public JFrame frame;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
 	private JScrollPane contenedorDePaneles;
-	private PanelIniciarSesion panelIniciarSesion;
-	private PanelUsuario panelUsuario;
-	private PanelAdministrador panelAdministrador;
-	private PanelRegistro panelRegistro;
 	private int anchura;
 	private int altura;
+	private PanelIniciarSesion panelIniciarSesion = new PanelIniciarSesion(this);
+	private PanelUsuario panelUsuario;
+	private PanelAdministrador panelAdministrador;
+	private PanelRegistro panelRegistro = new PanelRegistro();
 
 	/**
-	 * Launch the application.
+	 * Create the frame.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					//UIManager.setLookAndFeel((LookAndFeel) new SubstanceRavenLookAndFeel());
-					VentanaPrincipal window = new VentanaPrincipal(525,325);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
-	public VentanaPrincipal(int anchura, int altura) {
+	public ClientFrame(int anchura, int altura) {
 		
 		//Antes de llamar a los métodos debemos asignar la anchura y altura al JFrame:
 		this.anchura = anchura;
 		this.altura = altura;
 		
-		initialize();
+		inicializar();
 		componentes();
 		añadirComponentes();
-		eventos();	
+		eventos();				
 	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		panelIniciarSesion = new PanelIniciarSesion(frame);
-		panelRegistro = new PanelRegistro();		
+	
+	private void inicializar()
+	{
+		contentPane = new JPanel();
 		contenedorDePaneles = new JScrollPane();
 	}
 	
 	private void componentes()
 	{
-		frame.getContentPane().setBackground(Color.BLACK);		
+		contentPane.setBackground(Color.BLACK);
+		contentPane.setBorder(new LineBorder(Color.ORANGE, 2));
+		
 		//El contenedor se ajustará automáticamente a la anchura y altura pasadas por parámetro:
 		contenedorDePaneles.setBounds(0, 0, anchura - 6, altura - 35);
-		contenedorDePaneles.setBorder(new LineBorder(SystemColor.textHighlight, 3));
 	}
 	
 	private void añadirComponentes()
 	{
-		frame.setBackground(Color.DARK_GRAY);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		frame.setSize(anchura, altura);
-		frame.setLocationRelativeTo(null);
-		frame.getContentPane().setLayout(null);	
-		frame.getContentPane().add(contenedorDePaneles);
-		cargarPanelIniciarSesion();
+		setBackground(Color.DARK_GRAY);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setResizable(false);
+		setSize(anchura, altura);
+		setLocationRelativeTo(null);
+		setContentPane(contentPane);	
+		
+		contentPane.setLayout(null);
+		contentPane.add(contenedorDePaneles);
+
 	}
 	
 	private void eventos()

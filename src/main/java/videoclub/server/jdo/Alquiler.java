@@ -1,4 +1,4 @@
-package videoclub.datos;
+package videoclub.server.jdo;
 
 import java.util.Date;
 import javax.jdo.annotations.Inheritance;

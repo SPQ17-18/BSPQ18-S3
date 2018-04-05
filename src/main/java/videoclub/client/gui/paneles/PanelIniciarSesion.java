@@ -1,4 +1,4 @@
-package videoclub.paneles;
+package videoclub.client.gui.paneles;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -16,8 +16,8 @@ import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import videoclub.datos.Cliente;
-import videoclub.ventanas.VentanaPrincipal;
+import videoclub.client.gui.ventanas.ClientFrame;
+import videoclub.server.jdo.Cliente;
 
 public class PanelIniciarSesion extends JPanel {
 
@@ -141,8 +141,8 @@ public class PanelIniciarSesion extends JPanel {
 			//Primero cerramos la ventana actual de las credenciales:
 			frame.dispose();
 			//Inicializamos nueva JFrame VentanaPrincipal pero con distintos parámetros de entrada:
-			VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(1080+6,720+35);//800 (anchura del PanelUsuario), 600 (altura del PanelUsuario)
-			ventanaPrincipal.frame.setVisible(true);
+			ClientFrame ventanaPrincipal = new ClientFrame(1080+6,720+35);//800 (anchura del PanelUsuario), 600 (altura del PanelUsuario)
+			ventanaPrincipal.setVisible(true);
 			ventanaPrincipal.cargarPanelUsuario(null);
 			
 			//Mostramos mensaje:
@@ -152,8 +152,8 @@ public class PanelIniciarSesion extends JPanel {
 			//Primero cerramos la ventana actual de las credenciales:
 			frame.dispose();
 			//Inicializamos nueva JFrame VentanaPrincipal pero con distintos parámetros de entrada:
-			VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(1080+6,720+35);//800 (anchura del PanelAdministrador), 600 (altura del PanelAdministrador)
-			ventanaPrincipal.frame.setVisible(true);
+			ClientFrame ventanaPrincipal = new ClientFrame(1080+6,720+35);//800 (anchura del PanelAdministrador), 600 (altura del PanelAdministrador)
+			ventanaPrincipal.setVisible(true);
 			ventanaPrincipal.cargarPanelAdministrador();
 			
 			//Mostramos mensaje:

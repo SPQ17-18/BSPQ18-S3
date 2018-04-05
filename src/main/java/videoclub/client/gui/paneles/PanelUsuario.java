@@ -1,4 +1,4 @@
-package videoclub.paneles;
+package videoclub.client.gui.paneles;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -21,8 +21,8 @@ import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import videoclub.datos.Cliente;
-import videoclub.datos.Pelicula;
+import videoclub.server.jdo.Cliente;
+import videoclub.server.jdo.Pelicula;
 
 public class PanelUsuario extends JPanel {
 
