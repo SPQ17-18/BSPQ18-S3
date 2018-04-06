@@ -2,15 +2,20 @@ package videoclub.client.gui.paneles;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.HeadlessException;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.rmi.RemoteException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -55,6 +60,7 @@ public class PanelAdministrador extends JPanel {
 	private JScrollPane scrollPane_1;
 	
 	private ICollector collector;  //Collector implementado desde "ClienfFrame"
+	private JComboBox<Integer> comboBoxCantidad;
 
 	/**
 	 * Create the panel.
@@ -65,6 +71,12 @@ public class PanelAdministrador extends JPanel {
 		componentes();
 		añadirComponentes();
 		eventos();
+		
+		valoresComboBoxCategorias();
+		valoresComboBoxAños();
+		valoresComoboBoxDuraciones();
+		valoresComboBoxPrecios();
+		valoresComboBoxCantidad();
 	}
 
 	private void inicializar() {
@@ -88,6 +100,7 @@ public class PanelAdministrador extends JPanel {
 		scrollPane_3 = new JScrollPane();
 		textPaneMostrarDescripcion = new JTextPane();
 		comboBoxPrecio = new JComboBox<Float>();
+		comboBoxCantidad = new JComboBox<Integer>();
 	}
 
 	private void componentes() {
@@ -121,21 +134,21 @@ public class PanelAdministrador extends JPanel {
 		textFieldNombrePelicula.setBackground(Color.DARK_GRAY);
 		textFieldNombrePelicula.setBorder(new TitledBorder(null, "NOMBRE DE LA PELICULA", TitledBorder.CENTER,
 				TitledBorder.TOP, null, SystemColor.textHighlight));
-		textFieldNombrePelicula.setBounds(22, 598, 205, 94);
+		textFieldNombrePelicula.setBounds(22, 599, 205, 41);
 		textFieldNombrePelicula.setColumns(10);
 		comboBoxAnyo.setBackground(Color.DARK_GRAY);
 		comboBoxAnyo.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "A\u00D1O",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
-		comboBoxAnyo.setBounds(359, 601, 93, 91);
+		comboBoxAnyo.setBounds(365, 598, 115, 41);
 		comboBoxDuracion.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "DURACION",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
 		comboBoxDuracion.setBackground(Color.DARK_GRAY);
-		comboBoxDuracion.setBounds(464, 601, 127, 91);
+		comboBoxDuracion.setBounds(32, 653, 127, 41);
 		comboBoxCategoria.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "CATEGORIA",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
 		comboBoxCategoria.setBackground(Color.DARK_GRAY);
-		comboBoxCategoria.setBounds(603, 601, 135, 91);
-		scrollPane_2.setBounds(744, 600, 312, 92);
+		comboBoxCategoria.setBounds(174, 653, 179, 41);
+		scrollPane_2.setBounds(492, 599, 564, 93);
 		scrollPane_2.setViewportView(textPaneDescripcion);
 		textPaneDescripcion.setBackground(Color.DARK_GRAY);
 		textPaneDescripcion.setBorder(new TitledBorder(null, "DESCRIPCION", TitledBorder.CENTER, TitledBorder.TOP, null,
@@ -154,7 +167,10 @@ public class PanelAdministrador extends JPanel {
 		comboBoxPrecio.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "PRECIO",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
 		comboBoxPrecio.setBackground(Color.DARK_GRAY);
-		comboBoxPrecio.setBounds(233, 601, 114, 91);
+		comboBoxPrecio.setBounds(239, 598, 114, 41);
+		comboBoxCantidad.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "CANTIDAD", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
+		comboBoxCantidad.setBackground(Color.DARK_GRAY);
+		comboBoxCantidad.setBounds(365, 653, 115, 41);
 	}
 
 	private void añadirComponentes() {
@@ -179,6 +195,7 @@ public class PanelAdministrador extends JPanel {
 		add(scrollPane_1);
 		add(btnInsertarNuevoInventario);
 		add(scrollPane_3);
+		add(comboBoxCantidad);
 
 		scrollPane_3.setViewportView(textPaneMostrarDescripcion);
 		scrollPane.setViewportView(table);
@@ -204,7 +221,22 @@ public class PanelAdministrador extends JPanel {
 		});
 		btnInsertarNuevaPelcula.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				// Antes de insertar hay que comprobar si los campos están
+				// correctos:
+				boolean camposCorrectos = true;
+				if (textFieldNombrePelicula.getText().equals("")) {
+					camposCorrectos = false;
+				}
+				if (textPaneDescripcion.getText().equals("")) {
+					camposCorrectos = false;
+				}
+
+				if (camposCorrectos == true) {
+					insertarNuevaPeliculaEnLaBD();
+				} else {
+					JOptionPane.showMessageDialog(null, "¡LOS CAMPOS ESTÁN INCOMPLETOS!", "¡ERROR!",
+							JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		btnEliminarPelcula.addActionListener(new ActionListener() {
@@ -225,4 +257,77 @@ public class PanelAdministrador extends JPanel {
 		});
 	}
 	
+	private void valoresComboBoxCategorias() {
+		String[] arrayCategorias = new String[] {"Infantil","Comedia","Thriller","Miedo","Clasica","Musical"};
+		for(int i = 0; i<arrayCategorias.length; i++)
+		{
+			comboBoxCategoria.addItem(arrayCategorias[i]);
+		}
+	}
+	
+	private void valoresComboBoxAños() {
+		// Introducimos años desde 2017-1900:
+		for (int i = 2017; i > 1900; i--) {
+			comboBoxAnyo.addItem(i);
+		}
+	}
+
+	private void valoresComoboBoxDuraciones() {
+		// Introducimos duraciones desde 45 minutos hasta 345 minutos:
+		for (int i = 345; i > 45; i--) {
+			comboBoxDuracion.addItem(i);
+		}
+	}
+
+	private void valoresComboBoxPrecios() {
+		// Introducimos 100 precios diferentes:
+		float precio = 0.25F;
+		for (int i = 0; i < 100; i++) {
+			comboBoxPrecio.addItem(Redondear(precio, 2));
+			precio += 0.25F;
+		}
+	}
+	
+	private void valoresComboBoxCantidad()
+	{
+		for(int i = 1; i<100; i++)
+		{
+			comboBoxCantidad.addItem(i);
+		}
+	}
+	
+	public float Redondear(float pNumero, int pCantidadDecimales) {
+		// the function is call with the values Redondear(625.3f, 2)
+		BigDecimal value = new BigDecimal(pNumero);
+		value = value.setScale(pCantidadDecimales, RoundingMode.HALF_EVEN);
+		return value.floatValue(); // but here the values is 625.3
+	}
+	
+	/**
+	 * Método para insertar nueva película:
+	 */
+	private void insertarNuevaPeliculaEnLaBD() {
+		// Primero debemos obtener todos los valores de los campos:
+		String nombre = textFieldNombrePelicula.getText();
+		String descripcion = textPaneDescripcion.getText();
+		float precio = (float) comboBoxPrecio.getSelectedItem();
+		int anyo = (int) comboBoxAnyo.getSelectedItem();
+		int duracion = (int) comboBoxDuracion.getSelectedItem();
+		String categoria = (String) comboBoxCategoria.getSelectedItem();
+		int cantidad = (int) comboBoxCantidad.getSelectedItem();
+
+		// Finalmente guardamos la película en la base de datos:
+		try {
+			if (collector.insertarPelicula(nombre, duracion, descripcion, anyo, precio, categoria, cantidad) == true) {
+				JOptionPane.showMessageDialog(null,
+						"La película: " + nombre + " ha sido insertada correctamente en la base de datos.");
+			}
+		} catch (HeadlessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

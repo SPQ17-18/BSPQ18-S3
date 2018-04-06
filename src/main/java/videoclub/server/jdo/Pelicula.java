@@ -14,7 +14,7 @@ public class Pelicula {
 	private Categoria categoria;
 	private float precio;
 	
-	public Pelicula(String nombre, int duracion, String descripcion, int anyo, Categoria categoria, float precio) {
+	public Pelicula(String nombre, int duracion, String descripcion, int anyo, float precio, Categoria categoria) {
 		this.nombre = nombre;
 		this.duracion = duracion;
 		this.descripcion = descripcion;

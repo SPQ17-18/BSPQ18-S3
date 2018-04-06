@@ -22,8 +22,11 @@ import android.view.LayoutInflater.Filter;
 import videoclub.client.gui.paneles.PanelIniciarSesion;
 import videoclub.observer.RMI.IRemoteObserver;
 import videoclub.observer.RMI.RemoteObservable;
+import videoclub.server.jdo.Categoria;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Direccion;
+import videoclub.server.jdo.Inventario;
+import videoclub.server.jdo.Pelicula;
 import videoclub.server.jdo.Usuario;
 
 public class ServerCollector extends UnicastRemoteObject implements ICollector {
@@ -225,5 +228,64 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 			}
 		}
 		return inicioCorrecto;
+	}
+
+	@Override
+	public boolean insertarPelicula(String nombre, int duracion, String descripcion, int anyo, float precio,
+			String categoria, int cantidad) {
+		// TODO Auto-generated method stub
+		boolean correcto = false;
+		boolean categoriaExiste = false;
+		try {
+			tx.begin();
+			ServerFrame.textArea.append("Comprobación de la categoria: '" + categoria + "'\n");
+			Categoria cat = null;
+
+			//Sacamos todas las categorias de la BD:
+			@SuppressWarnings("unchecked")
+			Query<Categoria> q = pm.newQuery(
+					"SELECT FROM " + Categoria.class.getName() + " WHERE nombre == '" + categoria + "'");
+			List<Categoria> categorias = q.executeList();
+			//Comprobamos si dicha categoria existe:
+			for (Categoria cate : categorias) {
+				if (cate.getNombre().equals(categoria)) {
+					//Existe dicha categoria por tanto no hay que crearla!
+					categoriaExiste = true;
+					//Guardamos la categoria para usarla al crear la película:
+					cat = cate;
+				}
+			}
+
+			//Comprobamos si la categoria existe:
+			if(categoriaExiste == false)
+			{
+				//Hacer persistente:
+				ServerFrame.textArea.append("Creando nueva categoria...\n");
+				cat = new Categoria(categoria);
+				pm.makePersistent(cat);
+				ServerFrame.textArea.append("Categoria creada con éxito!\n");
+			}
+			
+			//Ahora toca crear la película:
+			ServerFrame.textArea.append("Creando nueva película...\n");
+			Pelicula pelicula = new Pelicula(nombre, duracion, descripcion, anyo, precio, cat);
+			pm.makePersistent(pelicula);
+			ServerFrame.textArea.append("Pelicula: "+nombre+" creada exitosamente!\n");
+			
+			//Creamos el inventario con la cantidad de películas en stock!:
+			ServerFrame.textArea.append("Creando inventario para la película: "+nombre+"\n");
+			pm.makePersistent(new Inventario(cantidad,pelicula));
+			ServerFrame.textArea.append("Inventario para le película "+nombre+" creado exitosamente..!\n");
+			
+			tx.commit();
+			
+			correcto = true;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+
+		return correcto;
 	}
 }
