@@ -6,7 +6,11 @@ import javax.jdo.annotations.InheritanceStrategy;
 
 @PersistenceCapable
 @Inheritance(strategy=InheritanceStrategy.NEW_TABLE)
-public class Pelicula {
+public class Pelicula implements java.io.Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String nombre;
 	private int duracion;
 	private String descripcion;

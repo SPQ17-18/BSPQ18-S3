@@ -6,7 +6,11 @@ import javax.jdo.annotations.InheritanceStrategy;
 
 @PersistenceCapable
 @Inheritance(strategy=InheritanceStrategy.NEW_TABLE)
-public class Direccion {
+public class Direccion  implements java.io.Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String calle;
 	private String ciudad;
 	private String pais;

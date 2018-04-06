@@ -104,10 +104,10 @@ public class ClientFrame extends JFrame {
 	}
 	
 	//Método para cargar el panel del usuario:
-	public void cargarPanelUsuario(Cliente cliente)
+	public void cargarPanelUsuario()
 	{
 		//Inicializamos el panel:
-		panelUsuario = new PanelUsuario(cliente, this.collector);
+		panelUsuario = new PanelUsuario(this.collector);
 		//Cargamos el panel en el scrollPane: contenedorDePaneles
 		contenedorDePaneles.setViewportView(panelUsuario);
 	}

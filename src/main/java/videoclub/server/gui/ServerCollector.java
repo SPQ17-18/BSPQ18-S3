@@ -20,6 +20,7 @@ import org.pushingpixels.substance.api.skin.SubstanceRavenLookAndFeel;
 
 import android.view.LayoutInflater.Filter;
 import videoclub.client.gui.paneles.PanelIniciarSesion;
+import videoclub.client.gui.paneles.PanelUsuario;
 import videoclub.observer.RMI.IRemoteObserver;
 import videoclub.observer.RMI.RemoteObservable;
 import videoclub.server.jdo.Categoria;
@@ -180,9 +181,9 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 				ServerFrame.textArea.append("Creando nuevo cliente...");
 				Cliente cliente = new Cliente(nombre, apellidos, fechaNacimiento, new Direccion(calle, ciudad, pais));
 				ServerFrame.textArea.append("Cliente: " + nombre + " - " + apellidos + " creado exitosamente! :D\n");
-				ServerFrame.textArea.append("Creando nuevo usuario: " + nombreUsuario+"\n");
+				ServerFrame.textArea.append("Creando nuevo usuario: " + nombreUsuario + "\n");
 				user = new Usuario(nombreUsuario, contraseña, correo, cliente);
-				ServerFrame.textArea.append("Usuario creado: " + nombreUsuario+"\n");
+				ServerFrame.textArea.append("Usuario creado: " + nombreUsuario + "\n");
 				pm.makePersistent(user);
 				ServerFrame.textArea.append("Sincronizado con las bases de datos... ! Correcto\n");
 			}
@@ -207,18 +208,18 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 
 			// Ejecutamos consulta para comprobar si el usuario es correcto:
 			@SuppressWarnings("unchecked")
-			Query<Usuario> q = pm.newQuery(
-					"SELECT FROM " + Usuario.class.getName() + " WHERE nombreUsuario == '" + nombreUsuario + "' && contraseña == '"+contraseña+"'");
+			Query<Usuario> q = pm.newQuery("SELECT FROM " + Usuario.class.getName() + " WHERE nombreUsuario == '"
+					+ nombreUsuario + "' && contraseña == '" + contraseña + "'");
 			List<Usuario> usuarios = q.executeList();
 			for (Usuario usuario : usuarios) {
 				// Comprobamos que el usuario sea correcto:
 				if (usuario.getNombreUsuario().equals(nombreUsuario) && usuario.getContraseña().equals(contraseña)) {
 					inicioCorrecto = true;
 					ServerFrame.textArea.append("Usuario y contraseña correctas! :D\n");
-					ServerFrame.textArea.append("Obteniendo datos del cliente...\n");
-					PanelIniciarSesion.clienteActual = usuario.getCliente();
+					ServerFrame.textArea.append("Obteniendo datos del cliente...\n");					
+					PanelUsuario.clienteActual = usuario.getCliente();
 					ServerFrame.textArea.append("Datos del cliente obtenidos!\n");
-					ServerFrame.textArea.append("Bienvenido "+usuario.getCliente().getNombre()+" :D\n");
+					ServerFrame.textArea.append("Bienvenido " + usuario.getCliente().getNombre() + " :D\n");
 				}
 			}
 			tx.commit();
@@ -241,44 +242,43 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 			ServerFrame.textArea.append("Comprobación de la categoria: '" + categoria + "'\n");
 			Categoria cat = null;
 
-			//Sacamos todas las categorias de la BD:
+			// Sacamos todas las categorias de la BD:
 			@SuppressWarnings("unchecked")
-			Query<Categoria> q = pm.newQuery(
-					"SELECT FROM " + Categoria.class.getName() + " WHERE nombre == '" + categoria + "'");
+			Query<Categoria> q = pm
+					.newQuery("SELECT FROM " + Categoria.class.getName() + " WHERE nombre == '" + categoria + "'");
 			List<Categoria> categorias = q.executeList();
-			//Comprobamos si dicha categoria existe:
+			// Comprobamos si dicha categoria existe:
 			for (Categoria cate : categorias) {
 				if (cate.getNombre().equals(categoria)) {
-					//Existe dicha categoria por tanto no hay que crearla!
+					// Existe dicha categoria por tanto no hay que crearla!
 					categoriaExiste = true;
-					//Guardamos la categoria para usarla al crear la película:
+					// Guardamos la categoria para usarla al crear la película:
 					cat = cate;
 				}
 			}
 
-			//Comprobamos si la categoria existe:
-			if(categoriaExiste == false)
-			{
-				//Hacer persistente:
+			// Comprobamos si la categoria existe:
+			if (categoriaExiste == false) {
+				// Hacer persistente:
 				ServerFrame.textArea.append("Creando nueva categoria...\n");
 				cat = new Categoria(categoria);
 				pm.makePersistent(cat);
 				ServerFrame.textArea.append("Categoria creada con éxito!\n");
 			}
-			
-			//Ahora toca crear la película:
+
+			// Ahora toca crear la película:
 			ServerFrame.textArea.append("Creando nueva película...\n");
 			Pelicula pelicula = new Pelicula(nombre, duracion, descripcion, anyo, precio, cat);
 			pm.makePersistent(pelicula);
-			ServerFrame.textArea.append("Pelicula: "+nombre+" creada exitosamente!\n");
-			
-			//Creamos el inventario con la cantidad de películas en stock!:
-			ServerFrame.textArea.append("Creando inventario para la película: "+nombre+"\n");
-			pm.makePersistent(new Inventario(cantidad,pelicula));
-			ServerFrame.textArea.append("Inventario para le película "+nombre+" creado exitosamente..!\n");
-			
+			ServerFrame.textArea.append("Pelicula: " + nombre + " creada exitosamente!\n");
+
+			// Creamos el inventario con la cantidad de películas en stock!:
+			ServerFrame.textArea.append("Creando inventario para la película: " + nombre + "\n");
+			pm.makePersistent(new Inventario(cantidad, pelicula));
+			ServerFrame.textArea.append("Inventario para le película " + nombre + " creado exitosamente..!\n");
+
 			tx.commit();
-			
+
 			correcto = true;
 		} finally {
 			if (tx.isActive()) {
@@ -287,5 +287,33 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		}
 
 		return correcto;
+	}
+
+	@Override
+	public List<Pelicula> obtenerPeliculas(List<Pelicula> arrayPeliculas) throws RemoteException {
+		// TODO Auto-generated method stub
+
+		try {
+			tx.begin();
+			ServerFrame.textArea.append("Obteniendo películas de la BD...\n");
+
+			// Sacamos todas las categorias de la BD:
+			@SuppressWarnings("unchecked")
+			Query<Pelicula> q = pm
+			.newQuery("SELECT FROM " + Pelicula.class.getName() + " WHERE nombre != ' '");
+			List<Pelicula> peliculas = (List<Pelicula>) q.executeList();
+			for (Pelicula pelicula : peliculas) {
+				//Vamos añadiendo las películas al array pasado:
+				arrayPeliculas.add(pelicula);
+			}
+			ServerFrame.textArea.append("Películas obteneidas ! :D\n");
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		
+		return arrayPeliculas;
 	}
 }

@@ -5,8 +5,12 @@ import javax.jdo.annotations.InheritanceStrategy;
 
 @PersistenceCapable
 @Inheritance(strategy=InheritanceStrategy.NEW_TABLE)
-public class Categoria {
+public class Categoria  implements java.io.Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String nombre;
 	
 	public Categoria(String nombre) {

@@ -35,7 +35,6 @@ public class PanelIniciarSesion extends JPanel {
 	public JButton BotonRegistrarse;
 	private JButton BotonContraseñaOlvidada;
 	private ICollector collector; //Pasamos collector desde el "ClientFrame"
-	public static Cliente clienteActual;
 
 	/**
 	 * Create the panel.
@@ -156,7 +155,7 @@ public class PanelIniciarSesion extends JPanel {
 			//Inicializamos nueva JFrame VentanaPrincipal pero con distintos parámetros de entrada:
 			ClientFrame ventanaPrincipal = new ClientFrame(1080+6,720+35, collector);//800 (anchura del PanelUsuario), 600 (altura del PanelUsuario)
 			ventanaPrincipal.setVisible(true);
-			ventanaPrincipal.cargarPanelUsuario(clienteActual);
+			ventanaPrincipal.cargarPanelUsuario();
 			
 			//Mostramos mensaje:
 			JOptionPane.showMessageDialog(null, "BIENVENIDO "+textField.getText());

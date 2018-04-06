@@ -5,8 +5,12 @@ import javax.jdo.annotations.InheritanceStrategy;
 
 @PersistenceCapable
 @Inheritance(strategy=InheritanceStrategy.NEW_TABLE)
-public class Usuario {
+public class Usuario  implements java.io.Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String nombreUsuario;
 	private String contraseña;
 	private String correo;
