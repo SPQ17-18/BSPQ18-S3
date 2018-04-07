@@ -1,8 +1,8 @@
 package videoclub.server.jdo;
 
 import javax.jdo.annotations.Inheritance;
-import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.InheritanceStrategy;
+import javax.jdo.annotations.PersistenceCapable;
 
 @PersistenceCapable
 @Inheritance(strategy=InheritanceStrategy.NEW_TABLE)
@@ -17,14 +17,16 @@ public class Pelicula implements java.io.Serializable{
 	private int anyo;
 	private Categoria categoria;
 	private float precio;
+	private Imagen image;
 	
-	public Pelicula(String nombre, int duracion, String descripcion, int anyo, float precio, Categoria categoria) {
+	public Pelicula(String nombre, int duracion, String descripcion, int anyo, float precio, Categoria categoria, Imagen image) {
 		this.nombre = nombre;
 		this.duracion = duracion;
 		this.descripcion = descripcion;
 		this.anyo = anyo;
 		this.categoria = categoria;
 		this.precio = precio;
+		this.image = image;
 	}
 
 	public float getPrecio() {
@@ -73,6 +75,14 @@ public class Pelicula implements java.io.Serializable{
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
+	}
+
+	public Imagen getImage() {
+		return image;
+	}
+
+	public void setImage(Imagen image) {
+		this.image = image;
 	}
 
 }

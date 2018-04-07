@@ -8,12 +8,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.rmi.RemoteException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -22,10 +31,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import videoclub.server.gui.ICollector;
+import videoclub.server.jdo.Imagen;
 
 public class PanelAdministrador extends JPanel {
 
@@ -41,7 +52,6 @@ public class PanelAdministrador extends JPanel {
 	private JButton btnMostrarAlquileresDe;
 	private JButton btnMostrarClientes;
 	private JButton btnInsertarNuevaPelcula;
-	private JButton btnEliminarPelcula;
 	private JLabel label;
 	private JTextField textFieldNombrePelicula;
 	private JComboBox<Integer> comboBoxAnyo;
@@ -49,17 +59,21 @@ public class PanelAdministrador extends JPanel {
 	private JComboBox<String> comboBoxCategoria;
 	private JTextPane textPaneDescripcion;
 	private JScrollPane scrollPane_2;
-	private JButton btnInsertarNuevoInventario;
-	private JTextPane textPaneMostrarDescripcion;
-	private JScrollPane scrollPane_3;
 	private JComboBox<Float> comboBoxPrecio;
+
+	// Para obtener ruta imágenes:
+	private JFileChooser jF1 = new JFileChooser();
+	private JLabel LabelImage;
+	private boolean imagenSubida = false;
+	private Imagen imagen;
+	private Path ruta;
 
 	@SuppressWarnings("unused")
 	private DefaultTableModel tableModel = new DefaultTableModel();
 	private JTable table_1;
 	private JScrollPane scrollPane_1;
-	
-	private ICollector collector;  //Collector implementado desde "ClienfFrame"
+
+	private ICollector collector; // Collector implementado desde "ClienfFrame"
 	private JComboBox<Integer> comboBoxCantidad;
 
 	/**
@@ -71,7 +85,7 @@ public class PanelAdministrador extends JPanel {
 		componentes();
 		añadirComponentes();
 		eventos();
-		
+
 		valoresComboBoxCategorias();
 		valoresComboBoxAños();
 		valoresComoboBoxDuraciones();
@@ -84,7 +98,6 @@ public class PanelAdministrador extends JPanel {
 		btnMostrarAlquileresDe = new JButton("Mostrar alquileres de pel\u00EDculas");
 		btnMostrarClientes = new JButton("Mostrar clientes");
 		btnInsertarNuevaPelcula = new JButton("Insertar nueva pel\u00EDcula");
-		btnEliminarPelcula = new JButton("Eliminar pel\u00EDcula");
 		scrollPane = new JScrollPane();
 		table = new JTable();
 		label = new JLabel();
@@ -96,11 +109,9 @@ public class PanelAdministrador extends JPanel {
 		comboBoxCategoria = new JComboBox<String>();
 		scrollPane_2 = new JScrollPane();
 		textPaneDescripcion = new JTextPane();
-		btnInsertarNuevoInventario = new JButton("Insertar nuevo inventario");
-		scrollPane_3 = new JScrollPane();
-		textPaneMostrarDescripcion = new JTextPane();
 		comboBoxPrecio = new JComboBox<Float>();
 		comboBoxCantidad = new JComboBox<Integer>();
+		LabelImage = new JLabel();
 	}
 
 	private void componentes() {
@@ -111,13 +122,10 @@ public class PanelAdministrador extends JPanel {
 		btnMostrarClientes.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnMostrarClientes.setBounds(492, 13, 135, 41);
 		btnInsertarNuevaPelcula.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnInsertarNuevaPelcula.setBounds(12, 535, 185, 41);
-		btnEliminarPelcula.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnEliminarPelcula.setBounds(418, 535, 232, 41);
+		btnInsertarNuevaPelcula.setBounds(22, 667, 267, 27);
 		scrollPane.setBounds(12, 67, 1056, 286);
-		label.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Insertar pel\u00EDcula",
-				TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 120, 215)));
-		label.setBounds(12, 582, 1056, 125);
+		label.setBorder(new LineBorder(SystemColor.textHighlight));
+		label.setBounds(12, 454, 1056, 253);
 		table.setCellSelectionEnabled(true);
 		table.setRowHeight(20);
 		table.setGridColor(new Color(0, 51, 102));
@@ -134,43 +142,38 @@ public class PanelAdministrador extends JPanel {
 		textFieldNombrePelicula.setBackground(Color.DARK_GRAY);
 		textFieldNombrePelicula.setBorder(new TitledBorder(null, "NOMBRE DE LA PELICULA", TitledBorder.CENTER,
 				TitledBorder.TOP, null, SystemColor.textHighlight));
-		textFieldNombrePelicula.setBounds(22, 599, 205, 41);
+		textFieldNombrePelicula.setBounds(22, 465, 267, 48);
 		textFieldNombrePelicula.setColumns(10);
 		comboBoxAnyo.setBackground(Color.DARK_GRAY);
 		comboBoxAnyo.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "A\u00D1O",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
-		comboBoxAnyo.setBounds(365, 598, 115, 41);
+		comboBoxAnyo.setBounds(427, 472, 115, 41);
 		comboBoxDuracion.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "DURACION",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
 		comboBoxDuracion.setBackground(Color.DARK_GRAY);
-		comboBoxDuracion.setBounds(32, 653, 127, 41);
+		comboBoxDuracion.setBounds(748, 472, 127, 41);
 		comboBoxCategoria.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "CATEGORIA",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
 		comboBoxCategoria.setBackground(Color.DARK_GRAY);
-		comboBoxCategoria.setBounds(174, 653, 179, 41);
-		scrollPane_2.setBounds(492, 599, 564, 93);
+		comboBoxCategoria.setBounds(557, 472, 179, 41);
+		scrollPane_2.setBounds(301, 526, 755, 168);
 		scrollPane_2.setViewportView(textPaneDescripcion);
 		textPaneDescripcion.setBackground(Color.DARK_GRAY);
 		textPaneDescripcion.setBorder(new TitledBorder(null, "DESCRIPCION", TitledBorder.CENTER, TitledBorder.TOP, null,
 				SystemColor.textHighlight));
-		btnInsertarNuevoInventario.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnInsertarNuevoInventario.setBounds(209, 535, 197, 41);
 		scrollPane_1.setBorder(new TitledBorder(null,
 				"Pel\u00EDculas alquiladas por los clientes - Nombre y descripci\u00F3n del cliente en particular",
 				TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.textHighlight));
-		textPaneMostrarDescripcion.setForeground(Color.WHITE);
-		textPaneMostrarDescripcion.setBackground(Color.DARK_GRAY);
-		textPaneMostrarDescripcion.setBorder(new TitledBorder(null,
-				"Descripci\u00F3n total de la pel\u00EDcula (primero click en descripci\u00F3n de pel\u00EDcula)",
-				TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.textHighlight));
-		scrollPane_3.setBounds(12, 454, 1056, 70);
 		comboBoxPrecio.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "PRECIO",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
 		comboBoxPrecio.setBackground(Color.DARK_GRAY);
-		comboBoxPrecio.setBounds(239, 598, 114, 41);
-		comboBoxCantidad.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "CANTIDAD", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
+		comboBoxPrecio.setBounds(301, 472, 114, 41);
+		comboBoxCantidad.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "CANTIDAD",
+				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
 		comboBoxCantidad.setBackground(Color.DARK_GRAY);
-		comboBoxCantidad.setBounds(365, 653, 115, 41);
+		comboBoxCantidad.setBounds(887, 472, 169, 41);
+		LabelImage.setBorder(new LineBorder(SystemColor.textHighlight));
+		LabelImage.setBounds(105, 517, 100, 140);
 	}
 
 	private void añadirComponentes() {
@@ -183,7 +186,6 @@ public class PanelAdministrador extends JPanel {
 		add(btnMostrarAlquileresDe);
 		add(btnMostrarClientes);
 		add(btnInsertarNuevaPelcula);
-		add(btnEliminarPelcula);
 		add(textFieldNombrePelicula);
 		add(comboBoxAnyo);
 		add(comboBoxDuracion);
@@ -191,13 +193,10 @@ public class PanelAdministrador extends JPanel {
 		add(comboBoxPrecio);
 		add(scrollPane_2);
 		add(scrollPane);
+		add(LabelImage);
 		add(label);
 		add(scrollPane_1);
-		add(btnInsertarNuevoInventario);
-		add(scrollPane_3);
 		add(comboBoxCantidad);
-
-		scrollPane_3.setViewportView(textPaneMostrarDescripcion);
 		scrollPane.setViewportView(table);
 		scrollPane_1.setViewportView(table_1);
 
@@ -239,32 +238,54 @@ public class PanelAdministrador extends JPanel {
 				}
 			}
 		});
-		btnEliminarPelcula.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-						
+
 			}
 		});
-		btnInsertarNuevoInventario.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
+		LabelImage.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				imagenSubida = false;
+				jF1.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				// Ahora tenemos que conseguir una imane a subir a la bd:
+				if (jF1.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+
+					// Obtenemos ruta de la imágen:
+					ruta = jF1.getSelectedFile().toPath();
+
+					// Guardamos imagen para introeducir en bd:
+					try {
+						byte[] data = Files.readAllBytes(ruta);
+						imagen = new Imagen(jF1.getSelectedFile().getName(), data);
+
+						// Mostramos imagen el el label:
+						byte[] bytes = imagen.getImage();
+						BufferedImage image = null;
+						InputStream in = new ByteArrayInputStream(bytes);
+						image = ImageIO.read(in);
+						LabelImage.setIcon(new ImageIcon(image.getScaledInstance(100, 140, 0)));
+
+						// Imagen subida correcto!
+						imagenSubida = true;
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+				}
 			}
 		});
 	}
-	
+
 	private void valoresComboBoxCategorias() {
-		String[] arrayCategorias = new String[] {"Infantil","Comedia","Thriller","Miedo","Clasica","Musical"};
-		for(int i = 0; i<arrayCategorias.length; i++)
-		{
+		String[] arrayCategorias = new String[] { "Infantil", "Comedia", "Thriller", "Miedo", "Clasica", "Musical" };
+		for (int i = 0; i < arrayCategorias.length; i++) {
 			comboBoxCategoria.addItem(arrayCategorias[i]);
 		}
 	}
-	
+
 	private void valoresComboBoxAños() {
 		// Introducimos años desde 2017-1900:
 		for (int i = 2017; i > 1900; i--) {
@@ -287,47 +308,50 @@ public class PanelAdministrador extends JPanel {
 			precio += 0.25F;
 		}
 	}
-	
-	private void valoresComboBoxCantidad()
-	{
-		for(int i = 1; i<100; i++)
-		{
+
+	private void valoresComboBoxCantidad() {
+		for (int i = 1; i < 100; i++) {
 			comboBoxCantidad.addItem(i);
 		}
 	}
-	
+
 	public float Redondear(float pNumero, int pCantidadDecimales) {
 		// the function is call with the values Redondear(625.3f, 2)
 		BigDecimal value = new BigDecimal(pNumero);
 		value = value.setScale(pCantidadDecimales, RoundingMode.HALF_EVEN);
 		return value.floatValue(); // but here the values is 625.3
 	}
-	
+
 	/**
 	 * Método para insertar nueva película:
 	 */
 	private void insertarNuevaPeliculaEnLaBD() {
-		// Primero debemos obtener todos los valores de los campos:
-		String nombre = textFieldNombrePelicula.getText();
-		String descripcion = textPaneDescripcion.getText();
-		float precio = (float) comboBoxPrecio.getSelectedItem();
-		int anyo = (int) comboBoxAnyo.getSelectedItem();
-		int duracion = (int) comboBoxDuracion.getSelectedItem();
-		String categoria = (String) comboBoxCategoria.getSelectedItem();
-		int cantidad = (int) comboBoxCantidad.getSelectedItem();
+		if (imagenSubida == true) {
+			// Primero debemos obtener todos los valores de los campos:
+			String nombre = textFieldNombrePelicula.getText();
+			String descripcion = textPaneDescripcion.getText();
+			float precio = (float) comboBoxPrecio.getSelectedItem();
+			int anyo = (int) comboBoxAnyo.getSelectedItem();
+			int duracion = (int) comboBoxDuracion.getSelectedItem();
+			String categoria = (String) comboBoxCategoria.getSelectedItem();
+			int cantidad = (int) comboBoxCantidad.getSelectedItem();
 
-		// Finalmente guardamos la película en la base de datos:
-		try {
-			if (collector.insertarPelicula(nombre, duracion, descripcion, anyo, precio, categoria, cantidad) == true) {
-				JOptionPane.showMessageDialog(null,
-						"La película: " + nombre + " ha sido insertada correctamente en la base de datos.");
+			// Finalmente guardamos la película en la base de datos:
+			try {
+				if (collector.insertarPelicula(nombre, duracion, descripcion, anyo, precio, categoria, cantidad,
+						imagen) == true) {
+					JOptionPane.showMessageDialog(null,
+							"La película: " + nombre + " ha sido insertada correctamente en la base de datos.");
+				}
+			} catch (HeadlessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (HeadlessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}else{
+			JOptionPane.showMessageDialog(null, "NO HAS ELEGIDO NINGUNA IMÁGEN PARA LA PELÍCULA...");
 		}
 	}
 }

@@ -18,14 +18,13 @@ import javax.swing.UIManager;
 
 import org.pushingpixels.substance.api.skin.SubstanceRavenLookAndFeel;
 
-import android.view.LayoutInflater.Filter;
-import videoclub.client.gui.paneles.PanelIniciarSesion;
 import videoclub.client.gui.paneles.PanelUsuario;
 import videoclub.observer.RMI.IRemoteObserver;
 import videoclub.observer.RMI.RemoteObservable;
 import videoclub.server.jdo.Categoria;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Direccion;
+import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Inventario;
 import videoclub.server.jdo.Pelicula;
 import videoclub.server.jdo.Usuario;
@@ -216,7 +215,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 				if (usuario.getNombreUsuario().equals(nombreUsuario) && usuario.getContraseña().equals(contraseña)) {
 					inicioCorrecto = true;
 					ServerFrame.textArea.append("Usuario y contraseña correctas! :D\n");
-					ServerFrame.textArea.append("Obteniendo datos del cliente...\n");					
+					ServerFrame.textArea.append("Obteniendo datos del cliente...\n");
 					PanelUsuario.clienteActual = usuario.getCliente();
 					ServerFrame.textArea.append("Datos del cliente obtenidos!\n");
 					ServerFrame.textArea.append("Bienvenido " + usuario.getCliente().getNombre() + " :D\n");
@@ -233,7 +232,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 
 	@Override
 	public boolean insertarPelicula(String nombre, int duracion, String descripcion, int anyo, float precio,
-			String categoria, int cantidad) {
+			String categoria, int cantidad, Imagen imagen) {
 		// TODO Auto-generated method stub
 		boolean correcto = false;
 		boolean categoriaExiste = false;
@@ -268,7 +267,8 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 
 			// Ahora toca crear la película:
 			ServerFrame.textArea.append("Creando nueva película...\n");
-			Pelicula pelicula = new Pelicula(nombre, duracion, descripcion, anyo, precio, cat);
+			Pelicula pelicula = new Pelicula(nombre, duracion, descripcion, anyo, precio, cat, imagen);
+			ServerFrame.textArea.append("Creando imagen: "+imagen.getNombre()+" \n");
 			pm.makePersistent(pelicula);
 			ServerFrame.textArea.append("Pelicula: " + nombre + " creada exitosamente!\n");
 
@@ -299,11 +299,10 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 
 			// Sacamos todas las categorias de la BD:
 			@SuppressWarnings("unchecked")
-			Query<Pelicula> q = pm
-			.newQuery("SELECT FROM " + Pelicula.class.getName() + " WHERE nombre != ' '");
+			Query<Pelicula> q = pm.newQuery("SELECT FROM " + Pelicula.class.getName() + " WHERE nombre != ' '");
 			List<Pelicula> peliculas = (List<Pelicula>) q.executeList();
 			for (Pelicula pelicula : peliculas) {
-				//Vamos añadiendo las películas al array pasado:
+				// Vamos añadiendo las películas al array pasado:
 				arrayPeliculas.add(pelicula);
 			}
 			ServerFrame.textArea.append("Películas obteneidas ! :D\n");
@@ -313,7 +312,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 				tx.rollback();
 			}
 		}
-		
+
 		return arrayPeliculas;
 	}
 }

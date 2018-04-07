@@ -6,12 +6,16 @@ import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -31,6 +35,7 @@ import javax.swing.border.TitledBorder;
 import videoclub.client.utiles.Temas;
 import videoclub.server.gui.ICollector;
 import videoclub.server.jdo.Cliente;
+import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Pelicula;
 
 public class PanelUsuario extends JPanel {
@@ -223,7 +228,6 @@ public class PanelUsuario extends JPanel {
 		comboBoxGenero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (comboBoxGeneroPresionado == true) {
-					buscarPeliculasPorAño((int) comboBoxAño.getSelectedItem());
 					buscarPeliculasPorGenero((String) comboBoxGenero.getSelectedItem());
 				}
 				comboBoxGeneroPresionado = true;
@@ -275,8 +279,6 @@ public class PanelUsuario extends JPanel {
 		if (correcto == true) {
 			arrayBotones = new JToggleButton[arrayPeliculas.size()];
 			arrayBotonesPelicula = new ArrayList<BotonPelicula>();
-			boolean png = false;
-
 			// Segundo buscamos el id asociado a cada película y lo cotejamos
 			// con el
 			// id de las imágenes:
@@ -285,32 +287,12 @@ public class PanelUsuario extends JPanel {
 				// Inicializamos cada BOTON!:
 
 				ImageIcon icon = null;
-
-				try {
-					icon = new ImageIcon(this.getClass().getResource("/Imagenes/peliculas/" + (i + 1) + ".jpg"));
-				} catch (Exception E) {
-					png = true;
-				}
-
-				try {
-					if (png == true) {
-						icon = new ImageIcon(this.getClass().getResource("/Imagenes/peliculas/" + (i + 1) + ".png"));
-						png = false;
-					}
-				} catch (Exception E) {
-					// Si no existe imágen de la película se asignará una
-					// auutomáticamente:
-					try {
-						icon = new ImageIcon(this.getClass().getResource("/Imagenes/peliculas/SINCARTEL.jpg"));
-					} catch (Exception E1) {
-
-					}
-				}
+				icon = getImageIconPelicula(arrayPeliculas.get(i).getImage());
 
 				arrayBotones[i] = new JToggleButton(icon);
 				arrayBotones[i].setContentAreaFilled(false);
 				arrayBotones[i].setBorder(new LineBorder(SystemColor.textHighlight));
-				arrayBotonesPelicula.add(new BotonPelicula((i + 1)));
+				arrayBotonesPelicula.add(new BotonPelicula(arrayPeliculas.get(i)));
 
 				// Añadimos botón de la película al panel asignado para ello:
 				panel.add(arrayBotones[i]);
@@ -331,7 +313,7 @@ public class PanelUsuario extends JPanel {
 				public void actionPerformed(ActionEvent e) {
 					for (int i = 0; i < arrayBotones.length; i++) {
 						if (arrayBotones[i].isSelected() == true) {
-							mostrarPeliculaAAlquilar(i);
+							mostrarPeliculaAAlquilar(arrayBotonesPelicula.get(i).getPelicula());
 							// Toca deseleccionar todos:
 							for (int j = 0; j < arrayBotones.length; j++) {
 								arrayBotones[j].setSelected(false);
@@ -395,13 +377,12 @@ public class PanelUsuario extends JPanel {
 			}
 		}
 
-		if (cantAnyo != 0) {
+		if (cantAnyo > 0) {
 			// Creamos cantidad de botones a partir de la cantAnyo:
 			arrayBotones = new JToggleButton[cantAnyo];
 			int posArrayBotones = 0;
 			// Nueva lista:
 			arrayBotonesPelicula = new ArrayList<BotonPelicula>();
-			boolean png = false;
 
 			// Segundo buscamos el id asociado a cada película y lo cotejamos
 			// con el
@@ -409,32 +390,13 @@ public class PanelUsuario extends JPanel {
 			for (int i = 0; i < arrayPeliculas.size(); i++) {
 
 				// Inicializamos cada BOTON!:
-
-				ImageIcon icon = null;
-
 				if (arrayPeliculas.get(i).getAnyo() == anyo) {
-					try {
-						icon = new ImageIcon(this.getClass().getResource("/Imagenes/peliculas/" + (i + 1) + ".jpg"));
-					} catch (Exception E) {
-						png = true;
-					}
-
-					try {
-						if (png == true) {
-							icon = new ImageIcon(
-									this.getClass().getResource("/Imagenes/peliculas/" + (i + 1) + ".png"));
-							png = false;
-						}
-					} catch (Exception E) {
-						// Si no existe imágen de la película se asignará una
-						// auutomáticamente:
-						icon = new ImageIcon(this.getClass().getResource("/Imagenes/peliculas/SINCARTEL.jpg"));
-					}
-
+					ImageIcon icon = null;
+					icon = getImageIconPelicula(arrayPeliculas.get(i).getImage());
 					arrayBotones[posArrayBotones] = new JToggleButton(icon);
 					arrayBotones[posArrayBotones].setContentAreaFilled(false);
 					arrayBotones[posArrayBotones].setBorder(new LineBorder(SystemColor.textHighlight));
-					arrayBotonesPelicula.add(new BotonPelicula(i + 1));
+					arrayBotonesPelicula.add(new BotonPelicula(arrayPeliculas.get(i)));
 
 					// Añadimos botón de la película al panel asignado para
 					// ello:
@@ -443,53 +405,32 @@ public class PanelUsuario extends JPanel {
 					posArrayBotones++;
 				}
 			}
-
-			eventosBotonesPeplicula();
-		} else {
-			JOptionPane.showMessageDialog(null, "No se ha encontrado ninguna película con el año " + anyo);
 		}
+		eventosBotonesPeplicula();
 	}
 
 	/**
 	 * Método que muestra todos los detalles de la película seleccionada a
 	 * alquilar:
 	 */
-	private void mostrarPeliculaAAlquilar(int id_pelicula) {
+	private void mostrarPeliculaAAlquilar(Pelicula pelicula) {
 		// Primero el el cartel de la película:
 		ImageIcon icon = null;
-		boolean png = false;
-
-		try {
-			icon = new ImageIcon(this.getClass().getResource("/Imagenes/peliculas/" + (id_pelicula + 1) + ".jpg"));
-		} catch (Exception E) {
-			png = true;
-		}
-
-		try {
-			if (png == true) {
-				icon = new ImageIcon(this.getClass().getResource("/Imagenes/peliculas/" + (id_pelicula + 1) + ".png"));
-				png = false;
-			}
-		} catch (Exception E) {
-			// Si no existe imágen de la película se asignará una
-			// auutomáticamente:
-			icon = new ImageIcon(this.getClass().getResource("/Imagenes/peliculas/SINCARTEL.jpg"));
-		}
+		icon = getImageIconPelicula(pelicula.getImage());
 
 		activarComponentes();
 
 		// Colocamos datos:
 		lblImagenPelicula.setIcon(icon);
-		labelAño.setText(" AÑO: " + Integer.toString(arrayPeliculas.get(id_pelicula).getAnyo()));
-		labelCategoria.setText(" CATEGORIA: " + arrayPeliculas.get(id_pelicula).getCategoria().getNombre());
-		labelDuracion
-				.setText(" DURACIÓN: " + Integer.toString(arrayPeliculas.get(id_pelicula).getDuracion()) + " minutos");
-		labelTitulo.setText(" TITULO: " + arrayPeliculas.get(id_pelicula).getNombre());
-		textPaneDescripcion.setText(arrayPeliculas.get(id_pelicula).getDescripcion());
-		labelPrecio.setText(" PRECIO: " + Float.toString(arrayPeliculas.get(id_pelicula).getPrecio()) + "€");
+		labelAño.setText(" AÑO: " + Integer.toString(pelicula.getAnyo()));
+		labelCategoria.setText(" CATEGORIA: " + pelicula.getCategoria().getNombre());
+		labelDuracion.setText(" DURACIÓN: " + Integer.toString(pelicula.getDuracion()) + " minutos");
+		labelTitulo.setText(" TITULO: " + pelicula.getNombre());
+		textPaneDescripcion.setText(pelicula.getDescripcion());
+		labelPrecio.setText(" PRECIO: " + Float.toString(pelicula.getPrecio()) + "€");
 
 		// Guardamos datos de la película por si el usuario quiere alquilarla:
-		peliculaAAlquilar = arrayPeliculas.get(id_pelicula);
+		peliculaAAlquilar = pelicula;
 	}
 
 	@SuppressWarnings("unused")
@@ -549,7 +490,6 @@ public class PanelUsuario extends JPanel {
 			int posArrayBotones = 0;
 			// Nueva lista:
 			arrayBotonesPelicula = new ArrayList<BotonPelicula>();
-			boolean png = false;
 
 			// Segundo buscamos el id asociado a cada película y lo cotejamos
 			// con el
@@ -561,28 +501,13 @@ public class PanelUsuario extends JPanel {
 				ImageIcon icon = null;
 
 				if (arrayPeliculas.get(i).getCategoria().getNombre().equals(categoria)) {
-					try {
-						icon = new ImageIcon(this.getClass().getResource("/Imagenes/peliculas/" + (i + 1) + ".jpg"));
-					} catch (Exception E) {
-						png = true;
-					}
 
-					try {
-						if (png == true) {
-							icon = new ImageIcon(
-									this.getClass().getResource("/Imagenes/peliculas/" + (i + 1) + ".png"));
-							png = false;
-						}
-					} catch (Exception E) {
-						// Si no existe imágen de la película se asignará una
-						// auutomáticamente:
-						icon = new ImageIcon(this.getClass().getResource("/Imagenes/peliculas/SINCARTEL.jpg"));
-					}
+					icon = getImageIconPelicula(arrayPeliculas.get(i).getImage());
 
 					arrayBotones[posArrayBotones] = new JToggleButton(icon);
 					arrayBotones[posArrayBotones].setContentAreaFilled(false);
 					arrayBotones[posArrayBotones].setBorder(new LineBorder(SystemColor.textHighlight));
-					arrayBotonesPelicula.add(new BotonPelicula((i + 1)));
+					arrayBotonesPelicula.add(new BotonPelicula(arrayPeliculas.get(i)));
 
 					// Añadimos botón de la película al panel asignado para
 					// ello:
@@ -622,7 +547,6 @@ public class PanelUsuario extends JPanel {
 			int posArrayBotones = 0;
 			// Nueva lista:
 			arrayBotonesPelicula = new ArrayList<BotonPelicula>();
-			boolean png = false;
 
 			// Segundo buscamos el id asociado a cada película y lo cotejamos
 			// con el
@@ -635,30 +559,12 @@ public class PanelUsuario extends JPanel {
 
 				for (int j = 0; j < nombres.size(); j++) {
 					if (arrayPeliculas.get(i).getNombre().equals(nombres.get(j))) {
-						try {
-							icon = new ImageIcon(
-									this.getClass().getResource("/Imagenes/peliculas/" + (i + 1) + ".jpg"));
-						} catch (Exception E) {
-							png = true;
-						}
-
-						try {
-							if (png == true) {
-								icon = new ImageIcon(
-										this.getClass().getResource("/Imagenes/peliculas/" + (i + 1) + ".png"));
-								png = false;
-							}
-						} catch (Exception E) {
-							// Si no existe imágen de la película se asignará
-							// una
-							// auutomáticamente:
-							icon = new ImageIcon(this.getClass().getResource("/Imagenes/peliculas/SINCARTEL.jpg"));
-						}
+						icon = getImageIconPelicula(arrayPeliculas.get(i).getImage());
 
 						arrayBotones[posArrayBotones] = new JToggleButton(icon);
 						arrayBotones[posArrayBotones].setContentAreaFilled(false);
 						arrayBotones[posArrayBotones].setBorder(new LineBorder(SystemColor.textHighlight));
-						arrayBotonesPelicula.add(new BotonPelicula((i + 1)));
+						arrayBotonesPelicula.add(new BotonPelicula(arrayPeliculas.get(i)));
 
 						// Añadimos botón de la película al panel asignado para
 						// ello:
@@ -701,22 +607,42 @@ public class PanelUsuario extends JPanel {
 		}
 	}
 
+	/**
+	 * Método para devolver automaticamente ya la ImageIcon!:
+	 * 
+	 * @param imagen
+	 * @return
+	 */
+	private ImageIcon getImageIconPelicula(Imagen imagen) {
+		ImageIcon dev = null;
+		byte[] bytes = imagen.getImage();
+		BufferedImage image = null;
+		InputStream in = new ByteArrayInputStream(bytes);
+		try {
+			image = ImageIO.read(in);
+			dev = new ImageIcon(image.getScaledInstance(100, 140, 0));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return dev;
+	}
+
 	// Clase para guardar los objetos tipo "BotonPelicula" que contendrán el id
 	// del botón:
 	public class BotonPelicula {
-		private int id_pelicula;
+		private Pelicula pelicula;
 
-		public BotonPelicula(int id_pelicula) {
-			this.id_pelicula = id_pelicula;
+		public BotonPelicula(Pelicula pelicula) {
+			this.pelicula = pelicula;
 		}
 
-		public int getId_pelicula() {
-			return id_pelicula;
+		public Pelicula getPelicula() {
+			return pelicula;
 		}
 
-		public void setId_pelicula(int id_pelicula) {
-			this.id_pelicula = id_pelicula;
+		public void setPelicula(Pelicula pelicula) {
+			this.pelicula = pelicula;
 		}
-
 	}
 }
