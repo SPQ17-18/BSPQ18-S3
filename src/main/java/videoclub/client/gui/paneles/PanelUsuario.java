@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -24,19 +25,24 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import videoclub.client.gui.ventanas.ClientAlquilerFrame;
 import videoclub.client.utiles.Temas;
 import videoclub.server.gui.ICollector;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Imagen;
+import videoclub.server.jdo.Mensaje;
 import videoclub.server.jdo.Pelicula;
+import videoclub.server.jdo.Usuario;
 
 public class PanelUsuario extends JPanel {
 
@@ -68,13 +74,22 @@ public class PanelUsuario extends JPanel {
 	private JComboBox<String> comboBoxGenero;
 
 	private ICollector collector; // Collector implementado desde "ClienfFrame"
-	public static Cliente clienteActual = null;
+	private Cliente clienteActual;
+	private Usuario usuarioActual;
+	List<Mensaje> arrayMensajes = new ArrayList<Mensaje>();
 
 	/**
 	 * Create the panel.
 	 */
 	public PanelUsuario(ICollector collector) {
 		this.collector = collector;
+		try {
+			this.clienteActual = this.collector.getCliente();
+			this.usuarioActual = this.collector.getUsuario();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		inicializar();
 		componentes();
 		añadirComponentes();
@@ -82,6 +97,15 @@ public class PanelUsuario extends JPanel {
 
 		valoresComboBoxCategorias();
 		valoresComboBoxAños();
+
+		// Ejecutamos comprobación de mensajes cada 1 segundo:
+		Timer timer = new Timer(1000, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mostrarMensajesNuevos();
+			}
+		});
+
+		timer.start();
 	}
 
 	private void inicializar() {
@@ -89,10 +113,8 @@ public class PanelUsuario extends JPanel {
 		gl_panel = new GridLayout(2, 2, 5, 5);
 		scrollPane = new JScrollPane();
 		panel = new JPanel();
-		// ERROR! NombreUsuario = new JLabel(" " + clienteActual.getNombre() + "
-		// - " + clienteActual.getApellidos() + " ["
-		// ERROR! + clienteActual.getDireccion().getPais() + "]");
-		NombreUsuario = new JLabel("Cliente...");
+		NombreUsuario = new JLabel(" " + clienteActual.getNombre() + "- " + clienteActual.getApellidos() + " ["
+				+ clienteActual.getDireccion().getPais() + "]");
 		textFieldBuscarPelicula = new JTextField();
 		comboBoxGenero = new JComboBox<String>();
 		lblImagenPelicula = new JLabel();
@@ -110,11 +132,16 @@ public class PanelUsuario extends JPanel {
 		scrollPane_1 = new JScrollPane();
 		textPaneDescripcion = new JTextPane();
 		comboBoxTema = new JComboBox<String>();
+		scrollPane_2 = new JScrollPane();
+		textAreaMensajes = new JTextArea();
+		scrollPane_3 = new JScrollPane();
+		textAreaEscribirMensaje = new JTextArea();
+		btnEnviarMensaje = new JButton("Enviar mensaje");
 	}
 
 	private void componentes() {
 		btnalquilarYaMismo.setBorder(new LineBorder(Color.GREEN));
-		scrollPane.setBounds(12, 64, 1056, 350);
+		scrollPane.setBounds(12, 64, 764, 350);
 		NombreUsuario.setFont(new Font("Tahoma", Font.BOLD, 15));
 		NombreUsuario.setForeground(Color.ORANGE);
 		NombreUsuario.setBorder(new TitledBorder(null, "Bienvenido de nuevo:", TitledBorder.LEADING, TitledBorder.TOP,
@@ -134,25 +161,25 @@ public class PanelUsuario extends JPanel {
 		lblImagenPelicula.setBorder(new LineBorder(SystemColor.textHighlight));
 		lblImagenPelicula.setBounds(12, 427, 100, 140);
 		labelTitulo.setForeground(Color.WHITE);
-		labelTitulo.setBorder(new LineBorder(SystemColor.textHighlight));
-		labelTitulo.setBounds(124, 427, 195, 29);
+		labelTitulo.setBorder(new LineBorder(Color.GRAY));
+		labelTitulo.setBounds(124, 427, 323, 29);
 		labelDuracion.setForeground(Color.WHITE);
-		labelDuracion.setBorder(new LineBorder(SystemColor.textHighlight));
-		labelDuracion.setBounds(124, 469, 195, 29);
+		labelDuracion.setBorder(new LineBorder(Color.GRAY));
+		labelDuracion.setBounds(666, 427, 195, 29);
 		labelAño.setForeground(Color.WHITE);
-		labelAño.setBorder(new LineBorder(SystemColor.textHighlight));
-		labelAño.setBounds(331, 427, 195, 29);
+		labelAño.setBorder(new LineBorder(Color.GRAY));
+		labelAño.setBounds(459, 427, 195, 29);
 		labelCategoria.setForeground(Color.WHITE);
-		labelCategoria.setBorder(new LineBorder(SystemColor.textHighlight));
-		labelCategoria.setBounds(331, 469, 195, 29);
+		labelCategoria.setBorder(new LineBorder(Color.GRAY));
+		labelCategoria.setBounds(873, 427, 195, 29);
 		textPaneDescripcion.setForeground(Color.WHITE);
-		textPaneDescripcion.setBorder(new LineBorder(SystemColor.textHighlight));
+		textPaneDescripcion.setBorder(null);
 		textPaneDescripcion.setBackground(Color.DARK_GRAY);
 		labelDisponibles.setForeground(Color.RED);
-		labelDisponibles.setBorder(new LineBorder(SystemColor.textHighlight));
+		labelDisponibles.setBorder(new LineBorder(Color.GRAY));
 		labelDisponibles.setBounds(12, 580, 100, 29);
 		labelPrecio.setForeground(Color.GREEN);
-		labelPrecio.setBorder(new LineBorder(SystemColor.textHighlight));
+		labelPrecio.setBorder(new LineBorder(Color.GRAY));
 		labelPrecio.setBounds(12, 622, 100, 29);
 		btnalquilarYaMismo.setForeground(Color.GREEN);
 		btnalquilarYaMismo.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -170,10 +197,24 @@ public class PanelUsuario extends JPanel {
 		comboBoxAño.setBounds(265, 6, 247, 55);
 		btnalquilarYaMismo.setContentAreaFilled(false);
 		panel.setBackground(Color.DARK_GRAY);
-		scrollPane_1.setBounds(124, 511, 402, 140);
-		scrollPane_1.setBorder(new LineBorder(SystemColor.textHighlight));
+		scrollPane_1.setBounds(124, 469, 944, 182);
+		scrollPane_1.setBorder(new LineBorder(Color.GRAY));
 		comboBoxTema.setModel(new DefaultComboBoxModel<String>(new String[] { "Tema Raven", "Tema Autum" }));
 		comboBoxTema.setBounds(865, 685, 203, 22);
+		scrollPane_2.setBorder(new LineBorder(Color.GRAY));
+		scrollPane_2.setBackground(Color.DARK_GRAY);
+		scrollPane_2.setBounds(788, 66, 280, 229);
+		textAreaMensajes.setFont(new Font("Monospaced", Font.BOLD, 13));
+		textAreaMensajes.setForeground(Color.ORANGE);
+		textAreaMensajes.setBackground(Color.DARK_GRAY);
+		textAreaEscribirMensaje.setFont(new Font("Monospaced", Font.BOLD, 13));
+		textAreaEscribirMensaje.setForeground(SystemColor.textHighlight);
+		textAreaEscribirMensaje.setBackground(Color.DARK_GRAY);
+		scrollPane_3.setBorder(new LineBorder(Color.GRAY));
+		scrollPane_3.setBounds(788, 302, 280, 72);
+		btnEnviarMensaje.setForeground(SystemColor.textHighlight);
+		btnEnviarMensaje.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnEnviarMensaje.setBounds(788, 385, 280, 29);
 
 	}
 
@@ -201,11 +242,19 @@ public class PanelUsuario extends JPanel {
 		add(labelDinero);
 		add(comboBoxAño);
 		add(comboBoxTema);
+		add(scrollPane_2);
+		add(scrollPane_3);
+		add(btnEnviarMensaje);
+
+		agregarPeliculasAlPanel();
 
 		scrollPane_1.setViewportView(textPaneDescripcion);
-		agregarPeliculasAlPanel();
 		scrollPane.setViewportView(panel);
+		scrollPane_2.setViewportView(textAreaMensajes);
+		scrollPane_3.setViewportView(textAreaEscribirMensaje);
+
 		panel.setLayout(gl_panel);
+
 	}
 
 	private boolean comboBoxAñoPresionado = false;
@@ -242,6 +291,8 @@ public class PanelUsuario extends JPanel {
 
 		btnalquilarYaMismo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ClientAlquilerFrame frame = new ClientAlquilerFrame(collector, peliculaAAlquilar, clienteActual);
+				frame.setVisible(true);
 			}
 		});
 		comboBoxTema.addActionListener(new ActionListener() {
@@ -254,6 +305,21 @@ public class PanelUsuario extends JPanel {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnEnviarMensaje.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (collector.setMensaje(
+							new Mensaje(textAreaEscribirMensaje.getText(), new Date(), usuarioActual)) == true) {
+						JOptionPane.showMessageDialog(null, "Mensaje enviado correctamente :D");
+					} else {
+						JOptionPane.showMessageDialog(null, "ERROR! MENSAJE NO ENVIADO!");
+					}
+				} catch (RemoteException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -426,7 +492,7 @@ public class PanelUsuario extends JPanel {
 		labelCategoria.setText(" CATEGORIA: " + pelicula.getCategoria().getNombre());
 		labelDuracion.setText(" DURACIÓN: " + Integer.toString(pelicula.getDuracion()) + " minutos");
 		labelTitulo.setText(" TITULO: " + pelicula.getNombre());
-		textPaneDescripcion.setText(pelicula.getDescripcion());
+		textPaneDescripcion.setText(openFileToString(pelicula.getDescripcion()));
 		labelPrecio.setText(" PRECIO: " + Float.toString(pelicula.getPrecio()) + "€");
 
 		// Guardamos datos de la película por si el usuario quiere alquilarla:
@@ -435,6 +501,11 @@ public class PanelUsuario extends JPanel {
 
 	@SuppressWarnings("unused")
 	private Pelicula peliculaAAlquilar;
+	private JTextArea textAreaMensajes;
+	private JScrollPane scrollPane_2;
+	private JTextArea textAreaEscribirMensaje;
+	private JScrollPane scrollPane_3;
+	private JButton btnEnviarMensaje;
 
 	private void desactivarComponentes() {
 		// No visibles:
@@ -626,6 +697,50 @@ public class PanelUsuario extends JPanel {
 			e.printStackTrace();
 		}
 		return dev;
+	}
+
+	/**
+	 * Método para pasar bytes a string:
+	 * 
+	 * @param _bytes
+	 * @return
+	 */
+	public String openFileToString(byte[] _bytes) {
+		String file_string = "";
+
+		for (int i = 0; i < _bytes.length; i++) {
+			file_string += (char) _bytes[i];
+		}
+
+		return file_string;
+	}
+
+	@SuppressWarnings("deprecation")
+	private void mostrarMensajesNuevos() {
+		try {
+			arrayMensajes = new ArrayList<Mensaje>();
+			arrayMensajes = collector.obtenerMensajes(arrayMensajes);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// Inicializamos de nuevo todo el componente:
+		textAreaMensajes = new JTextArea();
+		textAreaMensajes.setFont(new Font("Monospaced", Font.BOLD, 13));
+		textAreaMensajes.setForeground(Color.ORANGE);
+		textAreaMensajes.setBackground(Color.DARK_GRAY);
+		scrollPane_2.setViewportView(textAreaMensajes);
+
+		// MOstramos mensajes:
+		if (arrayMensajes.size() >= 0) {
+			for (int i = 0; i < arrayMensajes.size(); i++) {
+				textAreaMensajes.append("[" + arrayMensajes.get(i).getFecha().getHours() + ":"
+						+ arrayMensajes.get(i).getFecha().getMinutes() + ":"
+						+ arrayMensajes.get(i).getFecha().getSeconds() + "] "
+						+ arrayMensajes.get(i).getUsuario().getNombreUsuario() + ": "
+						+ arrayMensajes.get(i).getMensaje() + "\n");
+			}
+		}
 	}
 
 	// Clase para guardar los objetos tipo "BotonPelicula" que contendrán el id

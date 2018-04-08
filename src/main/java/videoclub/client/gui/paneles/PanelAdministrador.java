@@ -338,7 +338,7 @@ public class PanelAdministrador extends JPanel {
 
 			// Finalmente guardamos la película en la base de datos:
 			try {
-				if (collector.insertarPelicula(nombre, duracion, descripcion, anyo, precio, categoria, cantidad,
+				if (collector.insertarPelicula(nombre, duracion, descripcion.getBytes(), anyo, precio, categoria, cantidad,
 						imagen) == true) {
 					JOptionPane.showMessageDialog(null,
 							"La película: " + nombre + " ha sido insertada correctamente en la base de datos.");

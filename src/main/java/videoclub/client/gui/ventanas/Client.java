@@ -13,6 +13,7 @@ import videoclub.server.gui.ICollector;
 
 public class Client{
 	private ICollector collector;
+	@SuppressWarnings("unused")
 	private ClientRemoteObserver remoteDonor;
 
 	public Client() {

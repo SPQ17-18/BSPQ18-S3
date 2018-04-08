@@ -13,13 +13,13 @@ public class Pelicula implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
 	private String nombre;
 	private int duracion;
-	private String descripcion;
+	private byte[] descripcion;
 	private int anyo;
 	private Categoria categoria;
 	private float precio;
 	private Imagen image;
 	
-	public Pelicula(String nombre, int duracion, String descripcion, int anyo, float precio, Categoria categoria, Imagen image) {
+	public Pelicula(String nombre, int duracion, byte[] descripcion, int anyo, float precio, Categoria categoria, Imagen image) {
 		this.nombre = nombre;
 		this.duracion = duracion;
 		this.descripcion = descripcion;
@@ -53,11 +53,11 @@ public class Pelicula implements java.io.Serializable{
 		this.duracion = duracion;
 	}
 
-	public String getDescripcion() {
+	public byte[] getDescripcion() {
 		return descripcion;
 	}
 
-	public void setDescripcion(String descripcion) {
+	public void setDescripcion(byte[] descripcion) {
 		this.descripcion = descripcion;
 	}
 

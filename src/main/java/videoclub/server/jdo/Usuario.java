@@ -1,4 +1,6 @@
 package videoclub.server.jdo;
+import java.util.List;
+
 import javax.jdo.annotations.Inheritance;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.InheritanceStrategy;
@@ -54,8 +56,5 @@ public class Usuario  implements java.io.Serializable{
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
-	}
-	
-	
-
+	}	
 }

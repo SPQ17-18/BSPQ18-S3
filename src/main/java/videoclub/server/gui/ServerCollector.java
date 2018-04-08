@@ -21,11 +21,13 @@ import org.pushingpixels.substance.api.skin.SubstanceRavenLookAndFeel;
 import videoclub.client.gui.paneles.PanelUsuario;
 import videoclub.observer.RMI.IRemoteObserver;
 import videoclub.observer.RMI.RemoteObservable;
+import videoclub.server.jdo.Alquiler;
 import videoclub.server.jdo.Categoria;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Direccion;
 import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Inventario;
+import videoclub.server.jdo.Mensaje;
 import videoclub.server.jdo.Pelicula;
 import videoclub.server.jdo.Usuario;
 
@@ -35,6 +37,8 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 	private RemoteObservable remoteObservable;
 	private PersistenceManager pm = null;
 	private Transaction tx = null;
+	private Cliente cliente;
+	private Usuario usuario;
 
 	public ServerCollector() throws RemoteException {
 		super();
@@ -216,7 +220,8 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 					inicioCorrecto = true;
 					ServerFrame.textArea.append("Usuario y contraseña correctas! :D\n");
 					ServerFrame.textArea.append("Obteniendo datos del cliente...\n");
-					PanelUsuario.clienteActual = usuario.getCliente();
+					this.cliente = usuario.getCliente();
+					this.usuario = usuario;
 					ServerFrame.textArea.append("Datos del cliente obtenidos!\n");
 					ServerFrame.textArea.append("Bienvenido " + usuario.getCliente().getNombre() + " :D\n");
 				}
@@ -231,7 +236,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 	}
 
 	@Override
-	public boolean insertarPelicula(String nombre, int duracion, String descripcion, int anyo, float precio,
+	public boolean insertarPelicula(String nombre, int duracion, byte[] descripcion, int anyo, float precio,
 			String categoria, int cantidad, Imagen imagen) {
 		// TODO Auto-generated method stub
 		boolean correcto = false;
@@ -268,7 +273,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 			// Ahora toca crear la película:
 			ServerFrame.textArea.append("Creando nueva película...\n");
 			Pelicula pelicula = new Pelicula(nombre, duracion, descripcion, anyo, precio, cat, imagen);
-			ServerFrame.textArea.append("Creando imagen: "+imagen.getNombre()+" \n");
+			ServerFrame.textArea.append("Creando imagen: " + imagen.getNombre() + " \n");
 			pm.makePersistent(pelicula);
 			ServerFrame.textArea.append("Pelicula: " + nombre + " creada exitosamente!\n");
 
@@ -315,4 +320,146 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 
 		return arrayPeliculas;
 	}
+
+	@Override
+	public Cliente getCliente() throws RemoteException {
+		// TODO Auto-generated method stub
+		return this.cliente;
+	}
+
+	@Override
+	public boolean alquilarPelicula(Alquiler alquiler) throws RemoteException {
+		// TODO Auto-generated method stub
+		boolean alquilerCorrecto = false;
+		try {
+			tx.begin();
+			ServerFrame.textArea.append("Creando nuevo alquiler...\n");
+			pm.makePersistent(alquiler);
+			ServerFrame.textArea.append("Alquiler de " + alquiler.getCliente().getNombre() + " creado exitosamente!\n");
+			tx.commit();
+
+			alquilerCorrecto = true;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+
+		return alquilerCorrecto;
+	}
+
+	@Override
+	public List<Inventario> obtenerInventarios(List<Inventario> arrayInventarios) throws RemoteException {
+		// TODO Auto-generated method stub
+		try {
+			tx.begin();
+			ServerFrame.textArea.append("Obteniendo inventarios de la BD...\n");
+
+			@SuppressWarnings("unchecked")
+			Query<Inventario> q = pm.newQuery("SELECT FROM " + Inventario.class.getName());
+			List<Inventario> inventarios = (List<Inventario>) q.executeList();
+			for (Inventario inventario : inventarios) {
+				arrayInventarios.add(inventario);
+			}
+			ServerFrame.textArea.append("Inventarios obteneidos ! :D\n");
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return arrayInventarios;
+	}
+
+	@Override
+	public List<Cliente> obtenerClientes(List<Cliente> arrayClientes) throws RemoteException {
+		// TODO Auto-generated method stub
+		try {
+			tx.begin();
+			ServerFrame.textArea.append("Obteniendo clientes de la BD...\n");
+
+			@SuppressWarnings("unchecked")
+			Query<Cliente> q = pm.newQuery("SELECT FROM " + Cliente.class.getName());
+			List<Cliente> clientes = (List<Cliente>) q.executeList();
+			for (Cliente cliente : clientes) {
+				arrayClientes.add(cliente);
+			}
+			ServerFrame.textArea.append("Clientes obteneidos ! :D\n");
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return arrayClientes;
+	}
+
+	@Override
+	public boolean setMensaje(Mensaje mensaje) throws RemoteException {
+		// TODO Auto-generated method stub
+		boolean mensajeCorrecto = false;
+		try {
+			tx.begin();
+			ServerFrame.textArea
+					.append("Comprobación del usuario: '" + mensaje.getUsuario().getNombreUsuario() + "'\n");
+			Usuario usuario = null;
+
+			@SuppressWarnings("unchecked")
+			Query<Usuario> q = pm.newQuery("SELECT FROM " + Usuario.class.getName() + " WHERE nombreUsuario == '"
+					+ mensaje.getUsuario().getNombreUsuario() + "'");
+			List<Usuario> usuarios = q.executeList();
+			for (Usuario user : usuarios) {
+				if (user.getNombreUsuario().equals(mensaje.getUsuario().getNombreUsuario())) {
+					usuario = user;
+				}
+			}
+
+			// Ahora toca crear la película:
+			ServerFrame.textArea.append("Creando nuevo mensaje...\n");
+			Mensaje nuevoMensaje = new Mensaje(mensaje.getMensaje(), mensaje.getFecha(), usuario);
+			pm.makePersistent(nuevoMensaje);
+			ServerFrame.textArea.append("Mensaje " + mensaje.getMensaje() + " enviado exitosamente!\n");
+
+			tx.commit();
+
+			mensajeCorrecto = true;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+
+		return mensajeCorrecto;
+	}
+
+	@Override
+	public Usuario getUsuario() throws RemoteException {
+		// TODO Auto-generated method stub
+		return this.usuario;
+	}
+
+	@Override
+	public List<Mensaje> obtenerMensajes(List<Mensaje> arrayMensajes) throws RemoteException {
+		// TODO Auto-generated method stub
+		try {
+			tx.begin();
+			@SuppressWarnings("unchecked")
+			Query<Mensaje> q = pm.newQuery("SELECT FROM " + Mensaje.class.getName());
+			List<Mensaje> mensajes = (List<Mensaje>) q.executeList();
+			// Solo obtendremos mensajes si los mensajes de ld bd son mayores
+			// que arrayMensajes:
+			if (mensajes.size() > arrayMensajes.size()) {
+				for (Mensaje mensaje : mensajes) {
+					arrayMensajes.add(mensaje);
+				}
+			}
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return arrayMensajes;
+	}
+
 }
