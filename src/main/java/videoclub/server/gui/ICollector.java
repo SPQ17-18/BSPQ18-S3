@@ -14,7 +14,7 @@ import videoclub.server.jdo.Pelicula;
 import videoclub.server.jdo.Usuario;
 
 public interface ICollector extends IRemoteObservable {
-	void getDonation(int donation) throws RemoteException;
+	List<Alquiler> obtenerAlquileres (List<Alquiler> arrayAlquileres) throws RemoteException;
 	List<Mensaje> obtenerMensajes (List<Mensaje> arrayMensajes) throws RemoteException;
 	boolean setMensaje(Mensaje mensaje) throws RemoteException;
 	List<Cliente> obtenerClientes(List<Cliente> arrayClientes) throws RemoteException;

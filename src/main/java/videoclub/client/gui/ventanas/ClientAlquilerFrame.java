@@ -106,57 +106,89 @@ public class ClientAlquilerFrame extends JFrame {
 	private void eventos() {
 		btnAlquilarAhora.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Primero obtenemos todo el inventario de la base de datos:
-				List<Inventario> arrayInventarios = new ArrayList<Inventario>();
-				try {
-					arrayInventarios = collector.obtenerInventarios(arrayInventarios);
-				} catch (RemoteException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				if (comprobarAlquilerRepetido() == false) {
+					alquilarPelicula();
+				}else{
+					JOptionPane.showMessageDialog(null, "La película: "+pelicula.getNombre()+" ya fue alquilada", "¡ERROR!",JOptionPane.ERROR_MESSAGE);
+					ClientAlquilerFrame.this.dispose();
 				}
+			}
+		});
+	}
 
-				// Después obtenemos el id del cliente de la base de datos:
-				List<Cliente> arrayClientes = new ArrayList<Cliente>();
-				try {
-					arrayClientes = collector.obtenerClientes(arrayClientes);
-				} catch (RemoteException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				}
+	private void alquilarPelicula() {
+		// Primero obtenemos todo el inventario de la base de datos:
+		List<Inventario> arrayInventarios = new ArrayList<Inventario>();
+		try {
+			arrayInventarios = collector.obtenerInventarios(arrayInventarios);
+		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
-				// Cotejamos los clientes con el actual y:
-				// Buscamos el inventario que contenga la película a alquilar y
-				// creamos un nuevo objeto alquiler:
-				for (int i = 0; i < arrayInventarios.size(); i++) {
-					if (arrayInventarios.get(i).getPelicula().getNombre().equals(pelicula.getNombre())) {
-						for (int j = 0; j < arrayClientes.size(); j++) {
-							if (arrayClientes.get(j).getNombre().equals(cliente.getNombre())
-							 && arrayClientes.get(j).getApellidos().equals(cliente.getApellidos())
-							 && arrayClientes.get(j).getDireccion().getCalle().equals(cliente.getDireccion().getCalle())) {
-								// Entonces guardamos alquiler en base de datos
-								// y
-								// break en for:
-								Alquiler alquiler = new Alquiler(new Date(), dateChooser.getDate(), cliente,
-										arrayInventarios.get(i));
-								// MakePersistent:
-								try {
-									if (collector.alquilarPelicula(alquiler) == true) {
-										JOptionPane.showMessageDialog(null, "Película: " + pelicula.getNombre()
-												+ ", alquilada correctamente, gracias.");
-										ClientAlquilerFrame.this.dispose();
-									} else {
-										JOptionPane.showMessageDialog(null, "ERROR! VUELVA A INTENTARLO!");
-										ClientAlquilerFrame.this.dispose();
-									}
-								} catch (RemoteException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
+		// Después obtenemos el id del cliente de la base de datos:
+		List<Cliente> arrayClientes = new ArrayList<Cliente>();
+		try {
+			arrayClientes = collector.obtenerClientes(arrayClientes);
+		} catch (RemoteException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+
+		// Cotejamos los clientes con el actual y:
+		// Buscamos el inventario que contenga la película a alquilar y
+		// creamos un nuevo objeto alquiler:
+		for (int i = 0; i < arrayInventarios.size(); i++) {
+			if (arrayInventarios.get(i).getPelicula().getNombre().equals(pelicula.getNombre())) {
+				for (int j = 0; j < arrayClientes.size(); j++) {
+					if (arrayClientes.get(j).getNombre().equals(cliente.getNombre())
+							&& arrayClientes.get(j).getApellidos().equals(cliente.getApellidos()) && arrayClientes
+									.get(j).getDireccion().getCalle().equals(cliente.getDireccion().getCalle())) {
+						// Entonces guardamos alquiler en base de datos
+						// y
+						// break en for:
+						Alquiler alquiler = new Alquiler(new Date(), dateChooser.getDate(), cliente,
+								arrayInventarios.get(i));
+						// MakePersistent:
+						try {
+							if (collector.alquilarPelicula(alquiler) == true) {
+								JOptionPane.showMessageDialog(null,
+										"Película: " + pelicula.getNombre() + ", alquilada correctamente, gracias.");
+								ClientAlquilerFrame.this.dispose();
+							} else {
+								JOptionPane.showMessageDialog(null, "ERROR! VUELVA A INTENTARLO!", "¡ERROR!",JOptionPane.ERROR_MESSAGE);
+								ClientAlquilerFrame.this.dispose();
 							}
+						} catch (RemoteException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
 						}
 					}
 				}
 			}
-		});
+		}
+	}
+
+	/**
+	 * Método que comprueba si el alquiler a efectuar ya existe en la BD:
+	 * 
+	 * @return
+	 */
+	boolean comprobarAlquilerRepetido() {
+		boolean repetido = false;
+		List<Alquiler> arrayAlquileres = new ArrayList<Alquiler>();
+		try {
+			arrayAlquileres = collector.obtenerAlquileres(arrayAlquileres);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// Comprobamos:
+		for (int i = 0; i < arrayAlquileres.size(); i++) {
+			if (arrayAlquileres.get(i).getInventario().getPelicula().getNombre().equals(pelicula.getNombre())) {
+				repetido = true;
+			}
+		}
+		return repetido;
 	}
 }

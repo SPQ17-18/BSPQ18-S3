@@ -1,6 +1,7 @@
 package videoclub.client.gui.paneles;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.HeadlessException;
 import java.awt.SystemColor;
@@ -17,6 +18,8 @@ import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -30,13 +33,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.UIManager;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import videoclub.server.gui.ICollector;
+import videoclub.server.jdo.Alquiler;
+import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Imagen;
+import videoclub.server.jdo.Inventario;
 
 public class PanelAdministrador extends JPanel {
 
@@ -60,6 +68,8 @@ public class PanelAdministrador extends JPanel {
 	private JTextPane textPaneDescripcion;
 	private JScrollPane scrollPane_2;
 	private JComboBox<Float> comboBoxPrecio;
+	private JTextPane textPaneMostrarDescripcion;
+	private JScrollPane scrollPane_3;
 
 	// Para obtener ruta imágenes:
 	private JFileChooser jF1 = new JFileChooser();
@@ -68,13 +78,18 @@ public class PanelAdministrador extends JPanel {
 	private Imagen imagen;
 	private Path ruta;
 
-	@SuppressWarnings("unused")
 	private DefaultTableModel tableModel = new DefaultTableModel();
 	private JTable table_1;
 	private JScrollPane scrollPane_1;
 
 	private ICollector collector; // Collector implementado desde "ClienfFrame"
 	private JComboBox<Integer> comboBoxCantidad;
+
+	private int anchuraInicialTabla = 1056;
+	private int anchuraFinalTabla = 1056;
+	private int alturaInicialTabla = 146;
+	private int alturaFinalTabla = 640;
+	private boolean isExpanded = false;
 
 	/**
 	 * Create the panel.
@@ -98,8 +113,6 @@ public class PanelAdministrador extends JPanel {
 		btnMostrarAlquileresDe = new JButton("Mostrar alquileres de pel\u00EDculas");
 		btnMostrarClientes = new JButton("Mostrar clientes");
 		btnInsertarNuevaPelcula = new JButton("Insertar nueva pel\u00EDcula");
-		scrollPane = new JScrollPane();
-		table = new JTable();
 		label = new JLabel();
 		scrollPane_1 = new JScrollPane();
 		table_1 = new JTable();
@@ -112,6 +125,11 @@ public class PanelAdministrador extends JPanel {
 		comboBoxPrecio = new JComboBox<Float>();
 		comboBoxCantidad = new JComboBox<Integer>();
 		LabelImage = new JLabel();
+		scrollPane = new JScrollPane();
+		table = new JTable();
+		scrollPane_3 = new JScrollPane();
+		textPaneMostrarDescripcion = new JTextPane();
+		LabelFondo = new JLabel();
 	}
 
 	private void componentes() {
@@ -123,7 +141,7 @@ public class PanelAdministrador extends JPanel {
 		btnMostrarClientes.setBounds(492, 13, 135, 41);
 		btnInsertarNuevaPelcula.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnInsertarNuevaPelcula.setBounds(22, 667, 267, 27);
-		scrollPane.setBounds(12, 67, 1056, 286);
+		scrollPane.setBounds(12, 67, 1056, 146);
 		label.setBorder(new LineBorder(SystemColor.textHighlight));
 		label.setBounds(12, 454, 1056, 253);
 		table.setCellSelectionEnabled(true);
@@ -132,7 +150,7 @@ public class PanelAdministrador extends JPanel {
 		table.setFont(new Font("Tahoma", Font.BOLD, 15));
 		table.setSelectionBackground(new Color(0, 0, 153));
 		table.setSelectionForeground(new Color(0, 204, 102));
-		scrollPane_1.setBounds(12, 356, 1056, 85);
+		scrollPane_1.setBounds(12, 226, 1056, 76);
 		table_1.setSelectionForeground(new Color(0, 204, 102));
 		table_1.setSelectionBackground(new Color(0, 0, 153));
 		table_1.setRowHeight(20);
@@ -145,15 +163,15 @@ public class PanelAdministrador extends JPanel {
 		textFieldNombrePelicula.setBounds(22, 465, 267, 48);
 		textFieldNombrePelicula.setColumns(10);
 		comboBoxAnyo.setBackground(Color.DARK_GRAY);
-		comboBoxAnyo.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "A\u00D1O",
-				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
+		comboBoxAnyo.setBorder(new TitledBorder(null, "A\u00D1O", TitledBorder.LEADING, TitledBorder.TOP, null,
+				new Color(0, 120, 215)));
 		comboBoxAnyo.setBounds(427, 472, 115, 41);
-		comboBoxDuracion.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "DURACION",
-				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
+		comboBoxDuracion.setBorder(new TitledBorder(null, "DURACION", TitledBorder.LEADING, TitledBorder.TOP, null,
+				new Color(0, 120, 215)));
 		comboBoxDuracion.setBackground(Color.DARK_GRAY);
 		comboBoxDuracion.setBounds(748, 472, 127, 41);
-		comboBoxCategoria.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "CATEGORIA",
-				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
+		comboBoxCategoria.setBorder(new TitledBorder(null, "CATEGORIA", TitledBorder.LEADING, TitledBorder.TOP, null,
+				new Color(0, 120, 215)));
 		comboBoxCategoria.setBackground(Color.DARK_GRAY);
 		comboBoxCategoria.setBounds(557, 472, 179, 41);
 		scrollPane_2.setBounds(301, 526, 755, 168);
@@ -164,16 +182,26 @@ public class PanelAdministrador extends JPanel {
 		scrollPane_1.setBorder(new TitledBorder(null,
 				"Pel\u00EDculas alquiladas por los clientes - Nombre y descripci\u00F3n del cliente en particular",
 				TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.textHighlight));
-		comboBoxPrecio.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "PRECIO",
-				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
+		comboBoxPrecio.setBorder(
+				new TitledBorder(null, "PRECIO", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
 		comboBoxPrecio.setBackground(Color.DARK_GRAY);
 		comboBoxPrecio.setBounds(301, 472, 114, 41);
-		comboBoxCantidad.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "CANTIDAD",
-				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
+		comboBoxCantidad.setBorder(new TitledBorder(null, "CANTIDAD", TitledBorder.LEADING, TitledBorder.TOP, null,
+				new Color(0, 120, 215)));
 		comboBoxCantidad.setBackground(Color.DARK_GRAY);
 		comboBoxCantidad.setBounds(887, 472, 169, 41);
 		LabelImage.setBorder(new LineBorder(SystemColor.textHighlight));
 		LabelImage.setBounds(105, 517, 100, 140);
+		textPaneMostrarDescripcion.setForeground(Color.WHITE);
+		textPaneMostrarDescripcion.setBackground(Color.DARK_GRAY);
+		textPaneMostrarDescripcion.setBorder(new TitledBorder(null,
+				"Descripci\u00F3n total de la pel\u00EDcula (primero click en descripci\u00F3n de pel\u00EDcula)",
+				TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.textHighlight));
+		scrollPane_3.setBounds(12, 315, 1056, 126);
+		scrollPane.setBorder(new LineBorder(Color.ORANGE, 3));
+		LabelFondo.setBackground(Color.DARK_GRAY);
+		LabelFondo.setOpaque(true);
+		LabelFondo.setBounds(12, 67, 1056, 146);
 	}
 
 	private void añadirComponentes() {
@@ -182,6 +210,8 @@ public class PanelAdministrador extends JPanel {
 		setLayout(null);
 		setBorder(null);
 
+		add(scrollPane);
+		add(LabelFondo);
 		add(btnMostrarInventarioDe);
 		add(btnMostrarAlquileresDe);
 		add(btnMostrarClientes);
@@ -192,11 +222,13 @@ public class PanelAdministrador extends JPanel {
 		add(comboBoxCategoria);
 		add(comboBoxPrecio);
 		add(scrollPane_2);
-		add(scrollPane);
 		add(LabelImage);
 		add(label);
 		add(scrollPane_1);
 		add(comboBoxCantidad);
+		add(scrollPane_3);
+
+		scrollPane_3.setViewportView(textPaneMostrarDescripcion);
 		scrollPane.setViewportView(table);
 		scrollPane_1.setViewportView(table_1);
 
@@ -205,17 +237,25 @@ public class PanelAdministrador extends JPanel {
 	private void eventos() {
 		btnMostrarInventarioDe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				mostrarPeliculas();
+				peliculasAlquiladasEnTabla = false;
+				peliculasDescripcionEnTabla = true;
 			}
 		});
 		btnMostrarAlquileresDe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				mostrarAlquileres();
+				peliculasEnTabla = false;
+				peliculasAlquiladasEnTabla = true;
+				peliculasDescripcionEnTabla = false;
 			}
 		});
 		btnMostrarClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				mostrarClientes();
+				peliculasEnTabla = false;
+				peliculasAlquiladasEnTabla = false;
+				peliculasDescripcionEnTabla = false;
 			}
 		});
 		btnInsertarNuevaPelcula.addActionListener(new ActionListener() {
@@ -241,7 +281,38 @@ public class PanelAdministrador extends JPanel {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
+				if (peliculasAlquiladasEnTabla == true) {
+					if (table.isCellSelected(table.getSelectedRow(), 2)) {
+						mostrarClienteDelAlquiler();
+					}
+					if (table.isCellSelected(table.getSelectedRow(), 3)) {
+						mostrarPeliculaAlquiladaDelAlquiler();
+					}
+				} else if (peliculasDescripcionEnTabla == true) {
+					if (table.isCellSelected(table.getSelectedRow(), 2)) {
+						mostrarDescripcionDePeliculas();
+					}
+				}
+				rowSelected = table.getSelectedRow();
+			}
+		});
+		table.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent mouseEvent) {
+				// Si se clicka dos veces en la tabla se expendirá ocupando todo
+				// el panel! :D
+				if (mouseEvent.getClickCount() >= 2) {
+					if (isExpanded == false) {
+						// Expandimos
+						scrollPane.setSize(anchuraFinalTabla, alturaFinalTabla);
+						LabelFondo.setSize(anchuraFinalTabla,alturaFinalTabla);
+						isExpanded = true;
+					} else {
+						// Conmprimimos:
+						scrollPane.setSize(anchuraInicialTabla, alturaInicialTabla);
+						LabelFondo.setSize(anchuraInicialTabla,alturaInicialTabla);
+						isExpanded = false;
+					}
+				}
 			}
 		});
 		LabelImage.addMouseListener(new MouseAdapter() {
@@ -338,8 +409,8 @@ public class PanelAdministrador extends JPanel {
 
 			// Finalmente guardamos la película en la base de datos:
 			try {
-				if (collector.insertarPelicula(nombre, duracion, descripcion.getBytes(), anyo, precio, categoria, cantidad,
-						imagen) == true) {
+				if (collector.insertarPelicula(nombre, duracion, descripcion.getBytes(), anyo, precio, categoria,
+						cantidad, imagen) == true) {
 					JOptionPane.showMessageDialog(null,
 							"La película: " + nombre + " ha sido insertada correctamente en la base de datos.");
 				}
@@ -350,8 +421,232 @@ public class PanelAdministrador extends JPanel {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}else{
+		} else {
 			JOptionPane.showMessageDialog(null, "NO HAS ELEGIDO NINGUNA IMÁGEN PARA LA PELÍCULA...");
+		}
+	}
+
+	@SuppressWarnings("unused")
+	private int rowSelected = 0;
+
+	private void columnasTabla(int i) {
+		// Creacion de las columnas de la tabla:
+		if (i == 0) {
+			tableModel.addColumn("NOMBRE");
+			tableModel.addColumn("DURACION");
+			tableModel.addColumn("DESCRIPCION");
+			tableModel.addColumn("AÑO");
+			tableModel.addColumn("CATEGORIA");
+			tableModel.addColumn("DISPONIBLES");
+			tableModel.addColumn("PRECIO");
+		} else if (i == 1) {
+			tableModel.addColumn("NOMBRE");
+			tableModel.addColumn("APELLIDOS");
+			tableModel.addColumn("FECHA NACIMIENTO");
+			tableModel.addColumn("CALLE");
+			tableModel.addColumn("CIUDAD");
+			tableModel.addColumn("PAIS");
+		} else if (i == 2) {
+			tableModel.addColumn("FECHA DE ALQUILER");
+			tableModel.addColumn("FECHA DE DEVOLUCION");
+			tableModel.addColumn("Nº CLIENTE");
+			tableModel.addColumn("Nº INVENTARIO");
+		}
+	}
+
+	@SuppressWarnings("unused")
+	private boolean peliculasEnTabla = false;
+	private boolean peliculasAlquiladasEnTabla = false;
+	private boolean peliculasDescripcionEnTabla = false;
+	private JLabel LabelFondo;
+
+	private void mostrarPeliculas() {
+		tableModel = new DefaultTableModel();
+		columnasTabla(0);
+		List<Inventario> arrayInventarios = new ArrayList<Inventario>();
+		try {
+			arrayInventarios = collector.obtenerInventarios(arrayInventarios);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		for (int i = 0; i < arrayInventarios.size(); i++) {
+			tableModel.addRow(new Object[] { arrayInventarios.get(i).getPelicula().getNombre(),
+					arrayInventarios.get(i).getPelicula().getDuracion(),
+					openFileToString(arrayInventarios.get(i).getPelicula().getDescripcion()),
+					arrayInventarios.get(i).getPelicula().getAnyo(),
+					arrayInventarios.get(i).getPelicula().getCategoria().getNombre(),
+					arrayInventarios.get(i).getDisponibles(), arrayInventarios.get(i).getPelicula().getPrecio() });
+		}
+
+		// Introducimos el modelo en la tabla:
+		table.setModel(tableModel);
+		resaltarColumnas(table, 7, new int[] { 2, 5, 6 }, true, new int[] { 5, 6 });
+		peliculasEnTabla = true;
+	}
+
+	private void mostrarAlquileres() {
+		tableModel = new DefaultTableModel();
+		columnasTabla(2);
+		List<Alquiler> arrayAlquileres = new ArrayList<Alquiler>();
+		try {
+			arrayAlquileres = collector.obtenerAlquileres(arrayAlquileres);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for (int i = 0; i < arrayAlquileres.size(); i++) {
+			tableModel.addRow(new Object[] { arrayAlquileres.get(i).getFecha_alquiler(),
+					arrayAlquileres.get(i).getFecha_devolucion(), arrayAlquileres.get(i).getCliente(),
+					arrayAlquileres.get(i).getInventario() });
+		}
+
+		// Introducimos el modelo en la tabla:
+		table.setModel(tableModel);
+		resaltarColumnas(table, 4, new int[] { 2, 3 }, false, new int[] { -1 });
+	}
+
+	private void mostrarClientes() {
+		tableModel = new DefaultTableModel();
+		columnasTabla(1);
+		List<Cliente> arrayClientes = new ArrayList<Cliente>();
+		try {
+			arrayClientes = collector.obtenerClientes(arrayClientes);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for (int i = 0; i < arrayClientes.size(); i++) {
+			tableModel.addRow(new Object[] { arrayClientes.get(i).getNombre(), arrayClientes.get(i).getApellidos(),
+					arrayClientes.get(i).getFecha_nacimiento(), arrayClientes.get(i).getDireccion().getCalle(),
+					arrayClientes.get(i).getDireccion().getCiudad(), arrayClientes.get(i).getDireccion().getPais() });
+		}
+
+		// Introducimos el modelo en la tabla:
+		table.setModel(tableModel);
+		resaltarColumnas(table, 6, new int[] { -1 }, false, new int[] { -1 });
+	}
+
+	private void mostrarClienteDelAlquiler() {
+		// Primero obtener el valor de la celda seleccionada:
+		DefaultTableModel tm = (DefaultTableModel) table.getModel();
+		Cliente cliente = (Cliente) tm.getValueAt(table.getSelectedRow(), 2);
+
+		// Ahora tenemos que buscar el valor en todos los clientes y si
+		// corresponde mostrar el cliente:
+		tableModel = new DefaultTableModel();
+		columnasTabla(1);
+		tableModel.addRow(new Object[] { cliente.getNombre(), cliente.getApellidos(), cliente.getFecha_nacimiento(),
+				cliente.getDireccion().getCalle(), cliente.getDireccion().getCiudad(),
+				cliente.getDireccion().getPais() });
+
+		// Introducimos el modelo en la tabla:
+		table_1.setModel(tableModel);
+		resaltarColumnas(table_1, 6, new int[] { 0, 1, 2, 3, 4, 5 }, false, new int[] { -1 });
+	}
+
+	private void mostrarPeliculaAlquiladaDelAlquiler() {
+		// Primero obtener el valor de la celda seleccionada:
+		DefaultTableModel tm = (DefaultTableModel) table.getModel();
+		Inventario inventario = (Inventario) tm.getValueAt(table.getSelectedRow(), 3);
+
+		tableModel = new DefaultTableModel();
+		columnasTabla(0);
+
+		tableModel.addRow(new Object[] { inventario.getPelicula().getNombre(), inventario.getPelicula().getDuracion(),
+				openFileToString(inventario.getPelicula().getDescripcion()), inventario.getPelicula().getAnyo(),
+				inventario.getPelicula().getCategoria().getNombre(), inventario.getDisponibles(),
+				inventario.getPelicula().getPrecio() });
+
+		// Introducimos el modelo en la tabla:
+		table_1.setModel(tableModel);
+		resaltarColumnas(table_1, 7, new int[] { 0, 1, 2, 3, 4, 5, 6 }, true, new int[] { 5, 6 });
+	}
+
+	private void mostrarDescripcionDePeliculas() {
+		// Primero obtener el valor de la celda seleccionada:
+		DefaultTableModel tm = (DefaultTableModel) table.getModel();
+		textPaneMostrarDescripcion.setText((String) tm.getValueAt(table.getSelectedRow(), 2));
+	}
+
+	private void resaltarColumnas(JTable tabla, int numeroColumnas, int[] columnasAResaltar, boolean coumnaModificable,
+			int[] columnaAModificar) {
+		for (int i = 0; i < numeroColumnas; i++) {
+			// Indicamos como sera el resaltado de la tabla
+			for (int j = 0; j < columnasAResaltar.length; j++) {
+				if (i == columnasAResaltar[j]) {
+					tabla.getColumnModel().getColumn(i)
+							.setCellRenderer(new Resaltador(true, coumnaModificable, columnaAModificar));
+					break;
+				} else {
+					tabla.getColumnModel().getColumn(i)
+							.setCellRenderer(new Resaltador(false, coumnaModificable, columnaAModificar));
+				}
+			}
+		}
+	}
+
+	/**
+	 * Método para pasar bytes a string:
+	 * 
+	 * @param _bytes
+	 * @return
+	 */
+	public String openFileToString(byte[] _bytes) {
+		String file_string = "";
+
+		for (int i = 0; i < _bytes.length; i++) {
+			file_string += (char) _bytes[i];
+		}
+
+		return file_string;
+	}
+
+	public class Resaltador implements TableCellRenderer {
+		private boolean resaltado;
+		private boolean columnaModificable;
+		private int[] columna;
+		public final DefaultTableCellRenderer DEFAULT_RENDERER = new DefaultTableCellRenderer();
+
+		/**
+		 * Creamos el resaltador indicando que columna se coloreara por defecto
+		 * 
+		 * @param columna
+		 */
+		public Resaltador(boolean resaltado, boolean columnaModificable, int[] columna) {
+			this.resaltado = resaltado;
+			this.columnaModificable = columnaModificable;
+			this.columna = columna;
+		}
+
+		@Override
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+				int row, int column) {
+			// Obtenemos la celda que se esta renderizando
+			Component c = DEFAULT_RENDERER.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
+					column);
+			DEFAULT_RENDERER.setHorizontalAlignment(SwingConstants.CENTER);
+
+			// Solo marcaremos las columnas que quieran ser reslatadas:
+			if (resaltado == true) {
+				if (isSelected == true) {
+					c.setBackground(Color.GREEN);
+					c.setForeground(Color.BLACK);
+				} else {
+					c.setBackground(Color.darkGray);
+					c.setForeground(Color.GREEN);
+				}
+
+				for (int i = 0; i < columna.length; i++) {
+					if (columnaModificable == true && columna[i] == column) {
+						c.setBackground(Color.GREEN);
+						c.setForeground(Color.RED);
+					}
+				}
+
+			}
+			return c;
 		}
 	}
 }

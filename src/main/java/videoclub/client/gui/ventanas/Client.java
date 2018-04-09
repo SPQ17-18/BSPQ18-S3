@@ -14,7 +14,7 @@ import videoclub.server.gui.ICollector;
 public class Client{
 	private ICollector collector;
 	@SuppressWarnings("unused")
-	private ClientRemoteObserver remoteDonor;
+	private ClientRemoteObserver remoteClient;
 
 	public Client() {
 		// EDT para ajustar el tema propio al JFrame creado para el cliente:
@@ -35,7 +35,7 @@ public class Client{
 	public void start(String[] args) {
 		this.connect2Collector(args);
 		try {
-			this.remoteDonor = new ClientRemoteObserver(this.collector, this);
+			this.remoteClient = new ClientRemoteObserver(this.collector, this);
 		} catch (RemoteException e) {
 			System.err.println(" # Error creating Remote Donor: " + e.getMessage());
 			e.printStackTrace();

@@ -333,8 +333,34 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		boolean alquilerCorrecto = false;
 		try {
 			tx.begin();
-			ServerFrame.textArea.append("Creando nuevo alquiler...\n");
-			pm.makePersistent(alquiler);
+			ServerFrame.textArea.append("Comprobando de cliente...\n");
+			Cliente cliente = null;
+			@SuppressWarnings("unchecked")
+			Query<Cliente> q = pm.newQuery("SELECT FROM " + Cliente.class.getName());
+			List<Cliente> clientes = q.executeList();
+			for (Cliente client : clientes) {
+				if (client.getNombre().equals(alquiler.getCliente().getNombre())
+						&& client.getApellidos().equals(alquiler.getCliente().getApellidos())
+						&& client.getFecha_nacimiento().equals(alquiler.getCliente().getFecha_nacimiento())) {
+					cliente = client;
+				}
+			}
+
+			ServerFrame.textArea.append("Comprobando de inventario...\n");
+			Inventario inventario = null;
+			@SuppressWarnings("unchecked")
+			Query<Inventario> q2 = pm.newQuery("SELECT FROM " + Inventario.class.getName());
+			List<Inventario> inventarios = q2.executeList();
+			for (Inventario invent : inventarios) {
+				if (invent.getPelicula().getNombre().equals(alquiler.getInventario().getPelicula().getNombre())) {
+					inventario = invent;
+				}
+			}
+
+			// Ahora ya podemos hacer persistente el alquiler:
+			Alquiler nuevoAlquiler = new Alquiler(alquiler.getFecha_alquiler(), alquiler.getFecha_devolucion(), cliente,
+					inventario);
+			pm.makePersistent(nuevoAlquiler);
 			ServerFrame.textArea.append("Alquiler de " + alquiler.getCliente().getNombre() + " creado exitosamente!\n");
 			tx.commit();
 
@@ -460,6 +486,28 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 			}
 		}
 		return arrayMensajes;
+	}
+
+	@Override
+	public List<Alquiler> obtenerAlquileres(List<Alquiler> arrayAlquileres) throws RemoteException {
+		// TODO Auto-generated method stub
+		try {
+			tx.begin();
+			ServerFrame.textArea.append("Obteniendo alquileres...\n");
+			@SuppressWarnings("unchecked")
+			Query<Alquiler> q = pm.newQuery("SELECT FROM " + Alquiler.class.getName());
+			List<Alquiler> alquileres = (List<Alquiler>) q.executeList();
+			for (Alquiler alquiler : alquileres) {
+				arrayAlquileres.add(alquiler);
+			}
+			ServerFrame.textArea.append("Alquileres obtenidos!\n");
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return arrayAlquileres;
 	}
 
 }
