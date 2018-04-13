@@ -28,6 +28,7 @@ import videoclub.server.jdo.Direccion;
 import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Inventario;
 import videoclub.server.jdo.Mensaje;
+import videoclub.server.jdo.Novedad;
 import videoclub.server.jdo.Pelicula;
 import videoclub.server.jdo.Usuario;
 
@@ -237,7 +238,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 
 	@Override
 	public boolean insertarPelicula(String nombre, int duracion, byte[] descripcion, int anyo, float precio,
-			String categoria, int cantidad, Imagen imagen) {
+			String categoria, int cantidad, Imagen imagen, boolean novedad) {
 		// TODO Auto-generated method stub
 		boolean correcto = false;
 		boolean categoriaExiste = false;
@@ -281,6 +282,15 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 			ServerFrame.textArea.append("Creando inventario para la película: " + nombre + "\n");
 			pm.makePersistent(new Inventario(cantidad, pelicula));
 			ServerFrame.textArea.append("Inventario para le película " + nombre + " creado exitosamente..!\n");
+			
+			//Comprobamos si la casilla de novedad está activada:
+			if(novedad==true)
+			{
+				//Enconten metemos la película a novedades:
+				ServerFrame.textArea.append("Metiendo película a novedades...\n");
+				pm.makePersistent(new Novedad(pelicula));
+				ServerFrame.textArea.append("Película metida en novedades!\n");
+			}
 
 			tx.commit();
 
@@ -508,6 +518,31 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 			}
 		}
 		return arrayAlquileres;
+	}
+
+	@Override
+	public List<Pelicula> obtenerPeliculasNuevas(List<Pelicula> arrayPeliculas) throws RemoteException {
+		// TODO Auto-generated method stub
+		try {
+			tx.begin();
+			ServerFrame.textArea.append("Obteniendo películas nuevas de la BD...\n");
+
+			// Sacamos todas las categorias de la BD:
+			@SuppressWarnings("unchecked")
+			Query<Novedad> q = pm.newQuery("SELECT FROM " + Novedad.class.getName());
+			List<Novedad> peliculas = (List<Novedad>) q.executeList();
+			for (Novedad pelicula : peliculas) {
+				// Vamos añadiendo las películas al array pasado:
+				arrayPeliculas.add(pelicula.getPelicula());
+			}
+			ServerFrame.textArea.append("Películas nuevas obteneidas ! :D\n");
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return arrayPeliculas;
 	}
 
 }

@@ -9,11 +9,6 @@ import javax.swing.UIManager;
 import org.pushingpixels.substance.api.skin.SubstanceAutumnLookAndFeel;
 import org.pushingpixels.substance.api.skin.SubstanceRavenLookAndFeel;
 
-/**
- * 
- * @author Alejandro Relloso & David García
- *
- */
 public class Temas {
 
 	/**

@@ -153,7 +153,7 @@ public class PanelIniciarSesion extends JPanel {
 			//Primero cerramos la ventana actual de las credenciales:
 			frame.dispose();
 			//Inicializamos nueva JFrame VentanaPrincipal pero con distintos parámetros de entrada:
-			ClientFrame ventanaPrincipal = new ClientFrame(1080+6,720+35, collector);//800 (anchura del PanelUsuario), 600 (altura del PanelUsuario)
+			ClientFrame ventanaPrincipal = new ClientFrame(1280+6,720+35, collector);//800 (anchura del PanelUsuario), 600 (altura del PanelUsuario)
 			ventanaPrincipal.setVisible(true);
 			ventanaPrincipal.cargarPanelUsuario();
 			

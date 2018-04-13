@@ -23,7 +23,8 @@ public interface ICollector extends IRemoteObservable {
 	Cliente getCliente() throws RemoteException;
 	Usuario getUsuario() throws RemoteException;
 	List<Pelicula> obtenerPeliculas(List<Pelicula> arrayPeliculas) throws RemoteException;
-	boolean insertarPelicula(String nombre, int duracion, byte[] descripcion, int anyo, float precio, String categoria,int cantidad, Imagen imagen) throws RemoteException;
+	List<Pelicula> obtenerPeliculasNuevas(List<Pelicula> arrayPeliculas) throws RemoteException;
+	boolean insertarPelicula(String nombre, int duracion, byte[] descripcion, int anyo, float precio, String categoria,int cantidad, Imagen imagen, boolean novedad) throws RemoteException;
 	boolean login(String nombreUsuario, String contraseña) throws RemoteException;
 	boolean registerUser(String nombreUsuario, String contraseña, String correo, String nombre, String apellidos, Date fechaNacimiento, String calle, String ciudad, String pais) throws RemoteException;
 }

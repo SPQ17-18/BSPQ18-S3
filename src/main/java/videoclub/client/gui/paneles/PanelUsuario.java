@@ -43,12 +43,14 @@ import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Mensaje;
 import videoclub.server.jdo.Pelicula;
 import videoclub.server.jdo.Usuario;
+import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PanelUsuario extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private int anchuraPanel = 1080;
-	private int alturaPanel = 720;
 	private JPanel panel;
 	private JScrollPane scrollPane;
 	private GridLayout gl_panel;
@@ -59,24 +61,38 @@ public class PanelUsuario extends JPanel {
 
 	private JLabel NombreUsuario;
 	private JTextField textFieldBuscarPelicula;
-	private JLabel lblImagenPelicula;
-	private JLabel labelTitulo;
-	private JLabel labelDuracion;
-	private JLabel labelAño;
-	private JLabel labelCategoria;
-	private JTextPane textPaneDescripcion;
-	private JLabel labelDisponibles;
-	private JLabel labelPrecio;
-	private JButton btnalquilarYaMismo;
 	private JLabel lblNewLabel;
 	private JLabel labelDinero;
 	private JComboBox<Integer> comboBoxAño;
 	private JComboBox<String> comboBoxGenero;
+	
+	@SuppressWarnings("unused")
+	private Pelicula peliculaAAlquilar;
+	private JPanel panelOpciones;
+	private JButton btnListaSeries;
+	private JButton btnListaAmigos;
+	private JButton btnListaFavoritos;
+	private JButton btnListaRecomendadas;
+	private JButton btnPeliculasVistas;
+	private JButton btnPeliculasPendientes;
+	private JButton btnChat;
+	private JButton btnListaUsuarios;
+	private JButton btnListaAlquiladas;
+	private JButton btnPeliculasNuevas;
+	private JButton btnListaPeliculas;
+	private JLabel lblOpciones;
+	private JScrollPane scrollContenedorPaneles;
+	private JLabel lblBuscarPelculasPor;
+	private JLabel lblBuscarPelculasPor_1;
+	private JLabel lblBuscarPelculasPor_2;
 
 	private ICollector collector; // Collector implementado desde "ClienfFrame"
 	private Cliente clienteActual;
 	private Usuario usuarioActual;
-	List<Mensaje> arrayMensajes = new ArrayList<Mensaje>();
+	
+	private int alturaPanelOpcionesInicial = 41;
+	private int alturaPanelOpcionesFinal = 428;
+	private boolean panelOpcionesRecogido = true;
 
 	/**
 	 * Create the panel.
@@ -97,129 +113,163 @@ public class PanelUsuario extends JPanel {
 
 		valoresComboBoxCategorias();
 		valoresComboBoxAños();
-
-		// Ejecutamos comprobación de mensajes cada 1 segundo:
-		Timer timer = new Timer(1000, new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				mostrarMensajesNuevos();
-			}
-		});
-
-		timer.start();
 	}
 
 	private void inicializar() {
 		// Numero de filas, Numero de columnas, Separaciones h y v:
-		gl_panel = new GridLayout(2, 2, 5, 5);
+		gl_panel = new GridLayout(1, 5, 5, 5);
 		scrollPane = new JScrollPane();
 		panel = new JPanel();
 		NombreUsuario = new JLabel(" " + clienteActual.getNombre() + "- " + clienteActual.getApellidos() + " ["
 				+ clienteActual.getDireccion().getPais() + "]");
 		textFieldBuscarPelicula = new JTextField();
 		comboBoxGenero = new JComboBox<String>();
-		lblImagenPelicula = new JLabel();
-		labelTitulo = new JLabel();
-		labelDuracion = new JLabel();
-		labelAño = new JLabel();
-		labelCategoria = new JLabel();
-		labelDisponibles = new JLabel();
-		labelDisponibles.setText(">0");
-		labelPrecio = new JLabel();
-		btnalquilarYaMismo = new JButton("\u00A1ALQUILAR YA MISMO!");
-		lblNewLabel = new JLabel("SALDO ");
+		lblNewLabel = new JLabel("  SALDO ");
 		labelDinero = new JLabel("0 \u20AC");
 		comboBoxAño = new JComboBox<Integer>();
-		scrollPane_1 = new JScrollPane();
-		textPaneDescripcion = new JTextPane();
 		comboBoxTema = new JComboBox<String>();
-		scrollPane_2 = new JScrollPane();
-		textAreaMensajes = new JTextArea();
-		scrollPane_3 = new JScrollPane();
-		textAreaEscribirMensaje = new JTextArea();
-		btnEnviarMensaje = new JButton("Enviar mensaje");
+		panelOpciones = new JPanel();
+		lblOpciones = new JLabel("OPCIONES");
+		btnListaPeliculas = new JButton("PELICULAS");
+		btnListaSeries = new JButton("SERIES");
+		btnListaAmigos = new JButton("AMIGOS");
+		btnListaFavoritos = new JButton("PELICULAS FAVORTIAS");
+		btnListaRecomendadas = new JButton("PELICULAS RECOMENDADAS");
+		btnPeliculasVistas = new JButton("PELICULAS VISTAS");
+		btnPeliculasPendientes = new JButton("PELICULAS PENDIENTES");
+		btnChat = new JButton("CHAT");
+		btnListaUsuarios = new JButton("USUARIOS");
+		btnListaAlquiladas = new JButton("PELICULAS ALQUILADAS");
+		btnPeliculasNuevas = new JButton("PELICULAS NUEVAS");
+		scrollContenedorPaneles = new JScrollPane();
+		lblBuscarPelculasPor = new JLabel("Buscar películas por año");
+		lblBuscarPelculasPor_1 = new JLabel("Buscar películas por género");
+		lblBuscarPelculasPor_2 = new JLabel("Buscar películas por nombre (se mostrarán todos los parecidos)");
+
 	}
 
 	private void componentes() {
-		btnalquilarYaMismo.setBorder(new LineBorder(Color.GREEN));
-		scrollPane.setBounds(12, 64, 764, 350);
+		lblNewLabel.setBorder(new LineBorder(Color.GREEN));
+		labelDinero.setBorder(null);
+		labelDinero.setHorizontalAlignment(SwingConstants.CENTER);
+		comboBoxTema.setBorder(new LineBorder(Color.MAGENTA));
+		scrollPane.setBounds(12, 112, 1256, 302);
 		NombreUsuario.setFont(new Font("Tahoma", Font.BOLD, 15));
 		NombreUsuario.setForeground(Color.ORANGE);
-		NombreUsuario.setBorder(new TitledBorder(null, "Bienvenido de nuevo:", TitledBorder.LEADING, TitledBorder.TOP,
-				null, SystemColor.textHighlight));
-		NombreUsuario.setBounds(12, 0, 241, 65);
+		NombreUsuario.setBorder(new LineBorder(Color.ORANGE));
+		NombreUsuario.setBounds(12, 13, 331, 29);
 		textFieldBuscarPelicula.setBackground(Color.DARK_GRAY);
-		textFieldBuscarPelicula.setBorder(
-				new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Buscar pel\u00EDcula por nombre",
-						TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.textHighlight));
-		textFieldBuscarPelicula.setBounds(783, 0, 285, 65);
+		textFieldBuscarPelicula.setBorder(new LineBorder(SystemColor.textHighlight));
+		textFieldBuscarPelicula.setBounds(756, 76, 512, 29);
 		textFieldBuscarPelicula.setColumns(10);
 		comboBoxGenero.setBackground(Color.BLACK);
-		comboBoxGenero.setBorder(
-				new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Buscar pel\u00EDcula por g\u00E9nero",
-						TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.textHighlight));
-		comboBoxGenero.setBounds(524, 6, 247, 55);
-		lblImagenPelicula.setBorder(new LineBorder(SystemColor.textHighlight));
-		lblImagenPelicula.setBounds(12, 427, 100, 140);
-		labelTitulo.setForeground(Color.WHITE);
-		labelTitulo.setBorder(new LineBorder(Color.GRAY));
-		labelTitulo.setBounds(124, 427, 323, 29);
-		labelDuracion.setForeground(Color.WHITE);
-		labelDuracion.setBorder(new LineBorder(Color.GRAY));
-		labelDuracion.setBounds(666, 427, 195, 29);
-		labelAño.setForeground(Color.WHITE);
-		labelAño.setBorder(new LineBorder(Color.GRAY));
-		labelAño.setBounds(459, 427, 195, 29);
-		labelCategoria.setForeground(Color.WHITE);
-		labelCategoria.setBorder(new LineBorder(Color.GRAY));
-		labelCategoria.setBounds(873, 427, 195, 29);
-		textPaneDescripcion.setForeground(Color.WHITE);
-		textPaneDescripcion.setBorder(null);
-		textPaneDescripcion.setBackground(Color.DARK_GRAY);
-		labelDisponibles.setForeground(Color.RED);
-		labelDisponibles.setBorder(new LineBorder(Color.GRAY));
-		labelDisponibles.setBounds(12, 580, 100, 29);
-		labelPrecio.setForeground(Color.GREEN);
-		labelPrecio.setBorder(new LineBorder(Color.GRAY));
-		labelPrecio.setBounds(12, 622, 100, 29);
-		btnalquilarYaMismo.setForeground(Color.GREEN);
-		btnalquilarYaMismo.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnalquilarYaMismo.setBounds(124, 661, 402, 46);
-		lblNewLabel.setForeground(SystemColor.textHighlight);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNewLabel.setBounds(12, 661, 73, 46);
-		labelDinero.setForeground(Color.GREEN);
-		labelDinero.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		labelDinero.setBounds(81, 663, 157, 43);
-		comboBoxAño.setBorder(
-				new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Buscar pel\u00EDcula por a\u00F1o",
-						TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
+		comboBoxGenero.setBorder(new LineBorder(SystemColor.textHighlight));
+		comboBoxGenero.setBounds(504, 76, 240, 29);
+		lblNewLabel.setForeground(Color.GREEN);
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel.setBounds(355, 13, 137, 29);
+		labelDinero.setForeground(new Color(30, 144, 255));
+		labelDinero.setFont(new Font("Tahoma", Font.BOLD, 15));
+		labelDinero.setBounds(425, 13, 67, 29);
+		comboBoxAño.setBorder(new LineBorder(SystemColor.textHighlight));
 		comboBoxAño.setBackground(Color.BLACK);
-		comboBoxAño.setBounds(265, 6, 247, 55);
-		btnalquilarYaMismo.setContentAreaFilled(false);
+		comboBoxAño.setBounds(252, 76, 240, 29);
 		panel.setBackground(Color.DARK_GRAY);
-		scrollPane_1.setBounds(124, 469, 944, 182);
-		scrollPane_1.setBorder(new LineBorder(Color.GRAY));
 		comboBoxTema.setModel(new DefaultComboBoxModel<String>(new String[] { "Tema Raven", "Tema Autum" }));
-		comboBoxTema.setBounds(865, 685, 203, 22);
-		scrollPane_2.setBorder(new LineBorder(Color.GRAY));
-		scrollPane_2.setBackground(Color.DARK_GRAY);
-		scrollPane_2.setBounds(788, 66, 280, 229);
-		textAreaMensajes.setFont(new Font("Monospaced", Font.BOLD, 13));
-		textAreaMensajes.setForeground(Color.ORANGE);
-		textAreaMensajes.setBackground(Color.DARK_GRAY);
-		textAreaEscribirMensaje.setFont(new Font("Monospaced", Font.BOLD, 13));
-		textAreaEscribirMensaje.setForeground(SystemColor.textHighlight);
-		textAreaEscribirMensaje.setBackground(Color.DARK_GRAY);
-		scrollPane_3.setBorder(new LineBorder(Color.GRAY));
-		scrollPane_3.setBounds(788, 302, 280, 72);
-		btnEnviarMensaje.setForeground(SystemColor.textHighlight);
-		btnEnviarMensaje.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnEnviarMensaje.setBounds(788, 385, 280, 29);
+		comboBoxTema.setBounds(1118, 14, 150, 29);
+		panel.setLayout(gl_panel);
+		panelOpciones.setLayout(null);
+		panelOpciones.setBorder(new LineBorder(Color.ORANGE));
+		panelOpciones.setBackground(Color.GRAY);
+		panelOpciones.setBounds(11, 64, 232, alturaPanelOpcionesInicial);
+		lblOpciones.setBackground(Color.GRAY);
+		lblOpciones.setOpaque(true);
+		lblOpciones.setBorder(new LineBorder(Color.ORANGE));
+		lblOpciones.setForeground(Color.ORANGE);
+		lblOpciones.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblOpciones.setHorizontalAlignment(SwingConstants.CENTER);
+		lblOpciones.setBounds(0, 0, 232, 40);
+		btnListaPeliculas.setBorderPainted(false);
+		btnListaPeliculas.setBackground(Color.BLACK);
+		btnListaPeliculas.setBorder(null);
+		btnListaPeliculas.setForeground(Color.WHITE);
+		btnListaPeliculas.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnListaPeliculas.setBounds(1, 41, 228, 34);
+		btnListaSeries.setBorderPainted(false);
+		btnListaSeries.setBackground(Color.BLACK);
+		btnListaSeries.setForeground(Color.WHITE);
+		btnListaSeries.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnListaSeries.setBorder(null);
+		btnListaSeries.setBounds(1, 76, 228, 34);
+		btnListaAmigos.setBorderPainted(false);
+		btnListaAmigos.setBackground(Color.BLACK);
+		btnListaAmigos.setForeground(Color.WHITE);
+		btnListaAmigos.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnListaAmigos.setBorder(null);
+		btnListaAmigos.setBounds(1, 111, 228, 34);
+		btnListaFavoritos.setBorderPainted(false);
+		btnListaFavoritos.setBackground(Color.BLACK);
+		btnListaFavoritos.setForeground(Color.WHITE);
+		btnListaFavoritos.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnListaFavoritos.setBorder(null);
+		btnListaFavoritos.setBounds(1, 146, 228, 34);
+		btnListaRecomendadas.setBorderPainted(false);
+		btnListaRecomendadas.setBackground(Color.BLACK);
+		btnListaRecomendadas.setForeground(Color.WHITE);
+		btnListaRecomendadas.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnListaRecomendadas.setBorder(null);
+		btnListaRecomendadas.setBounds(1, 181, 228, 34);
+		btnPeliculasVistas.setBorderPainted(false);
+		btnPeliculasVistas.setBackground(Color.BLACK);
+		btnPeliculasVistas.setForeground(Color.WHITE);
+		btnPeliculasVistas.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnPeliculasVistas.setBorder(null);
+		btnPeliculasVistas.setBounds(1, 356, 228, 34);
+		btnPeliculasPendientes.setBorderPainted(false);
+		btnPeliculasPendientes.setBackground(Color.BLACK);
+		btnPeliculasPendientes.setForeground(Color.WHITE);
+		btnPeliculasPendientes.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnPeliculasPendientes.setBorder(null);
+		btnPeliculasPendientes.setBounds(1, 321, 228, 34);
+		btnChat.setBorderPainted(false);
+		btnChat.setBackground(Color.BLACK);
+		btnChat.setForeground(Color.WHITE);
+		btnChat.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnChat.setBorder(null);
+		btnChat.setBounds(1, 286, 228, 34);
+		btnListaUsuarios.setBorderPainted(false);
+		btnListaUsuarios.setBackground(Color.BLACK);
+		btnListaUsuarios.setForeground(Color.WHITE);
+		btnListaUsuarios.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnListaUsuarios.setBorder(null);
+		btnListaUsuarios.setBounds(1, 251, 228, 34);
+		btnListaAlquiladas.setBorderPainted(false);
+		btnListaAlquiladas.setBackground(Color.BLACK);
+		btnListaAlquiladas.setForeground(Color.WHITE);
+		btnListaAlquiladas.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnListaAlquiladas.setBorder(null);
+		btnListaAlquiladas.setBounds(1, 216, 228, 34);
+		btnPeliculasNuevas.setBorderPainted(false);
+		btnPeliculasNuevas.setBackground(Color.BLACK);
+		btnPeliculasNuevas.setForeground(Color.WHITE);
+		btnPeliculasNuevas.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnPeliculasNuevas.setBorder(null);
+		btnPeliculasNuevas.setBounds(1, 391, 228, 34);
+		scrollContenedorPaneles.setBounds(252, 427, 1016, 279);		
+		lblBuscarPelculasPor.setForeground(SystemColor.textHighlight);
+		lblBuscarPelculasPor.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblBuscarPelculasPor.setBounds(252, 55, 240, 16);
+		lblBuscarPelculasPor_1.setForeground(SystemColor.textHighlight);
+		lblBuscarPelculasPor_1.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblBuscarPelculasPor_1.setBounds(504, 55, 240, 16);
+		lblBuscarPelculasPor_2.setForeground(SystemColor.textHighlight);
+		lblBuscarPelculasPor_2.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblBuscarPelculasPor_2.setBounds(756, 55, 512, 16);
 
 	}
 
 	private void añadirComponentes() {
-		setSize(anchuraPanel, alturaPanel);
+		setSize(1280, 720);
 		setBackground(Color.DARK_GRAY);
 		setLayout(null);
 		setBorder(null);
@@ -228,39 +278,38 @@ public class PanelUsuario extends JPanel {
 		add(NombreUsuario);
 		add(textFieldBuscarPelicula);
 		add(comboBoxGenero);
-		add(lblImagenPelicula);
-		add(labelTitulo);
-		add(labelDuracion);
-		add(labelAño);
-		add(labelCategoria);
-		add(scrollPane_1);
-
-		add(labelDisponibles);
-		add(labelPrecio);
-		add(btnalquilarYaMismo);
 		add(lblNewLabel);
 		add(labelDinero);
 		add(comboBoxAño);
 		add(comboBoxTema);
-		add(scrollPane_2);
-		add(scrollPane_3);
-		add(btnEnviarMensaje);
+		add(panelOpciones);
+		add(scrollContenedorPaneles);
+		add(lblBuscarPelculasPor);
+		add(lblBuscarPelculasPor_1);
+		add(lblBuscarPelculasPor_2);
+
+		panelOpciones.add(lblOpciones);
+		panelOpciones.add(btnListaPeliculas);
+		panelOpciones.add(btnListaSeries);
+		panelOpciones.add(btnListaAmigos);
+		panelOpciones.add(btnListaFavoritos);
+		panelOpciones.add(btnListaRecomendadas);
+		panelOpciones.add(btnPeliculasVistas);
+		panelOpciones.add(btnPeliculasPendientes);
+		panelOpciones.add(btnChat);
+		panelOpciones.add(btnListaUsuarios);
+		panelOpciones.add(btnListaAlquiladas);
+		panelOpciones.add(btnPeliculasNuevas);
+
+		scrollPane.setViewportView(panel);
 
 		agregarPeliculasAlPanel();
-
-		scrollPane_1.setViewportView(textPaneDescripcion);
-		scrollPane.setViewportView(panel);
-		scrollPane_2.setViewportView(textAreaMensajes);
-		scrollPane_3.setViewportView(textAreaEscribirMensaje);
-
-		panel.setLayout(gl_panel);
-
+		eventosBotonesPeplicula();
 	}
 
 	private boolean comboBoxAñoPresionado = false;
 	private boolean comboBoxGeneroPresionado = false;
 	private List<String> arrayNombresPeliculasEncontradas = new ArrayList<String>();
-	private JScrollPane scrollPane_1;
 	private JComboBox<String> comboBoxTema;
 	@SuppressWarnings("unused")
 	private Temas tema;
@@ -289,12 +338,6 @@ public class PanelUsuario extends JPanel {
 			}
 		});
 
-		btnalquilarYaMismo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ClientAlquilerFrame frame = new ClientAlquilerFrame(collector, peliculaAAlquilar, clienteActual);
-				frame.setVisible(true);
-			}
-		});
 		comboBoxTema.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -310,19 +353,43 @@ public class PanelUsuario extends JPanel {
 				}
 			}
 		});
-		btnEnviarMensaje.addActionListener(new ActionListener() {
+		btnChat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					if (collector.setMensaje(
-							new Mensaje(textAreaEscribirMensaje.getText(), new Date(), usuarioActual)) == true) {
-						JOptionPane.showMessageDialog(null, "Mensaje enviado correctamente :D");
-					} else {
-						JOptionPane.showMessageDialog(null, "ERROR! MENSAJE NO ENVIADO!");
-					}
-				} catch (RemoteException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				PanelChat panelChat = new PanelChat(collector, usuarioActual);
+				scrollContenedorPaneles.setViewportView(panelChat);
+			}
+		});
+		lblOpciones.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(panelOpcionesRecogido==true)
+				{
+					//Lo expandimos:
+					panelOpciones.setSize(panelOpciones.getWidth(), alturaPanelOpcionesFinal);
+					scrollPane.setBounds(252, 112, 1016, 302);//Recogemos panel películas
+					panelOpcionesRecogido = false;
+					
+				}else{
+					//Lo recogemos:
+					panelOpciones.setSize(panelOpciones.getWidth(), alturaPanelOpcionesInicial);	
+					scrollPane.setBounds(12, 112, 1256, 302);//Expandimos panel películas
+					panelOpcionesRecogido = true;
 				}
+			}
+		});
+		btnPeliculasNuevas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				obtenerPeliculasNuevas();
+			}
+		});
+		btnListaPeliculas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Nuevo panel:
+				panel = new JPanel();
+				panel.setBackground(Color.DARK_GRAY);
+				scrollPane.setViewportView(panel);
+				panel.setLayout(gl_panel);
+				agregarPeliculasAlPanel();
 			}
 		});
 	}
@@ -331,7 +398,8 @@ public class PanelUsuario extends JPanel {
 	 * Método para cargar todas las películas en el gridLayout creando botones
 	 * para cada una:
 	 */
-	private void agregarPeliculasAlPanel() {
+	private void agregarPeliculasAlPanel() {		
+		arrayPeliculas = new ArrayList<Pelicula>();
 		boolean correcto = false;
 		// Primero obtenemos las películas de la base de datos:
 		try {
@@ -365,8 +433,6 @@ public class PanelUsuario extends JPanel {
 			}
 
 		}
-
-		eventosBotonesPeplicula();
 	}
 
 	/*
@@ -379,7 +445,11 @@ public class PanelUsuario extends JPanel {
 				public void actionPerformed(ActionEvent e) {
 					for (int i = 0; i < arrayBotones.length; i++) {
 						if (arrayBotones[i].isSelected() == true) {
-							mostrarPeliculaAAlquilar(arrayBotonesPelicula.get(i).getPelicula());
+							// Al accionar una de las películas creamos de nuevo
+							// el panel con la película selecccionada:
+							PanelPelicula panelPelicula = new PanelPelicula(collector, clienteActual,
+									arrayBotonesPelicula.get(i).getPelicula());
+							scrollContenedorPaneles.setViewportView(panelPelicula);
 							// Toca deseleccionar todos:
 							for (int j = 0; j < arrayBotones.length; j++) {
 								arrayBotones[j].setSelected(false);
@@ -428,7 +498,6 @@ public class PanelUsuario extends JPanel {
 	}
 
 	private void buscarPeliculasPorAño(int anyo) {
-		desactivarComponentes();
 		// Nuevo panel:
 		panel = new JPanel();
 		panel.setBackground(Color.DARK_GRAY);
@@ -475,72 +544,7 @@ public class PanelUsuario extends JPanel {
 		eventosBotonesPeplicula();
 	}
 
-	/**
-	 * Método que muestra todos los detalles de la película seleccionada a
-	 * alquilar:
-	 */
-	private void mostrarPeliculaAAlquilar(Pelicula pelicula) {
-		// Primero el el cartel de la película:
-		ImageIcon icon = null;
-		icon = getImageIconPelicula(pelicula.getImage());
-
-		activarComponentes();
-
-		// Colocamos datos:
-		lblImagenPelicula.setIcon(icon);
-		labelAño.setText(" AÑO: " + Integer.toString(pelicula.getAnyo()));
-		labelCategoria.setText(" CATEGORIA: " + pelicula.getCategoria().getNombre());
-		labelDuracion.setText(" DURACIÓN: " + Integer.toString(pelicula.getDuracion()) + " minutos");
-		labelTitulo.setText(" TITULO: " + pelicula.getNombre());
-		textPaneDescripcion.setText(openFileToString(pelicula.getDescripcion()));
-		labelPrecio.setText(" PRECIO: " + Float.toString(pelicula.getPrecio()) + "€");
-
-		// Guardamos datos de la película por si el usuario quiere alquilarla:
-		peliculaAAlquilar = pelicula;
-	}
-
-	@SuppressWarnings("unused")
-	private Pelicula peliculaAAlquilar;
-	private JTextArea textAreaMensajes;
-	private JScrollPane scrollPane_2;
-	private JTextArea textAreaEscribirMensaje;
-	private JScrollPane scrollPane_3;
-	private JButton btnEnviarMensaje;
-
-	private void desactivarComponentes() {
-		// No visibles:
-		lblImagenPelicula.setVisible(false);
-		labelAño.setVisible(false);
-		labelCategoria.setVisible(false);
-		labelDisponibles.setVisible(false);
-		labelDuracion.setVisible(false);
-		labelTitulo.setVisible(false);
-		textPaneDescripcion.setVisible(false);
-		btnalquilarYaMismo.setVisible(false);
-		labelPrecio.setVisible(false);
-		lblNewLabel.setVisible(false);
-		labelDinero.setVisible(false);
-		scrollPane_1.setVisible(false);
-	}
-
-	private void activarComponentes() {
-		// Visibles:
-		lblImagenPelicula.setVisible(true);
-		labelAño.setVisible(true);
-		labelCategoria.setVisible(true);
-		labelDisponibles.setVisible(true);
-		labelDuracion.setVisible(true);
-		labelTitulo.setVisible(true);
-		textPaneDescripcion.setVisible(true);
-		btnalquilarYaMismo.setVisible(true);
-		labelPrecio.setVisible(true);
-		lblNewLabel.setVisible(true);
-		labelDinero.setVisible(true);
-		scrollPane_1.setVisible(true);
-	}
-
 	private void buscarPeliculasPorGenero(String categoria) {
-		desactivarComponentes();
 		// Nuevo panel:
 		panel = new JPanel();
 		panel.setBackground(Color.DARK_GRAY);
@@ -595,7 +599,6 @@ public class PanelUsuario extends JPanel {
 	}
 
 	private void buscarPeliculaPorNombre(List<String> nombres) {
-		desactivarComponentes();
 		// Nuevo panel:
 		panel = new JPanel();
 		panel.setBackground(Color.DARK_GRAY);
@@ -677,6 +680,52 @@ public class PanelUsuario extends JPanel {
 			}
 		}
 	}
+	
+	/**
+	 * Método para cargar todas las películas en el gridLayout creando botones
+	 * para cada una:
+	 */
+	private void obtenerPeliculasNuevas() {		
+		// Nuevo panel:
+		panel = new JPanel();
+		panel.setBackground(Color.DARK_GRAY);
+		scrollPane.setViewportView(panel);
+		panel.setLayout(gl_panel);
+		
+		boolean correcto = false;
+		List<Pelicula> arrayPeliculasNuevas = new ArrayList<Pelicula>();
+		// Primero obtenemos las películas de la base de datos:
+		try {
+			arrayPeliculasNuevas = collector.obtenerPeliculasNuevas(arrayPeliculasNuevas);
+			correcto = true;
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (correcto == true) {
+			arrayBotones = new JToggleButton[arrayPeliculasNuevas.size()];
+			arrayBotonesPelicula = new ArrayList<BotonPelicula>();
+			// Segundo buscamos el id asociado a cada película y lo cotejamos
+			// con el
+			// id de las imágenes:
+			for (int i = 0; i < arrayPeliculasNuevas.size(); i++) {
+
+				// Inicializamos cada BOTON!:
+
+				ImageIcon icon = null;
+				icon = getImageIconPelicula(arrayPeliculasNuevas.get(i).getImage());
+
+				arrayBotones[i] = new JToggleButton(icon);
+				arrayBotones[i].setContentAreaFilled(false);
+				arrayBotones[i].setBorder(new LineBorder(SystemColor.textHighlight));
+				arrayBotonesPelicula.add(new BotonPelicula(arrayPeliculasNuevas.get(i)));
+
+				// Añadimos botón de la película al panel asignado para ello:
+				panel.add(arrayBotones[i]);
+			}
+		}
+	}
 
 	/**
 	 * Método para devolver automaticamente ya la ImageIcon!:
@@ -691,7 +740,7 @@ public class PanelUsuario extends JPanel {
 		InputStream in = new ByteArrayInputStream(bytes);
 		try {
 			image = ImageIO.read(in);
-			dev = new ImageIcon(image.getScaledInstance(100, 140, 0));
+			dev = new ImageIcon(image.getScaledInstance(195, 270, 0));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -713,34 +762,6 @@ public class PanelUsuario extends JPanel {
 		}
 
 		return file_string;
-	}
-
-	@SuppressWarnings("deprecation")
-	private void mostrarMensajesNuevos() {
-		try {
-			arrayMensajes = new ArrayList<Mensaje>();
-			arrayMensajes = collector.obtenerMensajes(arrayMensajes);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// Inicializamos de nuevo todo el componente:
-		textAreaMensajes = new JTextArea();
-		textAreaMensajes.setFont(new Font("Monospaced", Font.BOLD, 13));
-		textAreaMensajes.setForeground(Color.ORANGE);
-		textAreaMensajes.setBackground(Color.DARK_GRAY);
-		scrollPane_2.setViewportView(textAreaMensajes);
-
-		// MOstramos mensajes:
-		if (arrayMensajes.size() >= 0) {
-			for (int i = 0; i < arrayMensajes.size(); i++) {
-				textAreaMensajes.append("[" + arrayMensajes.get(i).getFecha().getHours() + ":"
-						+ arrayMensajes.get(i).getFecha().getMinutes() + ":"
-						+ arrayMensajes.get(i).getFecha().getSeconds() + "] "
-						+ arrayMensajes.get(i).getUsuario().getNombreUsuario() + ": "
-						+ arrayMensajes.get(i).getMensaje() + "\n");
-			}
-		}
 	}
 
 	// Clase para guardar los objetos tipo "BotonPelicula" que contendrán el id

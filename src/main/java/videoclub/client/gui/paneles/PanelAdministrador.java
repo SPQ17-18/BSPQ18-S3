@@ -45,6 +45,7 @@ import videoclub.server.jdo.Alquiler;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Inventario;
+import javax.swing.JCheckBox;
 
 public class PanelAdministrador extends JPanel {
 
@@ -130,6 +131,7 @@ public class PanelAdministrador extends JPanel {
 		scrollPane_3 = new JScrollPane();
 		textPaneMostrarDescripcion = new JTextPane();
 		LabelFondo = new JLabel();
+		chckbxNovedad = new JCheckBox("Novedad");
 	}
 
 	private void componentes() {
@@ -191,7 +193,7 @@ public class PanelAdministrador extends JPanel {
 		comboBoxCantidad.setBackground(Color.DARK_GRAY);
 		comboBoxCantidad.setBounds(887, 472, 169, 41);
 		LabelImage.setBorder(new LineBorder(SystemColor.textHighlight));
-		LabelImage.setBounds(105, 517, 100, 140);
+		LabelImage.setBounds(32, 514, 100, 140);
 		textPaneMostrarDescripcion.setForeground(Color.WHITE);
 		textPaneMostrarDescripcion.setBackground(Color.DARK_GRAY);
 		textPaneMostrarDescripcion.setBorder(new TitledBorder(null,
@@ -202,6 +204,7 @@ public class PanelAdministrador extends JPanel {
 		LabelFondo.setBackground(Color.DARK_GRAY);
 		LabelFondo.setOpaque(true);
 		LabelFondo.setBounds(12, 67, 1056, 146);
+		chckbxNovedad.setBounds(154, 571, 113, 25);
 	}
 
 	private void añadirComponentes() {
@@ -227,11 +230,11 @@ public class PanelAdministrador extends JPanel {
 		add(scrollPane_1);
 		add(comboBoxCantidad);
 		add(scrollPane_3);
-
+		add(chckbxNovedad);
+		
 		scrollPane_3.setViewportView(textPaneMostrarDescripcion);
 		scrollPane.setViewportView(table);
 		scrollPane_1.setViewportView(table_1);
-
 	}
 
 	private void eventos() {
@@ -410,7 +413,7 @@ public class PanelAdministrador extends JPanel {
 			// Finalmente guardamos la película en la base de datos:
 			try {
 				if (collector.insertarPelicula(nombre, duracion, descripcion.getBytes(), anyo, precio, categoria,
-						cantidad, imagen) == true) {
+						cantidad, imagen, chckbxNovedad.isSelected()) == true) {
 					JOptionPane.showMessageDialog(null,
 							"La película: " + nombre + " ha sido insertada correctamente en la base de datos.");
 				}
@@ -459,6 +462,7 @@ public class PanelAdministrador extends JPanel {
 	private boolean peliculasAlquiladasEnTabla = false;
 	private boolean peliculasDescripcionEnTabla = false;
 	private JLabel LabelFondo;
+	private JCheckBox chckbxNovedad;
 
 	private void mostrarPeliculas() {
 		tableModel = new DefaultTableModel();
