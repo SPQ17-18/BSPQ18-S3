@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import videoclub.client.gui.paneles.PanelUsuario;
 import videoclub.observer.RMI.IRemoteObserver;
 import videoclub.observer.RMI.RemoteObservable;
 import videoclub.server.jdo.Alquiler;
+import videoclub.server.jdo.Amigo;
 import videoclub.server.jdo.Categoria;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Direccion;
@@ -30,6 +32,7 @@ import videoclub.server.jdo.Inventario;
 import videoclub.server.jdo.Mensaje;
 import videoclub.server.jdo.Novedad;
 import videoclub.server.jdo.Pelicula;
+import videoclub.server.jdo.Recomendacion;
 import videoclub.server.jdo.Usuario;
 
 public class ServerCollector extends UnicastRemoteObject implements ICollector {
@@ -40,6 +43,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 	private Transaction tx = null;
 	private Cliente cliente;
 	private Usuario usuario;
+	private List<Usuario> usuariosConectados = new ArrayList<Usuario>();
 
 	public ServerCollector() throws RemoteException {
 		super();
@@ -223,6 +227,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 					ServerFrame.textArea.append("Obteniendo datos del cliente...\n");
 					this.cliente = usuario.getCliente();
 					this.usuario = usuario;
+					this.usuariosConectados.add(usuario);
 					ServerFrame.textArea.append("Datos del cliente obtenidos!\n");
 					ServerFrame.textArea.append("Bienvenido " + usuario.getCliente().getNombre() + " :D\n");
 				}
@@ -282,11 +287,10 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 			ServerFrame.textArea.append("Creando inventario para la película: " + nombre + "\n");
 			pm.makePersistent(new Inventario(cantidad, pelicula));
 			ServerFrame.textArea.append("Inventario para le película " + nombre + " creado exitosamente..!\n");
-			
-			//Comprobamos si la casilla de novedad está activada:
-			if(novedad==true)
-			{
-				//Enconten metemos la película a novedades:
+
+			// Comprobamos si la casilla de novedad está activada:
+			if (novedad == true) {
+				// Enconten metemos la película a novedades:
 				ServerFrame.textArea.append("Metiendo película a novedades...\n");
 				pm.makePersistent(new Novedad(pelicula));
 				ServerFrame.textArea.append("Película metida en novedades!\n");
@@ -545,4 +549,166 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		return arrayPeliculas;
 	}
 
+	@Override
+	public List<Usuario> obtenerUsuarios(List<Usuario> arrayUsuarios) throws RemoteException {
+		// TODO Auto-generated method stub
+		try {
+			tx.begin();
+			ServerFrame.textArea.append("Obteniendo usuarios de la BD...\n");
+
+			// Sacamos todas las categorias de la BD:
+			@SuppressWarnings("unchecked")
+			Query<Usuario> q = pm.newQuery("SELECT FROM " + Usuario.class.getName());
+			List<Usuario> usuarios = (List<Usuario>) q.executeList();
+			for (Usuario usuario : usuarios) {
+				// Vamos añadiendo las películas al array pasado:
+				arrayUsuarios.add(usuario);
+			}
+			ServerFrame.textArea.append("Usuarios obtenenidos ! :D\n");
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return arrayUsuarios;
+	}
+
+	@Override
+	public List<Usuario> obtenerUsuariosConectados() throws RemoteException {
+		// TODO Auto-generated method stub
+		return this.usuariosConectados;
+	}
+
+	@Override
+	public List<Amigo> obtenerAmigos(List<Amigo> arrayAmigos) throws RemoteException {
+		// TODO Auto-generated method stub
+		try {
+			tx.begin();
+
+			ServerFrame.textArea.append("Obteniendo usuarios amigos de la BD...\n");
+			// Sacamos todas las categorias de la BD:
+			@SuppressWarnings("unchecked")
+			Query<Amigo> q = pm.newQuery("SELECT FROM " + Amigo.class.getName());
+			List<Amigo> amigos = (List<Amigo>) q.executeList();
+			for (Amigo amigo : amigos) {
+				// Vamos añadiendo las películas al array pasado:
+				arrayAmigos.add(amigo);
+			}
+			ServerFrame.textArea.append("Usuarios amigos obtenenidos ! :D\n");
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return arrayAmigos;
+	}
+
+	@Override
+	public boolean setAmigo(String usuario, String amigo) throws RemoteException {
+		// TODO Auto-generated method stub
+		boolean amigoGuardado = false;
+		try {
+			tx.begin();
+
+			Usuario _usuario = null;
+			Usuario _amigo = null;
+
+			@SuppressWarnings("unchecked")
+			Query<Usuario> q = pm.newQuery("SELECT FROM " + Usuario.class.getName());
+			List<Usuario> usuarios = (List<Usuario>) q.executeList();
+			for (Usuario u : usuarios) {
+				if (u.getNombreUsuario().equals(usuario)) {
+					_usuario = u;
+				} else if (u.getNombreUsuario().equals(amigo)) {
+					_amigo = u;
+				}
+			}
+
+			ServerFrame.textArea.append("Creando nuevo amigo...\n");
+			Amigo a = new Amigo(_usuario, _amigo);
+			pm.makePersistent(a);
+			ServerFrame.textArea.append("Amigo " + a.getAmigo().getNombreUsuario() + " creado exitosamente!\n");
+			tx.commit();
+			amigoGuardado = true;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+
+		return amigoGuardado;
+	}
+
+	@Override
+	public boolean setRecomendacion(String usuario, String amigo, Pelicula pelicula) throws RemoteException {
+		// TODO Auto-generated method stub
+		boolean recomendacionCorrecta = false;
+		try {
+			tx.begin();
+
+			Usuario _usuario = null;
+			Usuario _amigo = null;
+			Pelicula _pelicula = null;
+
+			@SuppressWarnings("unchecked")
+			Query<Usuario> q = pm.newQuery("SELECT FROM " + Usuario.class.getName());
+			List<Usuario> usuarios = (List<Usuario>) q.executeList();
+			for (Usuario u : usuarios) {
+				if (u.getNombreUsuario().equals(usuario)) {
+					_usuario = u;
+				} else if (u.getNombreUsuario().equals(amigo)) {
+					_amigo = u;
+				}
+			}
+
+			@SuppressWarnings("unchecked")
+			Query<Pelicula> q1 = pm.newQuery("SELECT FROM " + Pelicula.class.getName());
+			List<Pelicula> peliculas = (List<Pelicula>) q1.executeList();
+			for (Pelicula pel : peliculas) {
+				if (pel.getNombre().equals(pelicula.getNombre())) {
+					_pelicula = pel;
+					break;
+				}
+			}
+
+			ServerFrame.textArea.append("Creando nueva recomendacion de amigo...\n");
+			Recomendacion r = new Recomendacion(_usuario, _amigo, _pelicula);
+			pm.makePersistent(r);
+			ServerFrame.textArea.append("Recomendacion creado exitosamente!\n");
+			tx.commit();
+			recomendacionCorrecta = true;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return recomendacionCorrecta;
+	}
+
+	@Override
+	public List<Recomendacion> obtenerRecomendaciones(List<Recomendacion> arrayRecomendaciones) throws RemoteException {
+		// TODO Auto-generated method stub
+		try {
+			tx.begin();
+
+			ServerFrame.textArea.append("Obteniendo recomendaciones de amigos de la BD...\n");
+			// Sacamos todas las categorias de la BD:
+			@SuppressWarnings("unchecked")
+			Query<Recomendacion> q = pm.newQuery("SELECT FROM " + Recomendacion.class.getName());
+			List<Recomendacion> recomendaciones = (List<Recomendacion>) q.executeList();
+			for (Recomendacion recomendacion : recomendaciones) {
+				// Vamos añadiendo las películas al array pasado:
+				arrayRecomendaciones.add(recomendacion);
+			}
+			ServerFrame.textArea.append("Recomendaciones de amigos obtenenidos ! :D\n");
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return arrayRecomendaciones;
+	}
 }

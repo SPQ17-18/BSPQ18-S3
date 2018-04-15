@@ -40,6 +40,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import videoclub.client.utiles.Resaltador;
 import videoclub.server.gui.ICollector;
 import videoclub.server.jdo.Alquiler;
 import videoclub.server.jdo.Cliente;
@@ -231,7 +232,7 @@ public class PanelAdministrador extends JPanel {
 		add(comboBoxCantidad);
 		add(scrollPane_3);
 		add(chckbxNovedad);
-		
+
 		scrollPane_3.setViewportView(textPaneMostrarDescripcion);
 		scrollPane.setViewportView(table);
 		scrollPane_1.setViewportView(table_1);
@@ -307,12 +308,12 @@ public class PanelAdministrador extends JPanel {
 					if (isExpanded == false) {
 						// Expandimos
 						scrollPane.setSize(anchuraFinalTabla, alturaFinalTabla);
-						LabelFondo.setSize(anchuraFinalTabla,alturaFinalTabla);
+						LabelFondo.setSize(anchuraFinalTabla, alturaFinalTabla);
 						isExpanded = true;
 					} else {
 						// Conmprimimos:
 						scrollPane.setSize(anchuraInicialTabla, alturaInicialTabla);
-						LabelFondo.setSize(anchuraInicialTabla,alturaInicialTabla);
+						LabelFondo.setSize(anchuraInicialTabla, alturaInicialTabla);
 						isExpanded = false;
 					}
 				}
@@ -607,50 +608,4 @@ public class PanelAdministrador extends JPanel {
 		return file_string;
 	}
 
-	public class Resaltador implements TableCellRenderer {
-		private boolean resaltado;
-		private boolean columnaModificable;
-		private int[] columna;
-		public final DefaultTableCellRenderer DEFAULT_RENDERER = new DefaultTableCellRenderer();
-
-		/**
-		 * Creamos el resaltador indicando que columna se coloreara por defecto
-		 * 
-		 * @param columna
-		 */
-		public Resaltador(boolean resaltado, boolean columnaModificable, int[] columna) {
-			this.resaltado = resaltado;
-			this.columnaModificable = columnaModificable;
-			this.columna = columna;
-		}
-
-		@Override
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-				int row, int column) {
-			// Obtenemos la celda que se esta renderizando
-			Component c = DEFAULT_RENDERER.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
-					column);
-			DEFAULT_RENDERER.setHorizontalAlignment(SwingConstants.CENTER);
-
-			// Solo marcaremos las columnas que quieran ser reslatadas:
-			if (resaltado == true) {
-				if (isSelected == true) {
-					c.setBackground(Color.GREEN);
-					c.setForeground(Color.BLACK);
-				} else {
-					c.setBackground(Color.darkGray);
-					c.setForeground(Color.GREEN);
-				}
-
-				for (int i = 0; i < columna.length; i++) {
-					if (columnaModificable == true && columna[i] == column) {
-						c.setBackground(Color.GREEN);
-						c.setForeground(Color.RED);
-					}
-				}
-
-			}
-			return c;
-		}
-	}
 }

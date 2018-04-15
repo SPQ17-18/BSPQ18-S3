@@ -6,14 +6,22 @@ import java.util.List;
 
 import videoclub.observer.RMI.IRemoteObservable;
 import videoclub.server.jdo.Alquiler;
+import videoclub.server.jdo.Amigo;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Inventario;
 import videoclub.server.jdo.Mensaje;
 import videoclub.server.jdo.Pelicula;
+import videoclub.server.jdo.Recomendacion;
 import videoclub.server.jdo.Usuario;
 
 public interface ICollector extends IRemoteObservable {
+	boolean setRecomendacion(String usuario, String amigo, Pelicula pelicula)  throws RemoteException;
+	List<Recomendacion> obtenerRecomendaciones(List<Recomendacion> arrayRecomendaciones)  throws RemoteException;
+	List<Amigo> obtenerAmigos(List<Amigo> arrayAmigos) throws RemoteException;
+	boolean setAmigo(String usuario, String amigo) throws RemoteException;
+	List<Usuario> obtenerUsuariosConectados () throws RemoteException;
+	List<Usuario> obtenerUsuarios (List<Usuario> arrayUsuarios) throws RemoteException;
 	List<Alquiler> obtenerAlquileres (List<Alquiler> arrayAlquileres) throws RemoteException;
 	List<Mensaje> obtenerMensajes (List<Mensaje> arrayMensajes) throws RemoteException;
 	boolean setMensaje(Mensaje mensaje) throws RemoteException;

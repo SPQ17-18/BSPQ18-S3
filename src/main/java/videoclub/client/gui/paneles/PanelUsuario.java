@@ -42,6 +42,7 @@ import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Mensaje;
 import videoclub.server.jdo.Pelicula;
+import videoclub.server.jdo.Recomendacion;
 import videoclub.server.jdo.Usuario;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
@@ -65,7 +66,7 @@ public class PanelUsuario extends JPanel {
 	private JLabel labelDinero;
 	private JComboBox<Integer> comboBoxAño;
 	private JComboBox<String> comboBoxGenero;
-	
+
 	@SuppressWarnings("unused")
 	private Pelicula peliculaAAlquilar;
 	private JPanel panelOpciones;
@@ -89,7 +90,7 @@ public class PanelUsuario extends JPanel {
 	private ICollector collector; // Collector implementado desde "ClienfFrame"
 	private Cliente clienteActual;
 	private Usuario usuarioActual;
-	
+
 	private int alturaPanelOpcionesInicial = 41;
 	private int alturaPanelOpcionesFinal = 428;
 	private boolean panelOpcionesRecogido = true;
@@ -113,6 +114,8 @@ public class PanelUsuario extends JPanel {
 
 		valoresComboBoxCategorias();
 		valoresComboBoxAños();
+		PanelAmigosUsuarios pau = new PanelAmigosUsuarios(collector, "USUARIOS", usuarioActual);
+		scrollPane_1.setViewportView(pau);
 	}
 
 	private void inicializar() {
@@ -145,6 +148,8 @@ public class PanelUsuario extends JPanel {
 		lblBuscarPelculasPor = new JLabel("Buscar películas por año");
 		lblBuscarPelculasPor_1 = new JLabel("Buscar películas por género");
 		lblBuscarPelculasPor_2 = new JLabel("Buscar películas por nombre (se mostrarán todos los parecidos)");
+		scrollPane_1 = new JScrollPane();
+		panelAmigosUsuarios = new JPanel();
 
 	}
 
@@ -255,7 +260,7 @@ public class PanelUsuario extends JPanel {
 		btnPeliculasNuevas.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnPeliculasNuevas.setBorder(null);
 		btnPeliculasNuevas.setBounds(1, 391, 228, 34);
-		scrollContenedorPaneles.setBounds(252, 427, 1016, 279);		
+		scrollContenedorPaneles.setBounds(252, 427, 1016, 279);
 		lblBuscarPelculasPor.setForeground(SystemColor.textHighlight);
 		lblBuscarPelculasPor.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblBuscarPelculasPor.setBounds(252, 55, 240, 16);
@@ -265,6 +270,8 @@ public class PanelUsuario extends JPanel {
 		lblBuscarPelculasPor_2.setForeground(SystemColor.textHighlight);
 		lblBuscarPelculasPor_2.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblBuscarPelculasPor_2.setBounds(756, 55, 512, 16);
+		scrollPane_1.setBounds(12, 427, 232, 279);
+		panelAmigosUsuarios.setBorder(new LineBorder(SystemColor.textHighlight));
 
 	}
 
@@ -287,6 +294,7 @@ public class PanelUsuario extends JPanel {
 		add(lblBuscarPelculasPor);
 		add(lblBuscarPelculasPor_1);
 		add(lblBuscarPelculasPor_2);
+		add(scrollPane_1);
 
 		panelOpciones.add(lblOpciones);
 		panelOpciones.add(btnListaPeliculas);
@@ -302,9 +310,9 @@ public class PanelUsuario extends JPanel {
 		panelOpciones.add(btnPeliculasNuevas);
 
 		scrollPane.setViewportView(panel);
+		scrollPane_1.setViewportView(panelAmigosUsuarios);
 
 		agregarPeliculasAlPanel();
-		eventosBotonesPeplicula();
 	}
 
 	private boolean comboBoxAñoPresionado = false;
@@ -313,6 +321,8 @@ public class PanelUsuario extends JPanel {
 	private JComboBox<String> comboBoxTema;
 	@SuppressWarnings("unused")
 	private Temas tema;
+	private JPanel panelAmigosUsuarios;
+	private JScrollPane scrollPane_1;
 
 	private void eventos() {
 		comboBoxAño.addActionListener(new ActionListener() {
@@ -362,17 +372,22 @@ public class PanelUsuario extends JPanel {
 		lblOpciones.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(panelOpcionesRecogido==true)
-				{
-					//Lo expandimos:
+				if (panelOpcionesRecogido == true) {
+					// Lo expandimos:
 					panelOpciones.setSize(panelOpciones.getWidth(), alturaPanelOpcionesFinal);
-					scrollPane.setBounds(252, 112, 1016, 302);//Recogemos panel películas
+					// Recogemos panel películas
+					scrollPane.setBounds(252, 112, 1016, 302);
+					// Recogemos panel usuariosamigos
+					scrollPane_1.setBounds(12, 501, 232, 205);
 					panelOpcionesRecogido = false;
-					
-				}else{
-					//Lo recogemos:
-					panelOpciones.setSize(panelOpciones.getWidth(), alturaPanelOpcionesInicial);	
-					scrollPane.setBounds(12, 112, 1256, 302);//Expandimos panel películas
+
+				} else {
+					// Lo recogemos:
+					panelOpciones.setSize(panelOpciones.getWidth(), alturaPanelOpcionesInicial);
+					// Expandimos panel películas
+					scrollPane.setBounds(12, 112, 1256, 302);
+					// Expandimos panel usuariosamigos
+					scrollPane_1.setBounds(12, 427, 232, 279);
 					panelOpcionesRecogido = true;
 				}
 			}
@@ -392,13 +407,32 @@ public class PanelUsuario extends JPanel {
 				agregarPeliculasAlPanel();
 			}
 		});
+		btnListaUsuarios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelAmigosUsuarios pau = new PanelAmigosUsuarios(collector, "USUARIOS", usuarioActual);
+				scrollPane_1.setViewportView(pau);
+			}
+		});
+		btnListaAmigos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelAmigosUsuarios pau = new PanelAmigosUsuarios(collector, "AMIGOS", usuarioActual);
+				scrollPane_1.setViewportView(pau);
+			}
+		});
+		btnListaRecomendadas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (obtenerPeliculasRecomendadas() == false) {
+					JOptionPane.showMessageDialog(null, "No tiene ninguna recomendación de ningún amigo suyo.");
+				}
+			}
+		});
 	}
 
 	/**
 	 * Método para cargar todas las películas en el gridLayout creando botones
 	 * para cada una:
 	 */
-	private void agregarPeliculasAlPanel() {		
+	private void agregarPeliculasAlPanel() {
 		arrayPeliculas = new ArrayList<Pelicula>();
 		boolean correcto = false;
 		// Primero obtenemos las películas de la base de datos:
@@ -431,7 +465,7 @@ public class PanelUsuario extends JPanel {
 				// Añadimos botón de la película al panel asignado para ello:
 				panel.add(arrayBotones[i]);
 			}
-
+			eventosBotonesPeplicula();
 		}
 	}
 
@@ -680,18 +714,14 @@ public class PanelUsuario extends JPanel {
 			}
 		}
 	}
-	
-	/**
-	 * Método para cargar todas las películas en el gridLayout creando botones
-	 * para cada una:
-	 */
-	private void obtenerPeliculasNuevas() {		
+
+	private void obtenerPeliculasNuevas() {
 		// Nuevo panel:
 		panel = new JPanel();
 		panel.setBackground(Color.DARK_GRAY);
 		scrollPane.setViewportView(panel);
 		panel.setLayout(gl_panel);
-		
+
 		boolean correcto = false;
 		List<Pelicula> arrayPeliculasNuevas = new ArrayList<Pelicula>();
 		// Primero obtenemos las películas de la base de datos:
@@ -725,6 +755,61 @@ public class PanelUsuario extends JPanel {
 				panel.add(arrayBotones[i]);
 			}
 		}
+
+		eventosBotonesPeplicula();
+	}
+
+	private boolean obtenerPeliculasRecomendadas() {
+		// Nuevo panel:
+		panel = new JPanel();
+		panel.setBackground(Color.DARK_GRAY);
+		scrollPane.setViewportView(panel);
+		panel.setLayout(gl_panel);
+
+		boolean correcto = false;
+		boolean algunaRecomendacion = false;
+		List<Recomendacion> arrayRecomendaciones = new ArrayList<Recomendacion>();
+		try {
+			arrayRecomendaciones = collector.obtenerRecomendaciones(arrayRecomendaciones);
+			correcto = true;
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (correcto == true) {
+			arrayBotones = new JToggleButton[arrayRecomendaciones.size()];
+			arrayBotonesPelicula = new ArrayList<BotonPelicula>();
+			for (int i = 0; i < arrayRecomendaciones.size(); i++) {
+
+				// Buscamos las películas que se hayan recomendado a este
+				// usuario:
+				if (arrayRecomendaciones.get(i).getAmigo().getNombreUsuario()
+						.equals(usuarioActual.getNombreUsuario())) {
+					ImageIcon icon = null;
+					icon = getImageIconPelicula(arrayRecomendaciones.get(i).getPelicula().getImage());
+
+					arrayBotones[i] = new JToggleButton(icon);
+					// Mostramos también el nombre del amigo que se lo ha
+					// recomendado:
+					arrayBotones[i]
+							.setText("Recomendada por: " + arrayRecomendaciones.get(i).getUsuario().getNombreUsuario());
+					arrayBotones[i].setContentAreaFilled(false);
+					arrayBotones[i].setBorder(new LineBorder(SystemColor.textHighlight));
+					arrayBotonesPelicula.add(new BotonPelicula(arrayRecomendaciones.get(i).getPelicula()));
+
+					// Añadimos botón de la película al panel asignado para
+					// ello:
+					panel.add(arrayBotones[i]);
+
+					algunaRecomendacion = true;
+				}
+			}
+		}
+
+		eventosBotonesPeplicula();
+
+		return algunaRecomendacion;
 	}
 
 	/**
@@ -746,22 +831,6 @@ public class PanelUsuario extends JPanel {
 			e.printStackTrace();
 		}
 		return dev;
-	}
-
-	/**
-	 * Método para pasar bytes a string:
-	 * 
-	 * @param _bytes
-	 * @return
-	 */
-	public String openFileToString(byte[] _bytes) {
-		String file_string = "";
-
-		for (int i = 0; i < _bytes.length; i++) {
-			file_string += (char) _bytes[i];
-		}
-
-		return file_string;
 	}
 
 	// Clase para guardar los objetos tipo "BotonPelicula" que contendrán el id
