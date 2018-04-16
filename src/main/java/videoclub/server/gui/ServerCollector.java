@@ -19,7 +19,6 @@ import javax.swing.UIManager;
 
 import org.pushingpixels.substance.api.skin.SubstanceRavenLookAndFeel;
 
-import videoclub.client.gui.paneles.PanelUsuario;
 import videoclub.observer.RMI.IRemoteObserver;
 import videoclub.observer.RMI.RemoteObservable;
 import videoclub.server.jdo.Alquiler;
@@ -76,22 +75,13 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		pm.close();
 	}
 
-	public void addRemoteObserver(IRemoteObserver observer) {
+	public synchronized void addRemoteObserver(IRemoteObserver observer) {
 		this.remoteObservable.addRemoteObserver(observer);
 
 	}
 
-	public void deleteRemoteObserver(IRemoteObserver observer) {
+	public synchronized void deleteRemoteObserver(IRemoteObserver observer) {
 		this.remoteObservable.deleteRemoteObserver(observer);
-	}
-
-	public synchronized void getDonation(int donation) throws RemoteException {
-
-	}
-
-	@SuppressWarnings("unused")
-	private void notifyTotal(int total) {
-
 	}
 
 	private static Thread rmiRegistryThread = null;
@@ -710,5 +700,12 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 			}
 		}
 		return arrayRecomendaciones;
+	}
+
+	@Override
+	public synchronized void broadcastMessage(Object[] mensaje) throws RemoteException {
+		// TODO Auto-generated method stub
+		// Notificamos a todos los usuarios conectados al servidor:
+		this.remoteObservable.notifyRemoteObservers(mensaje);
 	}
 }

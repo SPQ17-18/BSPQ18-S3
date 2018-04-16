@@ -29,19 +29,21 @@ public class ClientFrame extends JFrame {
 	private int anchura;
 	private int altura;
 	private PanelIniciarSesion panelIniciarSesion;
-	private PanelUsuario panelUsuario;
+	public PanelUsuario panelUsuario;
 	private PanelAdministrador panelAdministrador;
 	private PanelRegistro panelRegistro;
+	private Client client;
 
 	/**
 	 * Create the frame.
 	 */
-	public ClientFrame(int anchura, int altura, ICollector collector) {
+	public ClientFrame(int anchura, int altura, ICollector collector, Client cliente) {
 		
 		//Antes de llamar a los métodos debemos asignar la anchura y altura al JFrame:
 		this.anchura = anchura;
 		this.altura = altura;
 		this.collector = collector;
+		this.client = cliente;
 		
 		inicializar();
 		componentes();
@@ -51,7 +53,7 @@ public class ClientFrame extends JFrame {
 	
 	private void inicializar()
 	{
-		panelIniciarSesion = new PanelIniciarSesion(this, this.collector);
+		panelIniciarSesion = new PanelIniciarSesion(this, this.collector,this.client);
 		panelRegistro = new PanelRegistro(this.collector);
 		contentPane = new JPanel();
 		contenedorDePaneles = new JScrollPane();

@@ -35,6 +35,10 @@ import videoclub.server.jdo.Usuario;
 
 public class ClientRecomendacionFrame extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable table;
 	private JButton btnNewButton;
@@ -155,6 +159,11 @@ public class ClientRecomendacionFrame extends JFrame {
 
 	private void mostrarPeliculas() {
 		DefaultTableModel model = new DefaultTableModel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			public Class<?> getColumnClass(int column) {
 				switch (column) {
 				case 0:

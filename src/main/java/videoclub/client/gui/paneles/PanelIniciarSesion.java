@@ -17,6 +17,7 @@ import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import videoclub.client.gui.ventanas.Client;
 import videoclub.client.gui.ventanas.ClientFrame;
 import videoclub.server.gui.ICollector;
 import videoclub.server.jdo.Cliente;
@@ -39,13 +40,13 @@ public class PanelIniciarSesion extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelIniciarSesion(JFrame frame, ICollector collector) {
+	public PanelIniciarSesion(ClientFrame frame, ICollector collector, Client cliente) {
 
 		this.collector = collector;
 		inicializar();
 		componentes();
 		añadirComponentes();
-		eventos(frame);
+		eventos(frame, cliente);
 	}
 
 	private void inicializar() {
@@ -100,11 +101,11 @@ public class PanelIniciarSesion extends JPanel {
 		add(BotonContraseñaOlvidada);
 	}
 
-	private void eventos(JFrame frame) {
+	private void eventos(ClientFrame frame, Client cliente) {
 		
 		BotonAcceder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				iniciarlizarVentana(comprobarCredenciales(), frame);
+				iniciarlizarVentana(comprobarCredenciales(), frame, cliente);
 			}
 		});
 		BotonContraseñaOlvidada.addActionListener(new ActionListener() {
@@ -146,16 +147,17 @@ public class PanelIniciarSesion extends JPanel {
 		return dev;
 	}
 	
-	private void iniciarlizarVentana(String tipoUsuario, JFrame frame)
+	private void iniciarlizarVentana(String tipoUsuario, ClientFrame frame, Client cliente)
 	{
 		if(tipoUsuario.equals(("USER")))
 		{
 			//Primero cerramos la ventana actual de las credenciales:
 			frame.dispose();
 			//Inicializamos nueva JFrame VentanaPrincipal pero con distintos parámetros de entrada:
-			ClientFrame ventanaPrincipal = new ClientFrame(1280+6,720+35, collector);//800 (anchura del PanelUsuario), 600 (altura del PanelUsuario)
-			ventanaPrincipal.setVisible(true);
-			ventanaPrincipal.cargarPanelUsuario();
+			frame = new ClientFrame(1280+6,720+35, collector,cliente);//800 (anchura del PanelUsuario), 600 (altura del PanelUsuario)
+			frame.setVisible(true);
+			frame.cargarPanelUsuario();
+			cliente.setFrame(frame);
 			
 			//Mostramos mensaje:
 			JOptionPane.showMessageDialog(null, "BIENVENIDO "+textField.getText());
@@ -164,9 +166,10 @@ public class PanelIniciarSesion extends JPanel {
 			//Primero cerramos la ventana actual de las credenciales:
 			frame.dispose();
 			//Inicializamos nueva JFrame VentanaPrincipal pero con distintos parámetros de entrada:
-			ClientFrame ventanaPrincipal = new ClientFrame(1080+6,720+35, collector);//800 (anchura del PanelAdministrador), 600 (altura del PanelAdministrador)
-			ventanaPrincipal.setVisible(true);
-			ventanaPrincipal.cargarPanelAdministrador();
+			frame = new ClientFrame(1080+6,720+35, collector,cliente);//800 (anchura del PanelAdministrador), 600 (altura del PanelAdministrador)
+			frame.setVisible(true);
+			frame.cargarPanelAdministrador();
+			cliente.setFrame(frame);
 			
 			//Mostramos mensaje:
 			JOptionPane.showMessageDialog(null, "BIENVENIDO "+textField.getText());

@@ -95,6 +95,8 @@ public class PanelUsuario extends JPanel {
 	private int alturaPanelOpcionesFinal = 428;
 	private boolean panelOpcionesRecogido = true;
 
+	public PanelChat panelChat;
+
 	/**
 	 * Create the panel.
 	 */
@@ -116,6 +118,8 @@ public class PanelUsuario extends JPanel {
 		valoresComboBoxAños();
 		PanelAmigosUsuarios pau = new PanelAmigosUsuarios(collector, "USUARIOS", usuarioActual);
 		scrollPane_1.setViewportView(pau);
+		panelChat = new PanelChat(collector, usuarioActual);
+		scrollContenedorPaneles.setViewportView(panelChat);
 	}
 
 	private void inicializar() {
@@ -365,7 +369,7 @@ public class PanelUsuario extends JPanel {
 		});
 		btnChat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PanelChat panelChat = new PanelChat(collector, usuarioActual);
+				panelChat = new PanelChat(collector, usuarioActual);
 				scrollContenedorPaneles.setViewportView(panelChat);
 			}
 		});
@@ -794,6 +798,7 @@ public class PanelUsuario extends JPanel {
 					// recomendado:
 					arrayBotones[i]
 							.setText("Recomendada por: " + arrayRecomendaciones.get(i).getUsuario().getNombreUsuario());
+					arrayBotones[i].setForeground(Color.GREEN);
 					arrayBotones[i].setContentAreaFilled(false);
 					arrayBotones[i].setBorder(new LineBorder(SystemColor.textHighlight));
 					arrayBotonesPelicula.add(new BotonPelicula(arrayRecomendaciones.get(i).getPelicula()));

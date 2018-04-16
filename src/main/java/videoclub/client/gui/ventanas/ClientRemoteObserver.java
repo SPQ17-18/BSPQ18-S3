@@ -6,7 +6,7 @@ import videoclub.observer.RMI.RemoteObserver;
 import videoclub.server.gui.ICollector;
 
 public class ClientRemoteObserver extends RemoteObserver {
-	
+
 	private static final long serialVersionUID = 1L;
 	private ICollector collector;
 	private Client client;
@@ -25,6 +25,8 @@ public class ClientRemoteObserver extends RemoteObserver {
 	@Override
 	public void update(Object arg) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+		// Recibimos mensaje del servidor y mostramos el mensaje (de otro
+		// usuario) mediante el Client:
+		client.notifyMessage((Object[]) arg);
 	}
 }

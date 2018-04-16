@@ -1,31 +1,32 @@
 package videoclub.client.gui.paneles;
 
-import javax.swing.JPanel;
 import java.awt.Color;
-import javax.swing.JTextArea;
-import javax.swing.Timer;
-
-import videoclub.server.gui.ICollector;
-import videoclub.server.jdo.Mensaje;
-import videoclub.server.jdo.Usuario;
-
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+
+import videoclub.server.gui.ICollector;
+import videoclub.server.jdo.Mensaje;
+import videoclub.server.jdo.Usuario;
 
 public class PanelChat extends JPanel {
 
@@ -33,10 +34,8 @@ public class PanelChat extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JLabel time;
-	private JTextArea textAreaMensajes;
+	private JLabel usuario;
 	private JButton btnEnviarMensaje;
-	private JScrollPane scrollPane;
 	private JLabel lblNmeroDeUsuarios;
 	private JLabel UsuariosEnLinea;
 	private JLabel lblChatGlobal;
@@ -45,72 +44,95 @@ public class PanelChat extends JPanel {
 	private Usuario usuarioActual;
 	List<Mensaje> arrayMensajes = new ArrayList<Mensaje>();
 	private JTextField txtEscribirAquPara;
+	private JTable table;
+	private JScrollPane scrollPane;
+	private DefaultTableModel tableModel = new DefaultTableModel();
 
 	/**
 	 * Create the panel.
 	 */
 	public PanelChat(ICollector collector, Usuario usuario) {
-		
+
 		this.collector = collector;
 		this.usuarioActual = usuario;
-		
+
 		inicializar();
 		añadir();
 		componentes();
 		eventos();
 
-		// Ejecutamos comprobación de mensajes cada 1 segundo:
-		Timer timer = new Timer(1000, new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				mostrarMensajesNuevos();
-			}
-		});
-
-		timer.start();
+		mostrarMensajesNuevos();
 	}
 
 	private void inicializar() {
-		scrollPane = new JScrollPane();
-		textAreaMensajes = new JTextArea();
 		btnEnviarMensaje = new JButton("Enviar mensaje");
 		UsuariosEnLinea = new JLabel("0");
-		time = new JLabel();
+		usuario = new JLabel();
 		lblChatGlobal = new JLabel("  CHAT GLOBAL");
 		lblNmeroDeUsuarios = new JLabel("NÚMERO DE USUARIOS EN LÍNEA:");
 		txtEscribirAquPara = new JTextField();
+		table = new JTable() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Component prepareRenderer(TableCellRenderer renderer, int rowIndex, int columnIndex) {
+				Component componenet = super.prepareRenderer(renderer, rowIndex, columnIndex);
+				Object value = getModel().getValueAt(rowIndex, columnIndex);
+				int posInicial = String.valueOf(value).indexOf(" ") + 1;
+				int posFinal = String.valueOf(value).lastIndexOf(":");
+				String user = String.valueOf(value).substring(posInicial, posFinal);
+
+				if (user.equals(usuarioActual.getNombreUsuario())) {
+					componenet.setBackground(Color.BLACK);
+					componenet.setForeground(Color.GREEN);
+				} else {
+					componenet.setBackground(Color.BLACK);
+					componenet.setForeground(SystemColor.textHighlight);
+				}
+				return componenet;
+			}
+		};
+		scrollPane = new JScrollPane();
 	}
 
 	private void añadir() {
 		setBackground(Color.DARK_GRAY);
 		setLayout(null);
-		add(scrollPane);
 		add(btnEnviarMensaje);
-		add(time);
+		add(usuario);
 		add(lblChatGlobal);
 		add(lblNmeroDeUsuarios);
 		add(UsuariosEnLinea);
 		add(txtEscribirAquPara);
-		scrollPane.setViewportView(textAreaMensajes);
+		add(scrollPane);
+
+		scrollPane.setViewportView(table);
 	}
 
 	private void componentes() {
-		time.setForeground(SystemColor.textHighlight);
-		time.setFont(new Font("Tahoma", Font.BOLD, 15));
-		time.setText("00:00:00");
-		time.setHorizontalAlignment(SwingConstants.RIGHT);
+		table.setVerifyInputWhenFocusTarget(false);
+		table.setRequestFocusEnabled(false);
+		scrollPane.setBounds(10, 37, 994, 151);
+		table.setShowVerticalLines(false);
+		table.setShowHorizontalLines(false);
+		table.setShowGrid(false);
+		table.setRowSelectionAllowed(false);
+		table.setForeground(SystemColor.textHighlight);
+		table.setFont(new Font("Tahoma", Font.BOLD, 15));
+		table.setFocusable(false);
+		usuario.setForeground(SystemColor.textHighlight);
+		usuario.setFont(new Font("Tahoma", Font.BOLD, 15));
+		usuario.setText(usuarioActual.getNombreUsuario());
+		usuario.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtEscribirAquPara.setForeground(Color.GREEN);
 		txtEscribirAquPara.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtEscribirAquPara.setText("Escribir aquí para mandar un mensaje...");
 		txtEscribirAquPara.setBounds(92, 194, 912, 35);
 		txtEscribirAquPara.setColumns(10);
-		scrollPane.setBounds(1, 28, 1015, 161);
-		textAreaMensajes.setForeground(Color.ORANGE);
-		textAreaMensajes.setFont(new Font("Monospaced", Font.BOLD, 13));
-		textAreaMensajes.setBackground(Color.DARK_GRAY);
 		btnEnviarMensaje.setForeground(SystemColor.textHighlight);
 		btnEnviarMensaje.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnEnviarMensaje.setBounds(0, 235, 1016, 44);
-		time.setBounds(0, 194, 80, 35);
+		usuario.setBounds(0, 194, 80, 35);
 		lblChatGlobal.setForeground(SystemColor.textHighlight);
 		lblChatGlobal.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblChatGlobal.setBounds(0, 3, 117, 21);
@@ -126,11 +148,19 @@ public class PanelChat extends JPanel {
 		btnEnviarMensaje.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					if (collector.setMensaje(
-							new Mensaje(txtEscribirAquPara.getText(), new Date(), usuarioActual)) == true) {
-						JOptionPane.showMessageDialog(null, "Mensaje enviado correctamente :D");
+					Date hora = new Date();
+					if (collector.setMensaje(new Mensaje(txtEscribirAquPara.getText(), hora, usuarioActual)) == true) {
+						@SuppressWarnings("deprecation")
+						Object[] mensaje = new Object[] {
+								"[" + hora.getHours() + ":" + hora.getMinutes() + ":" + hora.getSeconds() + "] "
+										+ usuarioActual.getNombreUsuario() + ": " + txtEscribirAquPara.getText() };
+
+						collector.broadcastMessage(mensaje);
+						txtEscribirAquPara.setText("");
+						table.updateUI();
 					} else {
-						JOptionPane.showMessageDialog(null, "ERROR! MENSAJE NO ENVIADO!");
+						JOptionPane.showMessageDialog(null, "ERROR! MENSAJE NO ENVIADO!", "ERROR",
+								JOptionPane.ERROR_MESSAGE);
 					}
 				} catch (RemoteException e1) {
 					// TODO Auto-generated catch block
@@ -148,6 +178,9 @@ public class PanelChat extends JPanel {
 
 	@SuppressWarnings("deprecation")
 	private void mostrarMensajesNuevos() {
+		tableModel = new DefaultTableModel();
+		columnasTabla();
+
 		try {
 			arrayMensajes = new ArrayList<Mensaje>();
 			arrayMensajes = collector.obtenerMensajes(arrayMensajes);
@@ -155,25 +188,28 @@ public class PanelChat extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// Inicializamos de nuevo todo el componente:
-		textAreaMensajes = new JTextArea();
-		textAreaMensajes.setFont(new Font("Monospaced", Font.BOLD, 13));
-		textAreaMensajes.setForeground(Color.ORANGE);
-		textAreaMensajes.setBackground(Color.DARK_GRAY);
-		scrollPane.setViewportView(textAreaMensajes);
 
 		// MOstramos mensajes:
 		if (arrayMensajes.size() >= 0) {
 			for (int i = 0; i < arrayMensajes.size(); i++) {
-				textAreaMensajes.append("[" + arrayMensajes.get(i).getFecha().getHours() + ":"
+				tableModel.addRow(new Object[] { "[" + arrayMensajes.get(i).getFecha().getHours() + ":"
 						+ arrayMensajes.get(i).getFecha().getMinutes() + ":"
 						+ arrayMensajes.get(i).getFecha().getSeconds() + "] "
 						+ arrayMensajes.get(i).getUsuario().getNombreUsuario() + ": "
-						+ arrayMensajes.get(i).getMensaje() + "\n");
+						+ arrayMensajes.get(i).getMensaje() });
 			}
 		}
-		
-		Date d = new Date();
-		time.setText(d.getHours()+":"+d.getMinutes()+":"+d.getSeconds());
+		// Introducimos el modelo en la tabla:
+		table.setModel(tableModel);
 	}
+
+	private void columnasTabla() {
+		// Creacion de las columnas de la tabla:
+		tableModel.addColumn("CHAT - MENSAJES - DIRECTOS");
+	}
+
+	public void addNewMessage(Object[] mensaje) {
+		tableModel.addRow(mensaje);
+	}
+
 }

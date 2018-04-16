@@ -11,10 +11,11 @@ import org.pushingpixels.substance.api.skin.SubstanceRavenLookAndFeel;
 
 import videoclub.server.gui.ICollector;
 
-public class Client{
+public class Client {
 	private ICollector collector;
 	@SuppressWarnings("unused")
 	private ClientRemoteObserver remoteClient;
+	public ClientFrame frame;
 
 	public Client() {
 		// EDT para ajustar el tema propio al JFrame creado para el cliente:
@@ -22,7 +23,7 @@ public class Client{
 			public void run() {
 				try {
 					UIManager.setLookAndFeel((LookAndFeel) new SubstanceRavenLookAndFeel());
-					ClientFrame frame = new ClientFrame(525, 325, collector);
+					frame = new ClientFrame(525, 325, collector, Client.this);
 					frame.setVisible(true);
 					frame.cargarPanelIniciarSesion();
 				} catch (Exception e) {
@@ -54,6 +55,14 @@ public class Client{
 			System.err.println(" *# Error connecting to Donation Collector: " + e.getMessage());
 			e.printStackTrace();
 		}
+	}
+
+	public void setFrame(ClientFrame frame) {
+		this.frame = frame;
+	}
+
+	public void notifyMessage(Object[] arg) {
+		this.frame.panelUsuario.panelChat.addNewMessage(arg);
 	}
 
 	public static void main(String[] args) {
