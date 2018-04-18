@@ -31,6 +31,7 @@ import videoclub.server.jdo.Inventario;
 import videoclub.server.jdo.Mensaje;
 import videoclub.server.jdo.Novedad;
 import videoclub.server.jdo.Pelicula;
+import videoclub.server.jdo.PeliculaVista;
 import videoclub.server.jdo.Recomendacion;
 import videoclub.server.jdo.Usuario;
 
@@ -748,5 +749,50 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		}
 		return clienteEliminado;
 
+	}
+
+	@Override
+	public boolean setPeliculaVista(Pelicula pelicula, Cliente cliente) throws RemoteException {
+		// TODO Auto-generated method stub
+		boolean peliculaVistaGuardada = false;
+		try {
+			tx.begin();
+
+			Cliente _cliente = null;
+			Pelicula _pelicula = null;
+
+			@SuppressWarnings("unchecked")
+			Query<Cliente> q = pm.newQuery("SELECT FROM " + Cliente.class.getName());
+			List<Cliente> clientes = (List<Cliente>) q.executeList();
+			for (Cliente c : clientes) {
+				if (c.getNombre().equals(cliente.getNombre()) && c.getApellidos().equals(cliente.getApellidos())) {
+					_cliente = c;
+					break;
+				}
+			}
+
+			@SuppressWarnings("unchecked")
+			Query<Pelicula> q1 = pm.newQuery("SELECT FROM " + Pelicula.class.getName());
+			List<Pelicula> peliculas = (List<Pelicula>) q1.executeList();
+			for (Pelicula pel : peliculas) {
+				if (pel.getNombre().equals(pelicula.getNombre())) {
+					_pelicula = pel;
+					break;
+				}
+			}
+
+			ServerFrame.textArea.append("Creando nueva pelicula ya vista...\n");
+			PeliculaVista peliculaVista = new PeliculaVista(_pelicula, _cliente);
+			pm.makePersistent(peliculaVista);
+			ServerFrame.textArea.append("Pelicula vista creada exitosamente!\n");
+
+			tx.commit();
+			peliculaVistaGuardada = true;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return peliculaVistaGuardada;
 	}
 }
