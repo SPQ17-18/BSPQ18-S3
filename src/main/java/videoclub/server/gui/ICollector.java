@@ -16,6 +16,7 @@ import videoclub.server.jdo.Recomendacion;
 import videoclub.server.jdo.Usuario;
 
 public interface ICollector extends IRemoteObservable {
+	boolean eliminarCliente(String nombre, String apellidos, String fechaNacimiento) throws RemoteException;
 	void broadcastMessage(Object[] mensaje)  throws RemoteException;
 	boolean setRecomendacion(String usuario, String amigo, Pelicula pelicula)  throws RemoteException;
 	List<Recomendacion> obtenerRecomendaciones(List<Recomendacion> arrayRecomendaciones)  throws RemoteException;

@@ -708,4 +708,45 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		// Notificamos a todos los usuarios conectados al servidor:
 		this.remoteObservable.notifyRemoteObservers(mensaje);
 	}
+
+	@Override
+	public boolean eliminarCliente(String nombre, String apellidos, String fechaNacimiento) throws RemoteException {
+		// TODO Auto-generated method stub
+		boolean clienteEliminado = false;
+		try {
+			tx.begin();
+			ServerFrame.textArea.append("Obteniendo usuarios de la BD...\n");
+			@SuppressWarnings("unchecked")
+			Query<Usuario> q = pm.newQuery("SELECT FROM " + Usuario.class.getName());
+			List<Usuario> usuarios = (List<Usuario>) q.executeList();
+			Usuario usuarioActual = null;
+			Cliente cliente = null;
+			Direccion direccion = null;
+			for (Usuario user : usuarios) {
+				// Recorremos clientes para ver c˙al es el actual:
+				if (user.getCliente().getNombre().equals(nombre) && user.getCliente().getApellidos().equals(apellidos)
+						&& user.getCliente().getFecha_nacimiento().toString().equals(fechaNacimiento)) {
+					// Lo tenemos:
+					usuarioActual = user;
+					cliente = user.getCliente();
+					direccion = user.getCliente().getDireccion();
+				}
+			}
+
+			// Eliminamos cliente de la base de datos:
+			pm.deletePersistent(usuarioActual);
+			pm.deletePersistent(cliente);
+			pm.deletePersistent(direccion);
+
+			clienteEliminado = true;
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+		return clienteEliminado;
+
+	}
 }

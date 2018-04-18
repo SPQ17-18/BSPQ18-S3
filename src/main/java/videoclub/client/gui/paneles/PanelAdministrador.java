@@ -244,6 +244,7 @@ public class PanelAdministrador extends JPanel {
 				mostrarPeliculas();
 				peliculasAlquiladasEnTabla = false;
 				peliculasDescripcionEnTabla = true;
+				clientesDescripcionEnTabla = false;
 			}
 		});
 		btnMostrarAlquileresDe.addActionListener(new ActionListener() {
@@ -252,6 +253,7 @@ public class PanelAdministrador extends JPanel {
 				peliculasEnTabla = false;
 				peliculasAlquiladasEnTabla = true;
 				peliculasDescripcionEnTabla = false;
+				clientesDescripcionEnTabla = false;
 			}
 		});
 		btnMostrarClientes.addActionListener(new ActionListener() {
@@ -260,6 +262,7 @@ public class PanelAdministrador extends JPanel {
 				peliculasEnTabla = false;
 				peliculasAlquiladasEnTabla = false;
 				peliculasDescripcionEnTabla = false;
+				clientesDescripcionEnTabla = true;
 			}
 		});
 		btnInsertarNuevaPelcula.addActionListener(new ActionListener() {
@@ -295,6 +298,25 @@ public class PanelAdministrador extends JPanel {
 				} else if (peliculasDescripcionEnTabla == true) {
 					if (table.isCellSelected(table.getSelectedRow(), 2)) {
 						mostrarDescripcionDePeliculas();
+					}
+				}else if (clientesDescripcionEnTabla == true) { 
+					if (table.isCellSelected(table.getSelectedRow(), 0)) {
+						DefaultTableModel tm = (DefaultTableModel) table.getModel();
+						String cliente = (String) tm.getValueAt(table.getSelectedRow(), 0);
+						String apellidos = (String) tm.getValueAt(table.getSelectedRow(), 1);
+						String fechaNacimiento = tm.getValueAt(table.getSelectedRow(), 2).toString();
+						int opcion = JOptionPane.showConfirmDialog(null,
+								"øDesea eliminar al cliente: " + cliente + " ?");
+						// La opciÛn 0 es un SI:
+						if (opcion == 0) {
+							eliminarCliente(cliente, apellidos, fechaNacimiento);
+							// La opciÛn 1 es un NO:
+						} else if (opcion == 1) {
+							JOptionPane.showMessageDialog(null, "El cliente: " + cliente + " no ha sido eliminado.");
+							// Sino es igual a CANCELAR:
+						} else {
+							JOptionPane.showMessageDialog(null, "OperaciÛn cancelada.");
+						}
 					}
 				}
 				rowSelected = table.getSelectedRow();
@@ -462,6 +484,7 @@ public class PanelAdministrador extends JPanel {
 	private boolean peliculasEnTabla = false;
 	private boolean peliculasAlquiladasEnTabla = false;
 	private boolean peliculasDescripcionEnTabla = false;
+	private boolean clientesDescripcionEnTabla = false;
 	private JLabel LabelFondo;
 	private JCheckBox chckbxNovedad;
 
@@ -575,6 +598,25 @@ public class PanelAdministrador extends JPanel {
 		textPaneMostrarDescripcion.setText((String) tm.getValueAt(table.getSelectedRow(), 2));
 	}
 
+	/*
+	 * MÈtodo que eliminar un cliente y sus correspondientes relacinones de la
+	 * base de datos del programa:
+	 */
+	private void eliminarCliente(String nombre, String apellidos, String fechaNacimiento) {
+		// Eliminamos cliente:
+		try {
+			if (collector.eliminarCliente(nombre, apellidos, fechaNacimiento)) {
+				JOptionPane.showMessageDialog(null, "Cliente: " + nombre + " eliminado correctamente.");
+			} else {
+				JOptionPane.showMessageDialog(null, "Error al intentar eliminar el cliente: " + nombre, "ERROR!",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	private void resaltarColumnas(JTable tabla, int numeroColumnas, int[] columnasAResaltar, boolean coumnaModificable,
 			int[] columnaAModificar) {
 		for (int i = 0; i < numeroColumnas; i++) {
