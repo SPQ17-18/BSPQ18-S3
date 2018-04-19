@@ -795,4 +795,37 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		}
 		return peliculaVistaGuardada;
 	}
+
+	/*
+	 * Creado metodo para obtener las peliculas en la base de datos que serán
+	 * pasadas al cliente. (non-Javadoc)
+	 * 
+	 * @see
+	 * videoclub.server.gui.ICollector#obtenerPeliculasAlquiladas(java.util.
+	 * List)
+	 */
+	@Override
+	public List<Alquiler> obtenerPeliculasAlquiladas(List<Alquiler> arrayPeliculasAlquiladas) throws RemoteException {
+		// TODO Auto-generated method stub
+		try {
+			tx.begin();
+
+			ServerFrame.textArea.append("Obteniendo peliculas alquiladas de la BD...\n");
+			// Sacamos todas las categorias de la BD:
+			@SuppressWarnings("unchecked")
+			Query<Alquiler> q = pm.newQuery("SELECT FROM " + Alquiler.class.getName());
+			List<Alquiler> alquileres = (List<Alquiler>) q.executeList();
+			for (Alquiler alquiler : alquileres) {
+				// Vamos añadiendo las películas al array pasado:
+				arrayPeliculasAlquiladas.add(alquiler);
+			}
+			ServerFrame.textArea.append("Peliculas alquiladas obtenenidas ! :D\n");
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return arrayPeliculasAlquiladas;
+	}
 }

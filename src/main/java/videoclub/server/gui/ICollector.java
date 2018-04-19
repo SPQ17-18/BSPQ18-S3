@@ -1,6 +1,7 @@
 package videoclub.server.gui;
 
 import java.rmi.RemoteException;
+
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import videoclub.server.jdo.Recomendacion;
 import videoclub.server.jdo.Usuario;
 
 public interface ICollector extends IRemoteObservable {
+	List<Alquiler> obtenerPeliculasAlquiladas(List<Alquiler> arrayPeliculasAlquiladas) throws RemoteException;
 	boolean setPeliculaVista(Pelicula pelicula, Cliente cliente) throws RemoteException;
 	boolean eliminarCliente(String nombre, String apellidos, String fechaNacimiento) throws RemoteException;
 	void broadcastMessage(Object[] mensaje)  throws RemoteException;

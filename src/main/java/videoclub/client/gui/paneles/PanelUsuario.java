@@ -38,6 +38,7 @@ import javax.swing.border.TitledBorder;
 import videoclub.client.gui.ventanas.ClientAlquilerFrame;
 import videoclub.client.utiles.Temas;
 import videoclub.server.gui.ICollector;
+import videoclub.server.jdo.Alquiler;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Mensaje;
@@ -431,6 +432,14 @@ public class PanelUsuario extends JPanel {
 				}
 			}
 		});
+
+		btnListaAlquiladas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (obtenerPeliculasAlquiladas() == false) {
+					JOptionPane.showMessageDialog(null, "No tiene ninguna pelicula alquilada.");
+				}
+			}
+		});
 	}
 
 	/**
@@ -816,6 +825,53 @@ public class PanelUsuario extends JPanel {
 		eventosBotonesPeplicula();
 
 		return algunaRecomendacion;
+	}
+
+	private boolean obtenerPeliculasAlquiladas() {
+		// Nuevo panel:
+		panel = new JPanel();
+		panel.setBackground(Color.DARK_GRAY);
+		scrollPane.setViewportView(panel);
+		panel.setLayout(gl_panel);
+
+		boolean correcto = false;
+		boolean algunaAlquilada = false;
+		List<Alquiler> arrayAlquileres = new ArrayList<Alquiler>();
+		try {
+			arrayAlquileres = collector.obtenerAlquileres(arrayAlquileres);
+			correcto = true;
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (correcto == true) {
+			arrayBotones = new JToggleButton[arrayAlquileres.size()];
+			arrayBotonesPelicula = new ArrayList<BotonPelicula>();
+			for (int i = 0; i < arrayAlquileres.size(); i++) {
+				if (arrayAlquileres.get(i).getCliente().getNombre().equals(clienteActual.getNombre())
+						&& arrayAlquileres.get(i).getCliente().getApellidos().equals(clienteActual.getApellidos())) {
+					ImageIcon icon = null;
+					icon = getImageIconPelicula(arrayAlquileres.get(i).getInventario().getPelicula().getImage());
+
+					arrayBotones[i] = new JToggleButton(icon);
+					arrayBotones[i].setForeground(Color.GREEN);
+					arrayBotones[i].setContentAreaFilled(false);
+					arrayBotones[i].setBorder(new LineBorder(SystemColor.textHighlight));
+					arrayBotonesPelicula.add(new BotonPelicula(arrayAlquileres.get(i).getInventario().getPelicula()));
+
+					// Añadimos botón de la película al panel asignado para
+					// ello:
+					panel.add(arrayBotones[i]);
+
+					algunaAlquilada = true;
+				}
+			}
+		}
+
+		eventosBotonesPeplicula();
+
+		return algunaAlquilada;
 	}
 
 	/**
