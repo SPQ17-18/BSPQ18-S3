@@ -52,23 +52,29 @@ public class PanelPelicula extends JPanel {
 	private JLabel label_5;
 	private JScrollPane scrollPane;
 	private JTextPane textPaneDescripcion;
-	
+
 	private ICollector collector; // Collector implementado desde "ClienfFrame"
 	private Cliente clienteActual;
 	private Pelicula peliculaAAlquilar;
+	private Pelicula peliculaAVer;
+	private boolean peliculaAlquiladaAVer;
+	private JButton btnverPelculaAhora;
+
 	/**
 	 * Create the panel.
 	 */
-	public PanelPelicula(ICollector collector, Cliente cliente, Pelicula pelicula) {
+	public PanelPelicula(ICollector collector, Cliente cliente, Pelicula pelicula, boolean peliculaAlquiladaAVer) {
+		this.peliculaAlquiladaAVer = peliculaAlquiladaAVer;
 		this.collector = collector;
 		this.clienteActual = cliente;
 		this.peliculaAAlquilar = pelicula;
+		this.peliculaAVer = pelicula;
 		inicializar();
 		añadir();
 		componentes();
 		eventos();
-		
-		mostrarPeliculaAAlquilar(pelicula);
+
+		comprobarPeliculaAlquilada();
 	}
 
 	private void inicializar() {
@@ -88,6 +94,7 @@ public class PanelPelicula extends JPanel {
 		label_5 = new JLabel();
 		scrollPane = new JScrollPane();
 		textPaneDescripcion = new JTextPane();
+		btnverPelculaAhora = new JButton("¡VER PELÍCULA AHORA¡");
 	}
 
 	private void añadir() {
@@ -108,10 +115,16 @@ public class PanelPelicula extends JPanel {
 		add(label_4);
 		add(label_5);
 		add(scrollPane);
+		add(btnverPelculaAhora);
 		scrollPane.setViewportView(textPaneDescripcion);
 	}
 
 	private void componentes() {
+		btnverPelculaAhora.setForeground(Color.GREEN);
+		btnverPelculaAhora.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnverPelculaAhora.setContentAreaFilled(false);
+		btnverPelculaAhora.setBorder(new LineBorder(Color.GREEN));
+		btnverPelculaAhora.setBounds(207, 0, 809, 34);
 		lblImagenPelicula.setBorder(new LineBorder(SystemColor.textHighlight));
 		lblImagenPelicula.setBounds(0, 0, 195, 277);
 		labelTitulo.setForeground(Color.WHITE);
@@ -130,7 +143,7 @@ public class PanelPelicula extends JPanel {
 		labelCategoria.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		labelCategoria.setBorder(null);
 		labelCategoria.setBounds(905, 47, 111, 31);
-		labelDisponibles.setText("1");
+		labelDisponibles.setText("100");
 		labelDisponibles.setHorizontalAlignment(SwingConstants.CENTER);
 		labelDisponibles.setForeground(Color.CYAN);
 		labelDisponibles.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -191,30 +204,46 @@ public class PanelPelicula extends JPanel {
 				frame.setVisible(true);
 			}
 		});
+		btnverPelculaAhora.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
 	}
-	
+
 	/**
 	 * Método que muestra todos los detalles de la película seleccionada a
 	 * alquilar:
 	 */
-	private void mostrarPeliculaAAlquilar(Pelicula pelicula) {
+	private void mostrarPeliculaAAlquilar() {
 		// Primero el el cartel de la película:
 		ImageIcon icon = null;
-		icon = getImageIconPelicula(pelicula.getImage());
+		icon = getImageIconPelicula(peliculaAAlquilar.getImage());
 
 		// Colocamos datos:
 		lblImagenPelicula.setIcon(icon);
-		labelAño.setText(Integer.toString(pelicula.getAnyo()));
-		labelCategoria.setText(pelicula.getCategoria().getNombre());
-		labelDuracion.setText(Integer.toString(pelicula.getDuracion()) + " m");
-		labelTitulo.setText(pelicula.getNombre());
-		textPaneDescripcion.setText(openFileToString(pelicula.getDescripcion()));
-		labelPrecio.setText(Float.toString(pelicula.getPrecio()) + " €");
-
-		// Guardamos datos de la película por si el usuario quiere alquilarla:
-		peliculaAAlquilar = pelicula;
+		labelAño.setText(Integer.toString(peliculaAAlquilar.getAnyo()));
+		labelCategoria.setText(peliculaAAlquilar.getCategoria().getNombre());
+		labelDuracion.setText(Integer.toString(peliculaAAlquilar.getDuracion()) + " m");
+		labelTitulo.setText(peliculaAAlquilar.getNombre());
+		textPaneDescripcion.setText(openFileToString(peliculaAAlquilar.getDescripcion()));
+		labelPrecio.setText(Float.toString(peliculaAAlquilar.getPrecio()) + " €");
 	}
 	
+	private void mostrarPeliculaAVer() {
+		// Primero el el cartel de la película:
+		ImageIcon icon = null;
+		icon = getImageIconPelicula(peliculaAVer.getImage());
+
+		// Colocamos datos:
+		lblImagenPelicula.setIcon(icon);
+		labelAño.setText(Integer.toString(peliculaAVer.getAnyo()));
+		labelCategoria.setText(peliculaAVer.getCategoria().getNombre());
+		labelDuracion.setText(Integer.toString(peliculaAVer.getDuracion()) + " m");
+		labelTitulo.setText(peliculaAVer.getNombre());
+		textPaneDescripcion.setText(openFileToString(peliculaAVer.getDescripcion()));
+	}
+
 	/**
 	 * Método para devolver automaticamente ya la ImageIcon!:
 	 * 
@@ -250,5 +279,39 @@ public class PanelPelicula extends JPanel {
 		}
 
 		return file_string;
+	}
+
+	/*
+	 * Método que comprueba si el panel tiene que mostrar una película para ver
+	 * o simplimente para alquilar:
+	 * 
+	 */
+	private void comprobarPeliculaAlquilada() {
+		if (peliculaAlquiladaAVer == true) {
+			// Olcultamos componentes que no queremos mostrar:
+			btnalquilarYaMismo.setVisible(false);
+			label_5.setVisible(false);
+			label_4.setVisible(false);
+			labelPrecio.setVisible(false);
+			labelDisponibles.setVisible(false);
+
+			// Mostramos componenets solo para películas a ver:
+			btnverPelculaAhora.setVisible(true);
+			
+			mostrarPeliculaAVer();
+
+		} else {
+			// MOstramos componentes sólo para peliculas a alquilar:
+			btnalquilarYaMismo.setVisible(true);
+			label_5.setVisible(true);
+			label_4.setVisible(true);
+			labelPrecio.setVisible(true);
+			labelDisponibles.setVisible(true);
+
+			// Ocultamos componentes que no queremos mostrar:
+			btnverPelculaAhora.setVisible(false);
+			
+			mostrarPeliculaAAlquilar();
+		}
 	}
 }

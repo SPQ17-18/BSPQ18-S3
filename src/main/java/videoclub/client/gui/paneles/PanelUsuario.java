@@ -94,6 +94,7 @@ public class PanelUsuario extends JPanel {
 	private int alturaPanelOpcionesInicial = 41;
 	private int alturaPanelOpcionesFinal = 428;
 	private boolean panelOpcionesRecogido = true;
+	private boolean peliculaAlquiladaAVer = false;
 
 	public PanelChat panelChat;
 
@@ -486,7 +487,7 @@ public class PanelUsuario extends JPanel {
 							// Al accionar una de las películas creamos de nuevo
 							// el panel con la película selecccionada:
 							PanelPelicula panelPelicula = new PanelPelicula(collector, clienteActual,
-									arrayBotonesPelicula.get(i).getPelicula());
+									arrayBotonesPelicula.get(i).getPelicula(), peliculaAlquiladaAVer);
 							scrollContenedorPaneles.setViewportView(panelPelicula);
 							// Toca deseleccionar todos:
 							for (int j = 0; j < arrayBotones.length; j++) {
