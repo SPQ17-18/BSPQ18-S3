@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
@@ -13,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -25,30 +26,20 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
 import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 
-import videoclub.client.gui.ventanas.ClientAlquilerFrame;
 import videoclub.client.utiles.Temas;
 import videoclub.server.gui.ICollector;
 import videoclub.server.jdo.Alquiler;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Imagen;
-import videoclub.server.jdo.Mensaje;
 import videoclub.server.jdo.Pelicula;
 import videoclub.server.jdo.Recomendacion;
 import videoclub.server.jdo.Usuario;
-import javax.swing.SwingConstants;
-import javax.swing.border.BevelBorder;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class PanelUsuario extends JPanel {
 
@@ -90,14 +81,16 @@ public class PanelUsuario extends JPanel {
 
 	private ICollector collector; // Collector implementado desde "ClienfFrame"
 	private Cliente clienteActual;
-	private Usuario usuarioActual;
+	public Usuario usuarioActual;
 
 	private int alturaPanelOpcionesInicial = 41;
 	private int alturaPanelOpcionesFinal = 428;
 	private boolean panelOpcionesRecogido = true;
 	private boolean peliculaAlquiladaAVer = false;
-
 	public PanelChat panelChat;
+
+	private List<JButton> arrayBotonesOpciones = new ArrayList<JButton>();
+	public PanelAmigosUsuarios pau;
 
 	/**
 	 * Create the panel.
@@ -118,8 +111,7 @@ public class PanelUsuario extends JPanel {
 
 		valoresComboBoxCategorias();
 		valoresComboBoxAños();
-		PanelAmigosUsuarios pau = new PanelAmigosUsuarios(collector, "USUARIOS", usuarioActual);
-		scrollPane_1.setViewportView(pau);
+		actualizarPanelUsuariosAmigos();
 		panelChat = new PanelChat(collector, usuarioActual);
 		scrollContenedorPaneles.setViewportView(panelChat);
 	}
@@ -156,7 +148,6 @@ public class PanelUsuario extends JPanel {
 		lblBuscarPelculasPor_2 = new JLabel("Buscar películas por nombre (se mostrarán todos los parecidos)");
 		scrollPane_1 = new JScrollPane();
 		panelAmigosUsuarios = new JPanel();
-
 	}
 
 	private void componentes() {
@@ -200,67 +191,56 @@ public class PanelUsuario extends JPanel {
 		lblOpciones.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblOpciones.setHorizontalAlignment(SwingConstants.CENTER);
 		lblOpciones.setBounds(0, 0, 232, 40);
-		btnListaPeliculas.setBorderPainted(false);
 		btnListaPeliculas.setBackground(Color.BLACK);
 		btnListaPeliculas.setBorder(null);
 		btnListaPeliculas.setForeground(Color.WHITE);
 		btnListaPeliculas.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnListaPeliculas.setBounds(1, 41, 228, 34);
-		btnListaSeries.setBorderPainted(false);
 		btnListaSeries.setBackground(Color.BLACK);
 		btnListaSeries.setForeground(Color.WHITE);
 		btnListaSeries.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnListaSeries.setBorder(null);
 		btnListaSeries.setBounds(1, 76, 228, 34);
-		btnListaAmigos.setBorderPainted(false);
 		btnListaAmigos.setBackground(Color.BLACK);
 		btnListaAmigos.setForeground(Color.WHITE);
 		btnListaAmigos.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnListaAmigos.setBorder(null);
 		btnListaAmigos.setBounds(1, 111, 228, 34);
-		btnListaFavoritos.setBorderPainted(false);
 		btnListaFavoritos.setBackground(Color.BLACK);
 		btnListaFavoritos.setForeground(Color.WHITE);
 		btnListaFavoritos.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnListaFavoritos.setBorder(null);
 		btnListaFavoritos.setBounds(1, 146, 228, 34);
-		btnListaRecomendadas.setBorderPainted(false);
 		btnListaRecomendadas.setBackground(Color.BLACK);
 		btnListaRecomendadas.setForeground(Color.WHITE);
 		btnListaRecomendadas.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnListaRecomendadas.setBorder(null);
 		btnListaRecomendadas.setBounds(1, 181, 228, 34);
-		btnPeliculasVistas.setBorderPainted(false);
 		btnPeliculasVistas.setBackground(Color.BLACK);
 		btnPeliculasVistas.setForeground(Color.WHITE);
 		btnPeliculasVistas.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnPeliculasVistas.setBorder(null);
 		btnPeliculasVistas.setBounds(1, 356, 228, 34);
-		btnPeliculasPendientes.setBorderPainted(false);
 		btnPeliculasPendientes.setBackground(Color.BLACK);
 		btnPeliculasPendientes.setForeground(Color.WHITE);
 		btnPeliculasPendientes.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnPeliculasPendientes.setBorder(null);
 		btnPeliculasPendientes.setBounds(1, 321, 228, 34);
-		btnChat.setBorderPainted(false);
 		btnChat.setBackground(Color.BLACK);
 		btnChat.setForeground(Color.WHITE);
 		btnChat.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnChat.setBorder(null);
 		btnChat.setBounds(1, 286, 228, 34);
-		btnListaUsuarios.setBorderPainted(false);
 		btnListaUsuarios.setBackground(Color.BLACK);
 		btnListaUsuarios.setForeground(Color.WHITE);
 		btnListaUsuarios.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnListaUsuarios.setBorder(null);
 		btnListaUsuarios.setBounds(1, 251, 228, 34);
-		btnListaAlquiladas.setBorderPainted(false);
 		btnListaAlquiladas.setBackground(Color.BLACK);
 		btnListaAlquiladas.setForeground(Color.WHITE);
 		btnListaAlquiladas.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnListaAlquiladas.setBorder(null);
 		btnListaAlquiladas.setBounds(1, 216, 228, 34);
-		btnPeliculasNuevas.setBorderPainted(false);
 		btnPeliculasNuevas.setBackground(Color.BLACK);
 		btnPeliculasNuevas.setForeground(Color.WHITE);
 		btnPeliculasNuevas.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -314,6 +294,18 @@ public class PanelUsuario extends JPanel {
 		panelOpciones.add(btnListaUsuarios);
 		panelOpciones.add(btnListaAlquiladas);
 		panelOpciones.add(btnPeliculasNuevas);
+
+		arrayBotonesOpciones.add(btnListaPeliculas);
+		arrayBotonesOpciones.add(btnListaSeries);
+		arrayBotonesOpciones.add(btnListaAmigos);
+		arrayBotonesOpciones.add(btnListaFavoritos);
+		arrayBotonesOpciones.add(btnListaRecomendadas);
+		arrayBotonesOpciones.add(btnPeliculasVistas);
+		arrayBotonesOpciones.add(btnPeliculasPendientes);
+		arrayBotonesOpciones.add(btnChat);
+		arrayBotonesOpciones.add(btnListaUsuarios);
+		arrayBotonesOpciones.add(btnListaAlquiladas);
+		arrayBotonesOpciones.add(btnPeliculasNuevas);
 
 		scrollPane.setViewportView(panel);
 		scrollPane_1.setViewportView(panelAmigosUsuarios);
@@ -401,6 +393,7 @@ public class PanelUsuario extends JPanel {
 		btnPeliculasNuevas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				obtenerPeliculasNuevas();
+				peliculaAlquiladaAVer = false;
 			}
 		});
 		btnListaPeliculas.addActionListener(new ActionListener() {
@@ -411,17 +404,18 @@ public class PanelUsuario extends JPanel {
 				scrollPane.setViewportView(panel);
 				panel.setLayout(gl_panel);
 				agregarPeliculasAlPanel();
+				peliculaAlquiladaAVer = false;
 			}
 		});
 		btnListaUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PanelAmigosUsuarios pau = new PanelAmigosUsuarios(collector, "USUARIOS", usuarioActual);
+				pau = new PanelAmigosUsuarios(collector, "USUARIOS", usuarioActual);
 				scrollPane_1.setViewportView(pau);
 			}
 		});
 		btnListaAmigos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PanelAmigosUsuarios pau = new PanelAmigosUsuarios(collector, "AMIGOS", usuarioActual);
+				pau = new PanelAmigosUsuarios(collector, "AMIGOS", usuarioActual);
 				scrollPane_1.setViewportView(pau);
 			}
 		});
@@ -429,6 +423,8 @@ public class PanelUsuario extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (obtenerPeliculasRecomendadas() == false) {
 					JOptionPane.showMessageDialog(null, "No tiene ninguna recomendación de ningún amigo suyo.");
+				} else {
+					peliculaAlquiladaAVer = false;
 				}
 			}
 		});
@@ -437,9 +433,43 @@ public class PanelUsuario extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (obtenerPeliculasAlquiladas() == false) {
 					JOptionPane.showMessageDialog(null, "No tiene ninguna pelicula alquilada.");
+				} else {
+					peliculaAlquiladaAVer = true;
 				}
 			}
 		});
+
+		eventosBotonesOpciones();
+	}
+
+	private int indexBotonesOpciones = 0;
+
+	/**
+	 * Método para agrupar todos los botones de las opciones con un
+	 * addMouseListener único:
+	 */
+	private void eventosBotonesOpciones() {
+		for (indexBotonesOpciones = 0; indexBotonesOpciones < arrayBotonesOpciones.size(); indexBotonesOpciones++) {
+			arrayBotonesOpciones.get(indexBotonesOpciones).addMouseListener(new MouseAdapter() {
+				private int myIndex;
+
+				{
+					this.myIndex = indexBotonesOpciones;
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					arrayBotonesOpciones.get(myIndex).setBorder(new LineBorder(Color.ORANGE, 2));
+					arrayBotonesOpciones.get(myIndex).setForeground(Color.ORANGE);
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					arrayBotonesOpciones.get(myIndex).setBorder(null);
+					arrayBotonesOpciones.get(myIndex).setForeground(Color.WHITE);
+				}
+			});
+		}
 	}
 
 	/**
@@ -483,11 +513,12 @@ public class PanelUsuario extends JPanel {
 		}
 	}
 
+	private int indexBotonesPelicula = 0;
+
 	/*
 	 * Método de eventos para los botones de las películas:
 	 */
 	private void eventosBotonesPeplicula() {
-
 		for (int i = 0; i < arrayBotonesPelicula.size(); i++) {
 			arrayBotones[i].addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -501,10 +532,32 @@ public class PanelUsuario extends JPanel {
 							// Toca deseleccionar todos:
 							for (int j = 0; j < arrayBotones.length; j++) {
 								arrayBotones[j].setSelected(false);
+								arrayBotones[j].setBorder(new LineBorder(SystemColor.textHighlight));
 							}
+							arrayBotones[i].setBorder(new LineBorder(Color.GREEN, 3));
 							break;
 						}
 					}
+				}
+			});
+		}
+
+		for (indexBotonesPelicula = 0; indexBotonesPelicula < arrayBotones.length; indexBotonesPelicula++) {
+			arrayBotones[indexBotonesPelicula].addMouseListener(new MouseAdapter() {
+				private int myIndex;
+
+				{
+					this.myIndex = indexBotonesPelicula;
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					arrayBotones[myIndex].setBorder(new LineBorder(Color.ORANGE, 3));
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					arrayBotones[myIndex].setBorder(new LineBorder(SystemColor.textHighlight));
 				}
 			});
 		}
@@ -782,6 +835,7 @@ public class PanelUsuario extends JPanel {
 
 		boolean correcto = false;
 		boolean algunaRecomendacion = false;
+		int arraySize = 0;
 		List<Recomendacion> arrayRecomendaciones = new ArrayList<Recomendacion>();
 		try {
 			arrayRecomendaciones = collector.obtenerRecomendaciones(arrayRecomendaciones);
@@ -791,8 +845,16 @@ public class PanelUsuario extends JPanel {
 			e.printStackTrace();
 		}
 
+		// Comprobamos cuantas recomendaciones tenemos:
+		for (int i = 0; i < arrayRecomendaciones.size(); i++) {
+			if (arrayRecomendaciones.get(i).getAmigo().getNombreUsuario().equals(usuarioActual.getNombreUsuario())) {
+				arraySize++;
+			}
+		}
+
+		int posArrayBotones = 0;
 		if (correcto == true) {
-			arrayBotones = new JToggleButton[arrayRecomendaciones.size()];
+			arrayBotones = new JToggleButton[arraySize];
 			arrayBotonesPelicula = new ArrayList<BotonPelicula>();
 			for (int i = 0; i < arrayRecomendaciones.size(); i++) {
 
@@ -803,20 +865,20 @@ public class PanelUsuario extends JPanel {
 					ImageIcon icon = null;
 					icon = getImageIconPelicula(arrayRecomendaciones.get(i).getPelicula().getImage());
 
-					arrayBotones[i] = new JToggleButton(icon);
+					arrayBotones[posArrayBotones] = new JToggleButton(icon);
 					// Mostramos también el nombre del amigo que se lo ha
 					// recomendado:
-					arrayBotones[i]
+					arrayBotones[posArrayBotones]
 							.setText("Recomendada por: " + arrayRecomendaciones.get(i).getUsuario().getNombreUsuario());
-					arrayBotones[i].setForeground(Color.GREEN);
-					arrayBotones[i].setContentAreaFilled(false);
-					arrayBotones[i].setBorder(new LineBorder(SystemColor.textHighlight));
+					arrayBotones[posArrayBotones].setForeground(Color.GREEN);
+					arrayBotones[posArrayBotones].setContentAreaFilled(false);
+					arrayBotones[posArrayBotones].setBorder(new LineBorder(SystemColor.textHighlight));
 					arrayBotonesPelicula.add(new BotonPelicula(arrayRecomendaciones.get(i).getPelicula()));
 
 					// Añadimos botón de la película al panel asignado para
 					// ello:
-					panel.add(arrayBotones[i]);
-
+					panel.add(arrayBotones[posArrayBotones]);
+					posArrayBotones++;
 					algunaRecomendacion = true;
 				}
 			}
@@ -872,6 +934,11 @@ public class PanelUsuario extends JPanel {
 		eventosBotonesPeplicula();
 
 		return algunaAlquilada;
+	}
+
+	public void actualizarPanelUsuariosAmigos() {
+		pau = new PanelAmigosUsuarios(collector, "USUARIOS", usuarioActual);
+		scrollPane_1.setViewportView(pau);
 	}
 
 	/**

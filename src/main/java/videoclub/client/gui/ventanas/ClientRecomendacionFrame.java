@@ -25,6 +25,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import videoclub.server.gui.ICollector;
@@ -192,6 +193,15 @@ public class ClientRecomendacionFrame extends JFrame {
 		model.addColumn("AÑO");
 		model.addColumn("DURACIÓN");
 		model.addColumn("SELECCIONAR");
+
+		// Centramos las columnas de la tabla menos la de la imágen y la del
+		// checkBox!:
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 
 		// Vamos introduciendo las películas:
 		arrayPeliculas = new ArrayList<Pelicula>();

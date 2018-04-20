@@ -35,10 +35,32 @@ public class RemoteObservable {
 		return this.remoteObservers.size();
 	}
 
-	public synchronized void notifyRemoteObservers(Object arg) {
+	public synchronized void notifyRemoteObserversChatMessages(Object arg) {
 		for (IRemoteObserver observer : remoteObservers) {
 			try {
-				observer.update(arg);
+				observer.updateChatMessages(arg);
+			} catch (Exception ex) {
+				System.err.println(this.getClass().getName() + ".notifyRemoteObservers(): " + ex);
+				ex.printStackTrace();
+			}
+		}
+	}
+
+	public synchronized void notifyRemoteObserversUsuarioDesconectado() {
+		for (IRemoteObserver observer : remoteObservers) {
+			try {
+				observer.updateUsuarioDesconecatdo();
+			} catch (Exception ex) {
+				System.err.println(this.getClass().getName() + ".notifyRemoteObservers(): " + ex);
+				ex.printStackTrace();
+			}
+		}
+	}
+	
+	public synchronized void notifyRemoteObserversUsuarioConectado() {
+		for (IRemoteObserver observer : remoteObservers) {
+			try {
+				observer.updateUsuarioDesconecatdo();
 			} catch (Exception ex) {
 				System.err.println(this.getClass().getName() + ".notifyRemoteObservers(): " + ex);
 				ex.printStackTrace();

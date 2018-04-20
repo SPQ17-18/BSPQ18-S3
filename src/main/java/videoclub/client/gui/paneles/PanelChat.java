@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -37,7 +38,7 @@ public class PanelChat extends JPanel {
 	private JLabel usuario;
 	private JButton btnEnviarMensaje;
 	private JLabel lblNmeroDeUsuarios;
-	private JLabel UsuariosEnLinea;
+	public static JLabel usuariosEnLinea;
 	private JLabel lblChatGlobal;
 
 	private ICollector collector;
@@ -66,7 +67,7 @@ public class PanelChat extends JPanel {
 
 	private void inicializar() {
 		btnEnviarMensaje = new JButton("Enviar mensaje");
-		UsuariosEnLinea = new JLabel("0");
+		usuariosEnLinea = new JLabel();
 		usuario = new JLabel();
 		lblChatGlobal = new JLabel("  CHAT GLOBAL");
 		lblNmeroDeUsuarios = new JLabel("NÚMERO DE USUARIOS EN LÍNEA:");
@@ -102,7 +103,7 @@ public class PanelChat extends JPanel {
 		add(usuario);
 		add(lblChatGlobal);
 		add(lblNmeroDeUsuarios);
-		add(UsuariosEnLinea);
+		add(usuariosEnLinea);
 		add(txtEscribirAquPara);
 		add(scrollPane);
 
@@ -139,9 +140,9 @@ public class PanelChat extends JPanel {
 		lblNmeroDeUsuarios.setForeground(Color.ORANGE);
 		lblNmeroDeUsuarios.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblNmeroDeUsuarios.setBounds(129, 3, 270, 21);
-		UsuariosEnLinea.setForeground(Color.GREEN);
-		UsuariosEnLinea.setFont(new Font("Tahoma", Font.BOLD, 15));
-		UsuariosEnLinea.setBounds(396, 3, 270, 21);
+		usuariosEnLinea.setForeground(Color.GREEN);
+		usuariosEnLinea.setFont(new Font("Tahoma", Font.BOLD, 15));
+		usuariosEnLinea.setBounds(396, 3, 270, 21);
 	}
 
 	private void eventos() {

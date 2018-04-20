@@ -17,6 +17,8 @@ import videoclub.server.jdo.Recomendacion;
 import videoclub.server.jdo.Usuario;
 
 public interface ICollector extends IRemoteObservable {
+	void conectarUsuario() throws RemoteException;
+	void desconectarUsuario(String usuario) throws RemoteException;
 	List<Alquiler> obtenerPeliculasAlquiladas(List<Alquiler> arrayPeliculasAlquiladas) throws RemoteException;
 	boolean setPeliculaVista(Pelicula pelicula, Cliente cliente) throws RemoteException;
 	boolean eliminarCliente(String nombre, String apellidos, String fechaNacimiento) throws RemoteException;

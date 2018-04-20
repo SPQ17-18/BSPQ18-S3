@@ -23,10 +23,22 @@ public class ClientRemoteObserver extends RemoteObserver {
 	}
 
 	@Override
-	public void update(Object arg) throws RemoteException {
+	public void updateChatMessages(Object arg) throws RemoteException {
 		// TODO Auto-generated method stub
 		// Recibimos mensaje del servidor y mostramos el mensaje (de otro
 		// usuario) mediante el Client:
 		client.notifyMessage((Object[]) arg);
+	}
+
+	@Override
+	public void updateUsuarioDesconecatdo() throws RemoteException {
+		// TODO Auto-generated method stub
+		client.notifyUsuarioDesconectado();
+	}
+
+	@Override
+	public void updateUsuarioConectado() throws RemoteException {
+		// TODO Auto-generated method stub
+		client.notifyUsuarioConectado();
 	}
 }

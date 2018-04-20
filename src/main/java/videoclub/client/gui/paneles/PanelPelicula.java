@@ -124,7 +124,7 @@ public class PanelPelicula extends JPanel {
 		btnverPelculaAhora.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnverPelculaAhora.setContentAreaFilled(false);
 		btnverPelculaAhora.setBorder(new LineBorder(Color.GREEN));
-		btnverPelculaAhora.setBounds(207, 0, 809, 34);
+		btnverPelculaAhora.setBounds(207, 0, 806, 34);
 		lblImagenPelicula.setBorder(new LineBorder(SystemColor.textHighlight));
 		lblImagenPelicula.setBounds(0, 0, 195, 277);
 		labelTitulo.setForeground(Color.WHITE);

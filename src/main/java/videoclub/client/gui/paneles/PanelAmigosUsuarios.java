@@ -2,12 +2,14 @@ package videoclub.client.gui.paneles;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Image;
 
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -42,6 +44,7 @@ public class PanelAmigosUsuarios extends JPanel {
 	private ImageIcon imgDesconectado;
 	private ImageIcon imgRecomendacion;
 	private Usuario usuarioActual;
+	public boolean tablaAmigosCargada = false;
 
 	/**
 	 * Create the panel.
@@ -59,8 +62,10 @@ public class PanelAmigosUsuarios extends JPanel {
 
 		if (mostrar.equals("USUARIOS")) {
 			mostrarUsuarios();
+			tablaAmigosCargada = false;
 		} else if (mostrar.equals("AMIGOS")) {
 			mostrarAmigos();
+			tablaAmigosCargada = true;
 		}
 	}
 
@@ -79,6 +84,7 @@ public class PanelAmigosUsuarios extends JPanel {
 	private void componentes() {
 		scrollPane.setBounds(0, 0, 232, 279);
 		table.setForeground(SystemColor.textHighlight);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	}
 
 	private void eventos() {
@@ -114,54 +120,71 @@ public class PanelAmigosUsuarios extends JPanel {
 
 	private boolean tablaUsuario = true;
 
-	private void mostrarUsuarios() {
-		columnasTabla(0);
-		List<Usuario> arrayUsuarios = new ArrayList<Usuario>();
-		List<Usuario> usuariosConectados = new ArrayList<Usuario>();
-		try {
-			arrayUsuarios = collector.obtenerUsuarios(arrayUsuarios);
-			usuariosConectados = collector.obtenerUsuariosConectados();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void mostrarUsuarios() {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				columnasTabla(0);
+				List<Usuario> arrayUsuarios = new ArrayList<Usuario>();
+				List<Usuario> usuariosConectados = new ArrayList<Usuario>();
+				try {
+					arrayUsuarios = collector.obtenerUsuarios(arrayUsuarios);
+					usuariosConectados = collector.obtenerUsuariosConectados();
+					PanelChat.usuariosEnLinea.setText(Integer.toString(usuariosConectados.size()));
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
-		for (int i = 0; i < arrayUsuarios.size(); i++) {
-			tableModel.addRow(new Object[] { isUsuarioConectado(arrayUsuarios.get(i), usuariosConectados),
-					arrayUsuarios.get(i).getNombreUsuario() });
-		}
-		// Introducimos el modelo en la tabla:
-		table.setModel(tableModel);
-		table.getColumnModel().getColumn(0).setCellRenderer(new CellRendererImagen());
-		tablaUsuario = true;
+				for (int i = 0; i < arrayUsuarios.size(); i++) {
+					tableModel.addRow(new Object[] { isUsuarioConectado(arrayUsuarios.get(i), usuariosConectados),
+							arrayUsuarios.get(i).getNombreUsuario() });
+				}
+				// Introducimos el modelo en la tabla:
+				table.setModel(tableModel);
+				table.getColumnModel().getColumn(0).setCellRenderer(new CellRendererImagen());
+				table.getColumnModel().getColumn(0).setPreferredWidth(10);
+				table.getColumnModel().getColumn(1).setPreferredWidth(210);
+				tablaUsuario = true;
+			}
+		});
 	}
 
-	private void mostrarAmigos() {
-		columnasTabla(1);
-		List<Amigo> arrayAmigos = new ArrayList<Amigo>();
-		List<Usuario> usuariosConectados = new ArrayList<Usuario>();
+	public void mostrarAmigos() {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				columnasTabla(1);
+				List<Amigo> arrayAmigos = new ArrayList<Amigo>();
+				List<Usuario> usuariosConectados = new ArrayList<Usuario>();
 
-		try {
-			arrayAmigos = collector.obtenerAmigos(arrayAmigos);
-			usuariosConectados = collector.obtenerUsuariosConectados();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+				try {
+					arrayAmigos = collector.obtenerAmigos(arrayAmigos);
+					usuariosConectados = collector.obtenerUsuariosConectados();
+					PanelChat.usuariosEnLinea.setText(Integer.toString(usuariosConectados.size()));
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
-		for (int i = 0; i < arrayAmigos.size(); i++) {
-			// Recorremos todo el array en busca de los amigos del usuario
-			// actual:
-			if (usuarioActual.getNombreUsuario().equals(arrayAmigos.get(i).getUsuario().getNombreUsuario())) {
-				tableModel.addRow(new Object[] { isUsuarioConectado(arrayAmigos.get(i).getAmigo(), usuariosConectados),
-						arrayAmigos.get(i).getAmigo().getNombreUsuario(), "RECOMENDAR" });
+				for (int i = 0; i < arrayAmigos.size(); i++) {
+					// Recorremos todo el array en busca de los amigos del
+					// usuario
+					// actual:
+					if (usuarioActual.getNombreUsuario().equals(arrayAmigos.get(i).getUsuario().getNombreUsuario())) {
+						tableModel.addRow(
+								new Object[] { isUsuarioConectado(arrayAmigos.get(i).getAmigo(), usuariosConectados),
+										arrayAmigos.get(i).getAmigo().getNombreUsuario(), "RECOMENDAR" });
+					}
+				}
+				// Introducimos el modelo en la tabla:
+				table.setModel(tableModel);
+				table.getColumnModel().getColumn(0).setCellRenderer(new CellRendererImagen());
+				table.getColumnModel().getColumn(2).setCellRenderer(new CellRendererImagen());
+				table.getColumnModel().getColumn(0).setPreferredWidth(10);
+				table.getColumnModel().getColumn(1).setPreferredWidth(190);
+				table.getColumnModel().getColumn(2).setPreferredWidth(20);
+				tablaUsuario = false;
 			}
-		}
-		// Introducimos el modelo en la tabla:
-		table.setModel(tableModel);
-		table.getColumnModel().getColumn(0).setCellRenderer(new CellRendererImagen());
-		table.getColumnModel().getColumn(2).setCellRenderer(new CellRendererImagen());
-		tablaUsuario = false;
+		});
 	}
 
 	/**
@@ -190,12 +213,12 @@ public class PanelAmigosUsuarios extends JPanel {
 
 		public TableModel(int i) {
 			if (i == 0) {
-				addColumn("ESTADO");
+				addColumn("");
 				addColumn("USUARIO");
 			} else if (i == 1) {
-				addColumn("ESTADO");
+				addColumn("");
 				addColumn("AMIGO");
-				addColumn("PELICULA");
+				addColumn("");
 			}
 		}
 	}
@@ -207,7 +230,7 @@ public class PanelAmigosUsuarios extends JPanel {
 
 		// ----------------------------//
 		public CellRendererImagen() {
-			super();
+			super.setHorizontalAlignment(JLabel.CENTER);
 		}
 
 		public void setValue(Object value) {

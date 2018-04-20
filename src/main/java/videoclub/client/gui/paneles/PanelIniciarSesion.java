@@ -159,6 +159,13 @@ public class PanelIniciarSesion extends JPanel {
 			frame.cargarPanelUsuario();
 			cliente.setFrame(frame);
 			
+			try {
+				collector.conectarUsuario();
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			//Mostramos mensaje:
 			JOptionPane.showMessageDialog(null, "BIENVENIDO "+textField.getText());
 		}else if(tipoUsuario.equals(("ADMIN")))

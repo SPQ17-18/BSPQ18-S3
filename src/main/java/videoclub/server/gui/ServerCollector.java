@@ -566,12 +566,6 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 	}
 
 	@Override
-	public List<Usuario> obtenerUsuariosConectados() throws RemoteException {
-		// TODO Auto-generated method stub
-		return this.usuariosConectados;
-	}
-
-	@Override
 	public List<Amigo> obtenerAmigos(List<Amigo> arrayAmigos) throws RemoteException {
 		// TODO Auto-generated method stub
 		try {
@@ -704,13 +698,6 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 	}
 
 	@Override
-	public synchronized void broadcastMessage(Object[] mensaje) throws RemoteException {
-		// TODO Auto-generated method stub
-		// Notificamos a todos los usuarios conectados al servidor:
-		this.remoteObservable.notifyRemoteObservers(mensaje);
-	}
-
-	@Override
 	public boolean eliminarCliente(String nombre, String apellidos, String fechaNacimiento) throws RemoteException {
 		// TODO Auto-generated method stub
 		boolean clienteEliminado = false;
@@ -827,5 +814,41 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 			}
 		}
 		return arrayPeliculasAlquiladas;
+	}
+
+	@Override
+	public List<Usuario> obtenerUsuariosConectados() throws RemoteException {
+		// TODO Auto-generated method stub
+		return this.usuariosConectados;
+	}
+
+	@Override
+	public synchronized void broadcastMessage(Object[] mensaje) throws RemoteException {
+		// TODO Auto-generated method stub
+		// Notificamos a todos los usuarios conectados al servidor:
+		this.remoteObservable.notifyRemoteObserversChatMessages(mensaje);
+	}
+
+	@Override
+	public synchronized void desconectarUsuario(String usuario) throws RemoteException {
+		// TODO Auto-generated method stub
+		// Buscamos usuario y lo quitamos de la lista:
+		for (int i = 0; i < usuariosConectados.size(); i++) {
+			if (usuariosConectados.get(i).getNombreUsuario().equals(usuario)) {
+				usuariosConectados.remove(i);
+			}
+		}
+
+		if (this.usuariosConectados.size() >= 1) {
+			// Notificamos a todos los usuarios conectados al servidor:
+			this.remoteObservable.notifyRemoteObserversUsuarioDesconectado();
+		}
+	}
+
+	@Override
+	public synchronized void conectarUsuario() throws RemoteException {
+		// TODO Auto-generated method stub
+		// Notificamos a todos los usuarios conectados al servidor:
+		this.remoteObservable.notifyRemoteObserversUsuarioDesconectado();
 	}
 }

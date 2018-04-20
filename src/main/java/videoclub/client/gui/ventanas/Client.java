@@ -1,6 +1,8 @@
 package videoclub.client.gui.ventanas;
 
 import java.awt.EventQueue;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 
@@ -59,6 +61,33 @@ public class Client {
 
 	public void setFrame(ClientFrame frame) {
 		this.frame = frame;
+		this.frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				try {
+					collector.desconectarUsuario(frame.panelUsuario.usuarioActual.getNombreUsuario());
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+	}
+
+	public void notifyUsuarioDesconectado() {
+		if (this.frame.panelUsuario.pau.tablaAmigosCargada == true) {
+			this.frame.panelUsuario.pau.mostrarAmigos();
+		} else {
+			this.frame.panelUsuario.pau.mostrarUsuarios();
+		}
+	}
+
+	public void notifyUsuarioConectado() {
+		if (this.frame.panelUsuario.pau.tablaAmigosCargada == true) {
+			this.frame.panelUsuario.pau.mostrarAmigos();
+		} else {
+			this.frame.panelUsuario.pau.mostrarUsuarios();
+		}
 	}
 
 	public void notifyMessage(Object[] arg) {
