@@ -6,6 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 
 import videoclub.client.gui.ventanas.ClientAlquilerFrame;
+import videoclub.client.gui.ventanas.ClientPeliculaFrame;
 import videoclub.server.gui.ICollector;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Imagen;
@@ -206,7 +207,12 @@ public class PanelPelicula extends JPanel {
 		});
 		btnverPelculaAhora.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				/* Create and display the form */
+				java.awt.EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						new ClientPeliculaFrame(peliculaAVer).setVisible(true);
+					}
+				});
 			}
 		});
 	}
