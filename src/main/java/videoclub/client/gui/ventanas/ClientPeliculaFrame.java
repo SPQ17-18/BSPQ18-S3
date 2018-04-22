@@ -13,6 +13,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
@@ -25,6 +29,8 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import org.apache.commons.io.FileUtils;
 
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
@@ -77,12 +83,7 @@ public class ClientPeliculaFrame extends JFrame {
 		eventos();
 
 		file = new File("C:\\SoftLabs\\SPQ_GitHub\\Peliculas\\" + pelicula.getNombre() + ".mp4");
-		if (file != null) {
-			btnPlay.doClick();
-		} else {
-			JOptionPane.showMessageDialog(null, "Lo sentimos, ahora mismo no tenemos actualizada la pelÌcula.");
-			ClientPeliculaFrame.this.dispose();
-		}
+		btnPlay.doClick();
 	}
 
 	private void inicializar() {
@@ -316,4 +317,3 @@ public class ClientPeliculaFrame extends JFrame {
 
 	}
 }
-

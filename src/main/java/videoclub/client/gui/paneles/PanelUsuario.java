@@ -898,34 +898,48 @@ public class PanelUsuario extends JPanel {
 
 		boolean correcto = false;
 		boolean algunaAlquilada = false;
-		List<Alquiler> arrayAlquileres = new ArrayList<Alquiler>();
+		int arraySize = 0;
+		List<Alquiler> arrayPeliculasAlquiladas = new ArrayList<Alquiler>();
 		try {
-			arrayAlquileres = collector.obtenerAlquileres(arrayAlquileres);
+			arrayPeliculasAlquiladas = collector.obtenerPeliculasAlquiladas(arrayPeliculasAlquiladas);
 			correcto = true;
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		if (correcto == true) {
-			arrayBotones = new JToggleButton[arrayAlquileres.size()];
-			arrayBotonesPelicula = new ArrayList<BotonPelicula>();
-			for (int i = 0; i < arrayAlquileres.size(); i++) {
-				if (arrayAlquileres.get(i).getCliente().getNombre().equals(clienteActual.getNombre())
-						&& arrayAlquileres.get(i).getCliente().getApellidos().equals(clienteActual.getApellidos())) {
-					ImageIcon icon = null;
-					icon = getImageIconPelicula(arrayAlquileres.get(i).getInventario().getPelicula().getImage());
+		// Comprobamos cuantas arrayPeliculasAlquiladas tenemos:
+		for (int i = 0; i < arrayPeliculasAlquiladas.size(); i++) {
+			if (arrayPeliculasAlquiladas.get(i).getCliente().getNombre().equals(clienteActual.getNombre())
+					&& arrayPeliculasAlquiladas.get(i).getCliente().getApellidos()
+							.equals(clienteActual.getApellidos())) {
+				arraySize++;
+			}
+		}
 
-					arrayBotones[i] = new JToggleButton(icon);
-					arrayBotones[i].setForeground(Color.GREEN);
-					arrayBotones[i].setContentAreaFilled(false);
-					arrayBotones[i].setBorder(new LineBorder(SystemColor.textHighlight));
-					arrayBotonesPelicula.add(new BotonPelicula(arrayAlquileres.get(i).getInventario().getPelicula()));
+		int posArrayBotones = 0;
+		if (correcto == true) {
+			arrayBotones = new JToggleButton[arraySize];
+			arrayBotonesPelicula = new ArrayList<BotonPelicula>();
+			for (int i = 0; i < arrayPeliculasAlquiladas.size(); i++) {
+				if (arrayPeliculasAlquiladas.get(i).getCliente().getNombre().equals(clienteActual.getNombre())
+						&& arrayPeliculasAlquiladas.get(i).getCliente().getApellidos()
+								.equals(clienteActual.getApellidos())) {
+					ImageIcon icon = null;
+					icon = getImageIconPelicula(
+							arrayPeliculasAlquiladas.get(i).getInventario().getPelicula().getImage());
+
+					arrayBotones[posArrayBotones] = new JToggleButton(icon);
+					arrayBotones[posArrayBotones].setForeground(Color.GREEN);
+					arrayBotones[posArrayBotones].setContentAreaFilled(false);
+					arrayBotones[posArrayBotones].setBorder(new LineBorder(SystemColor.textHighlight));
+					arrayBotonesPelicula
+							.add(new BotonPelicula(arrayPeliculasAlquiladas.get(i).getInventario().getPelicula()));
 
 					// Añadimos botón de la película al panel asignado para
 					// ello:
-					panel.add(arrayBotones[i]);
-
+					panel.add(arrayBotones[posArrayBotones]);
+					posArrayBotones++;
 					algunaAlquilada = true;
 				}
 			}

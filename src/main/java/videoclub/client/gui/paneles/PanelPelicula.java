@@ -3,6 +3,7 @@ package videoclub.client.gui.paneles;
 import javax.swing.JPanel;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
 
 import videoclub.client.gui.ventanas.ClientAlquilerFrame;
@@ -18,6 +19,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.awt.Font;
@@ -210,7 +212,15 @@ public class PanelPelicula extends JPanel {
 				/* Create and display the form */
 				java.awt.EventQueue.invokeLater(new Runnable() {
 					public void run() {
-						new ClientPeliculaFrame(peliculaAVer).setVisible(true);
+						File file = new File(
+								"C:\\SoftLabs\\SPQ_GitHub\\Peliculas\\" + peliculaAVer.getNombre() + ".mp4");
+						if (file.exists()) {
+							new ClientPeliculaFrame(peliculaAVer).setVisible(true);
+						} else {
+							JOptionPane.showMessageDialog(null,
+									"Lo sentimos, ahora mismo no tenemos actualizada la pelÌcula.");
+						}
+
 					}
 				});
 			}
@@ -235,7 +245,7 @@ public class PanelPelicula extends JPanel {
 		textPaneDescripcion.setText(openFileToString(peliculaAAlquilar.getDescripcion()));
 		labelPrecio.setText(Float.toString(peliculaAAlquilar.getPrecio()) + " €");
 	}
-	
+
 	private void mostrarPeliculaAVer() {
 		// Primero el el cartel de la película:
 		ImageIcon icon = null;
@@ -303,7 +313,7 @@ public class PanelPelicula extends JPanel {
 
 			// Mostramos componenets solo para películas a ver:
 			btnverPelculaAhora.setVisible(true);
-			
+
 			mostrarPeliculaAVer();
 
 		} else {
@@ -316,7 +326,7 @@ public class PanelPelicula extends JPanel {
 
 			// Ocultamos componentes que no queremos mostrar:
 			btnverPelculaAhora.setVisible(false);
-			
+
 			mostrarPeliculaAAlquilar();
 		}
 	}
