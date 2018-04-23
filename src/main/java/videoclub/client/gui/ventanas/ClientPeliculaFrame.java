@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -13,24 +14,17 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import org.apache.commons.io.FileUtils;
 
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
@@ -73,16 +67,22 @@ public class ClientPeliculaFrame extends JFrame {
 	// bandera para controlar la reproduccion de video y el cambio en el avance
 	// de video
 	private boolean band = true;
+	private boolean trailer = false;
 
-	public ClientPeliculaFrame(Pelicula pelicula) {
+	public ClientPeliculaFrame(Pelicula pelicula, boolean trailer) {
 		this.pelicula = pelicula;
+		this.trailer = trailer;
 
 		inicializar();
 		componentes();
 		añadir();
 		eventos();
 
-		file = new File("C:\\SoftLabs\\SPQ_GitHub\\Peliculas\\" + pelicula.getNombre() + ".mp4");
+		if (trailer == false) {
+			file = new File("C:\\SoftLabs\\SPQ_GitHub\\Peliculas\\Completas\\" + pelicula.getNombre() + ".mp4");
+		} else {
+			file = new File("C:\\SoftLabs\\SPQ_GitHub\\Peliculas\\Trailers\\" + pelicula.getNombre() + ".mp4");
+		}
 		btnPlay.doClick();
 	}
 
@@ -113,8 +113,15 @@ public class ClientPeliculaFrame extends JFrame {
 	}
 
 	private void añadir() {
-		setTitle("ESTA VIENDO LA PELÕCULA: " + pelicula.getNombre());
 		setLocationRelativeTo(null);
+		if (trailer == false) {
+			setTitle("ESTA VIENDO LA PELÍCULA: " + pelicula.getNombre());
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			setSize(screenSize.width, screenSize.height);
+		} else {
+			setTitle("TRAILER DE: " + pelicula.getNombre());
+			setSize(720, 480);
+		}
 
 		jPanel3.add(sldProgress);
 		jPanel2.add(player);

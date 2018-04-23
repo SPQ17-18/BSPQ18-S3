@@ -445,8 +445,8 @@ public class PanelUsuario extends JPanel {
 	private int indexBotonesOpciones = 0;
 
 	/**
-	 * Método para agrupar todos los botones de las opciones con un
-	 * addMouseListener único:
+	 * Método para agrupar todos los botones de las opciones con un addMouseListener
+	 * único:
 	 */
 	private void eventosBotonesOpciones() {
 		for (indexBotonesOpciones = 0; indexBotonesOpciones < arrayBotonesOpciones.size(); indexBotonesOpciones++) {
@@ -473,8 +473,8 @@ public class PanelUsuario extends JPanel {
 	}
 
 	/**
-	 * Método para cargar todas las películas en el gridLayout creando botones
-	 * para cada una:
+	 * Método para cargar todas las películas en el gridLayout creando botones para
+	 * cada una:
 	 */
 	private void agregarPeliculasAlPanel() {
 		arrayPeliculas = new ArrayList<Pelicula>();
@@ -761,8 +761,8 @@ public class PanelUsuario extends JPanel {
 	 * Método que busca los nombres de las peliculas a partir de una serie de
 	 * caracteres, aunque el nombre no esté del todo puesto el buscador la
 	 * encontrará, o las encontrará, se va a buscar todos los string que sean
-	 * pareceidos a la búsqueda que hayas puesto, eso si no lo has escrito == a
-	 * una de las peliculas que exista!
+	 * pareceidos a la búsqueda que hayas puesto, eso si no lo has escrito == a una
+	 * de las peliculas que exista!
 	 */
 	private void buscarNombresPeliculasAproximadamente() {
 		arrayNombresPeliculasEncontradas = new ArrayList<String>();

@@ -1,20 +1,7 @@
 package videoclub.client.gui.paneles;
 
-import javax.swing.JPanel;
 import java.awt.Color;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.border.LineBorder;
-
-import videoclub.client.gui.ventanas.ClientAlquilerFrame;
-import videoclub.client.gui.ventanas.ClientPeliculaFrame;
-import videoclub.client.gui.ventanas.ClientPeliculaTrailerFrame;
-import videoclub.server.gui.ICollector;
-import videoclub.server.jdo.Cliente;
-import videoclub.server.jdo.Imagen;
-import videoclub.server.jdo.Pelicula;
-import videoclub.server.jdo.Usuario;
-
+import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,13 +10,24 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.awt.Font;
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+
+import videoclub.client.gui.ventanas.ClientAlquilerFrame;
+import videoclub.client.gui.ventanas.ClientPeliculaFrame;
+import videoclub.server.gui.ICollector;
+import videoclub.server.jdo.Cliente;
+import videoclub.server.jdo.Imagen;
+import videoclub.server.jdo.Pelicula;
 
 /**
  * Panel para ver los detalles de las películas:
@@ -222,28 +220,32 @@ public class PanelPelicula extends JPanel {
 				java.awt.EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						File file = new File(
-								"C:\\SoftLabs\\SPQ_GitHub\\Peliculas\\" + peliculaAVer.getNombre() + ".mp4");
+								"C:\\SoftLabs\\SPQ_GitHub\\Peliculas\\Completas\\" + peliculaAVer.getNombre() + ".mp4");
 						if (file.exists()) {
-							new ClientPeliculaFrame(peliculaAVer).setVisible(true);
+							new ClientPeliculaFrame(peliculaAVer, false).setVisible(true);
 						} else {
 							JOptionPane.showMessageDialog(null,
 									"Lo sentimos, ahora mismo no tenemos actualizada la pelÌcula.");
 						}
-
 					}
 				});
 			}
 		});
 		btnTrailer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new ClientPeliculaTrailerFrame();
+				File file = new File(
+						"C:\\SoftLabs\\SPQ_GitHub\\Peliculas\\Trailers\\" + peliculaAVer.getNombre() + ".mp4");
+				if (file.exists()) {
+					new ClientPeliculaFrame(peliculaAVer, true).setVisible(true);
+				} else {
+					JOptionPane.showMessageDialog(null, "Lo sentimos, ahora mismo no tenemos actualizada la pelÌcula.");
+				}
 			}
 		});
 	}
 
 	/**
-	 * Método que muestra todos los detalles de la película seleccionada a
-	 * alquilar:
+	 * Método que muestra todos los detalles de la película seleccionada a alquilar:
 	 */
 	private void mostrarPeliculaAAlquilar() {
 		// Primero el el cartel de la película:
@@ -312,8 +314,8 @@ public class PanelPelicula extends JPanel {
 	}
 
 	/*
-	 * Método que comprueba si el panel tiene que mostrar una película para ver
-	 * o simplimente para alquilar:
+	 * Método que comprueba si el panel tiene que mostrar una película para ver o
+	 * simplimente para alquilar:
 	 * 
 	 */
 	private void comprobarPeliculaAlquilada() {
