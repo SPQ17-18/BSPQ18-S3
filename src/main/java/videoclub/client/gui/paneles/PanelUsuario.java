@@ -3,6 +3,7 @@ package videoclub.client.gui.paneles;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,11 +29,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 
 import videoclub.client.utiles.Temas;
+import videoclub.client.utiles.UrlToImage;
 import videoclub.server.gui.ICollector;
 import videoclub.server.jdo.Alquiler;
 import videoclub.server.jdo.Cliente;
@@ -91,12 +94,16 @@ public class PanelUsuario extends JPanel {
 
 	private List<JButton> arrayBotonesOpciones = new ArrayList<JButton>();
 	public PanelAmigosUsuarios pau;
+	private UrlToImage imageIconBotonAnterio;
+	private UrlToImage imageIconBotonSiguiente;
 
 	/**
 	 * Create the panel.
 	 */
 	public PanelUsuario(ICollector collector) {
 		this.collector = collector;
+		this.imageIconBotonAnterio = new UrlToImage("https://icon-icons.com/icons2/10/PNG/256/above_thearrow_1550.png");
+		this.imageIconBotonSiguiente = new UrlToImage("https://icon-icons.com/icons2/10/PNG/256/Next_arrow_1559.png");
 		try {
 			this.clienteActual = this.collector.getCliente();
 			this.usuarioActual = this.collector.getUsuario();
@@ -119,6 +126,8 @@ public class PanelUsuario extends JPanel {
 	private void inicializar() {
 		// Numero de filas, Numero de columnas, Separaciones h y v:
 		gl_panel = new GridLayout(1, 5, 5, 5);
+		Anterior = new JButton();
+		Siguiente = new JButton();
 		scrollPane = new JScrollPane();
 		panel = new JPanel();
 		NombreUsuario = new JLabel(" " + clienteActual.getNombre() + "- " + clienteActual.getApellidos() + " ["
@@ -151,11 +160,23 @@ public class PanelUsuario extends JPanel {
 	}
 
 	private void componentes() {
+		Anterior.setBorderPainted(false);
+		Siguiente.setBorderPainted(false);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+		Anterior.setContentAreaFilled(false);
+		Siguiente.setContentAreaFilled(false);
+		Anterior.setBounds(12, 254, 32, 25);
+		Anterior.setIcon(new ImageIcon(imageIconBotonAnterio.getImageIcon().getImage()
+				.getScaledInstance(Anterior.getWidth(), Anterior.getHeight(), Image.SCALE_SMOOTH)));
+		Siguiente.setBounds(1231, 254, 32, 25);
+		Siguiente.setIcon(new ImageIcon(imageIconBotonSiguiente.getImageIcon().getImage()
+				.getScaledInstance(Siguiente.getWidth(), Siguiente.getHeight(), Image.SCALE_SMOOTH)));
 		lblNewLabel.setBorder(new LineBorder(Color.GREEN));
 		labelDinero.setBorder(null);
 		labelDinero.setHorizontalAlignment(SwingConstants.CENTER);
 		comboBoxTema.setBorder(new LineBorder(Color.MAGENTA));
-		scrollPane.setBounds(12, 112, 1256, 302);
+		scrollPane.setBounds(56, 112, 1163, 302);
 		NombreUsuario.setFont(new Font("Tahoma", Font.BOLD, 15));
 		NombreUsuario.setForeground(Color.ORANGE);
 		NombreUsuario.setBorder(new LineBorder(Color.ORANGE));
@@ -281,6 +302,8 @@ public class PanelUsuario extends JPanel {
 		add(lblBuscarPelculasPor_1);
 		add(lblBuscarPelculasPor_2);
 		add(scrollPane_1);
+		add(Anterior);
+		add(Siguiente);
 
 		panelOpciones.add(lblOpciones);
 		panelOpciones.add(btnListaPeliculas);
@@ -374,18 +397,26 @@ public class PanelUsuario extends JPanel {
 					// Lo expandimos:
 					panelOpciones.setSize(panelOpciones.getWidth(), alturaPanelOpcionesFinal);
 					// Recogemos panel películas
-					scrollPane.setBounds(252, 112, 1016, 302);
+					scrollPane.setBounds(298, 112, 921, 302);
 					// Recogemos panel usuariosamigos
 					scrollPane_1.setBounds(12, 501, 232, 205);
+					// Recogemos botón anterior:
+					Anterior.setBounds(252, 254, 32, 25);
+					// Actualizamos componentes:
+					updatePanel();
 					panelOpcionesRecogido = false;
 
 				} else {
 					// Lo recogemos:
 					panelOpciones.setSize(panelOpciones.getWidth(), alturaPanelOpcionesInicial);
 					// Expandimos panel películas
-					scrollPane.setBounds(12, 112, 1256, 302);
+					scrollPane.setBounds(56, 112, 1163, 302);
 					// Expandimos panel usuariosamigos
 					scrollPane_1.setBounds(12, 427, 232, 279);
+					// Expandimos botón anterior:
+					Anterior.setBounds(12, 254, 32, 25);
+					// Actualizamos componentes:
+					updatePanel();
 					panelOpcionesRecogido = true;
 				}
 			}
@@ -438,6 +469,18 @@ public class PanelUsuario extends JPanel {
 				}
 			}
 		});
+		Anterior.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				agregarBotonesPeliculasAnteriores();
+			}
+		});
+		Siguiente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (ultimoBotonAgregado + 1 < sizeArrayBotones) {
+					agregarBotonesPeliculasSiguientes();
+				}
+			}
+		});
 
 		eventosBotonesOpciones();
 	}
@@ -469,6 +512,84 @@ public class PanelUsuario extends JPanel {
 					arrayBotonesOpciones.get(myIndex).setForeground(Color.WHITE);
 				}
 			});
+		}
+	}
+
+	private int ultimoBotonAgregado = 0;
+	private int sizeArrayBotones = 0;
+	private int botonesMaximosPorPantalla = 0;
+
+	/**
+	 * Método que se va a encargar de agregar soloamente una cantidad de películas
+	 * al panel automáticamente:
+	 * 
+	 */
+	private void agregarBotonesPeliculasAlPanel(int maximosPorPantalla) {
+
+		this.botonesMaximosPorPantalla = maximosPorPantalla;
+
+		// Nuevo panel:
+		panel = new JPanel();
+		panel.setBackground(Color.DARK_GRAY);
+		scrollPane.setViewportView(panel);
+		panel.setLayout(gl_panel);
+
+		sizeArrayBotones = arrayBotones.length;
+		// Agregamos botones:
+		for (int i = ultimoBotonAgregado; i < botonesMaximosPorPantalla; i++) {
+			// Comprobamos antes si i es menor que cantidadBotonesMaximos:
+			if (i < sizeArrayBotones) {
+				// Entonces podemos agregar:
+				// Añadimos botón de la película al panel asignado para ello:
+				panel.add(arrayBotones[i]);
+				ultimoBotonAgregado = i;
+			}
+		}
+	}
+
+	private void agregarBotonesPeliculasSiguientes() {
+		// Nuevo panel:
+		panel = new JPanel();
+		panel.setBackground(Color.DARK_GRAY);
+		scrollPane.setViewportView(panel);
+		panel.setLayout(gl_panel);
+
+		int devaluador = 0;
+		sizeArrayBotones = arrayBotones.length;
+		// Agregamos botones:
+		for (int i = ultimoBotonAgregado + 1; devaluador < botonesMaximosPorPantalla; i++) {
+			// Comprobamos antes si i es menor que cantidadBotonesMaximos:
+			if (i < sizeArrayBotones) {
+				// Entonces podemos agregar:
+				// Añadimos botón de la película al panel asignado para ello:
+				panel.add(arrayBotones[i]);
+				ultimoBotonAgregado = i;
+			}
+
+			devaluador++;
+		}
+	}
+
+	private void agregarBotonesPeliculasAnteriores() {
+		// Nuevo panel:
+		panel = new JPanel();
+		panel.setBackground(Color.DARK_GRAY);
+		scrollPane.setViewportView(panel);
+		panel.setLayout(gl_panel);
+
+		int devaluador = 0;
+		sizeArrayBotones = arrayBotones.length;
+		// Agregamos botones:
+		for (int i = 0; devaluador < botonesMaximosPorPantalla; i++) {
+			// Comprobamos antes si i es menor que cantidadBotonesMaximos:
+			if (i < sizeArrayBotones) {
+				// Entonces podemos agregar:
+				// Añadimos botón de la película al panel asignado para ello:
+				panel.add(arrayBotones[i]);
+				ultimoBotonAgregado = i;
+			}
+
+			devaluador++;
 		}
 	}
 
@@ -505,15 +626,17 @@ public class PanelUsuario extends JPanel {
 				arrayBotones[i].setContentAreaFilled(false);
 				arrayBotones[i].setBorder(new LineBorder(SystemColor.textHighlight));
 				arrayBotonesPelicula.add(new BotonPelicula(arrayPeliculas.get(i)));
-
-				// Añadimos botón de la película al panel asignado para ello:
-				panel.add(arrayBotones[i]);
 			}
+
+			ultimoBotonAgregado = 0;
+			agregarBotonesPeliculasAlPanel(4);
 			eventosBotonesPeplicula();
 		}
 	}
 
 	private int indexBotonesPelicula = 0;
+	private JButton Anterior;
+	private JButton Siguiente;
 
 	/*
 	 * Método de eventos para los botones de las películas:
@@ -553,11 +676,39 @@ public class PanelUsuario extends JPanel {
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					arrayBotones[myIndex].setBorder(new LineBorder(Color.ORANGE, 3));
+
+					ImageIcon dev = null;
+					byte[] bytes = arrayBotonesPelicula.get(myIndex).getPelicula().getImage().getImage();
+					BufferedImage image = null;
+					InputStream in = new ByteArrayInputStream(bytes);
+					try {
+						image = ImageIO.read(in);
+						dev = new ImageIcon(image.getScaledInstance(210, 285, 0));
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					arrayBotones[myIndex].setIcon(dev);
 				}
 
 				@Override
 				public void mouseExited(MouseEvent e) {
 					arrayBotones[myIndex].setBorder(new LineBorder(SystemColor.textHighlight));
+
+					ImageIcon dev = null;
+					byte[] bytes = arrayBotonesPelicula.get(myIndex).getPelicula().getImage().getImage();
+					BufferedImage image = null;
+					InputStream in = new ByteArrayInputStream(bytes);
+					try {
+						image = ImageIO.read(in);
+						dev = new ImageIcon(image.getScaledInstance(195, 270, 0));
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					arrayBotones[myIndex].setIcon(dev);
 				}
 			});
 		}
@@ -599,12 +750,6 @@ public class PanelUsuario extends JPanel {
 	}
 
 	private void buscarPeliculasPorAño(int anyo) {
-		// Nuevo panel:
-		panel = new JPanel();
-		panel.setBackground(Color.DARK_GRAY);
-		scrollPane.setViewportView(panel);
-		panel.setLayout(gl_panel);
-
 		// Primero obtenemos cantidad de peliculas por ese año:
 		int cantAnyo = 0;
 		for (int i = 0; i < arrayPeliculas.size(); i++) {
@@ -633,25 +778,16 @@ public class PanelUsuario extends JPanel {
 					arrayBotones[posArrayBotones].setContentAreaFilled(false);
 					arrayBotones[posArrayBotones].setBorder(new LineBorder(SystemColor.textHighlight));
 					arrayBotonesPelicula.add(new BotonPelicula(arrayPeliculas.get(i)));
-
-					// Añadimos botón de la película al panel asignado para
-					// ello:
-					panel.add(arrayBotones[posArrayBotones]);
-
 					posArrayBotones++;
 				}
 			}
 		}
+		ultimoBotonAgregado = 0;
+		agregarBotonesPeliculasAlPanel(4);
 		eventosBotonesPeplicula();
 	}
 
 	private void buscarPeliculasPorGenero(String categoria) {
-		// Nuevo panel:
-		panel = new JPanel();
-		panel.setBackground(Color.DARK_GRAY);
-		scrollPane.setViewportView(panel);
-		panel.setLayout(gl_panel);
-
 		// Primero obtenemos cantidad de peliculas por ese año:
 		int cantAnyo = 0;
 		for (int i = 0; i < arrayPeliculas.size(); i++) {
@@ -684,15 +820,11 @@ public class PanelUsuario extends JPanel {
 					arrayBotones[posArrayBotones].setContentAreaFilled(false);
 					arrayBotones[posArrayBotones].setBorder(new LineBorder(SystemColor.textHighlight));
 					arrayBotonesPelicula.add(new BotonPelicula(arrayPeliculas.get(i)));
-
-					// Añadimos botón de la película al panel asignado para
-					// ello:
-					panel.add(arrayBotones[posArrayBotones]);
-
 					posArrayBotones++;
 				}
 			}
-
+			ultimoBotonAgregado = 0;
+			agregarBotonesPeliculasAlPanel(4);
 			eventosBotonesPeplicula();
 		} else {
 			JOptionPane.showMessageDialog(null, "No se ha encontrado ninguna película con el género " + categoria);
@@ -700,12 +832,6 @@ public class PanelUsuario extends JPanel {
 	}
 
 	private void buscarPeliculaPorNombre(List<String> nombres) {
-		// Nuevo panel:
-		panel = new JPanel();
-		panel.setBackground(Color.DARK_GRAY);
-		scrollPane.setViewportView(panel);
-		panel.setLayout(gl_panel);
-
 		// Primero obtenemos cantidad de peliculas por ese año:
 		int cantAnyo = 0;
 		for (int i = 0; i < arrayPeliculas.size(); i++) {
@@ -740,16 +866,12 @@ public class PanelUsuario extends JPanel {
 						arrayBotones[posArrayBotones].setContentAreaFilled(false);
 						arrayBotones[posArrayBotones].setBorder(new LineBorder(SystemColor.textHighlight));
 						arrayBotonesPelicula.add(new BotonPelicula(arrayPeliculas.get(i)));
-
-						// Añadimos botón de la película al panel asignado para
-						// ello:
-						panel.add(arrayBotones[posArrayBotones]);
-
 						posArrayBotones++;
 					}
 				}
 			}
-
+			ultimoBotonAgregado = 0;
+			agregarBotonesPeliculasAlPanel(4);
 			eventosBotonesPeplicula();
 		} else {
 			JOptionPane.showMessageDialog(null,
@@ -783,12 +905,6 @@ public class PanelUsuario extends JPanel {
 	}
 
 	private void obtenerPeliculasNuevas() {
-		// Nuevo panel:
-		panel = new JPanel();
-		panel.setBackground(Color.DARK_GRAY);
-		scrollPane.setViewportView(panel);
-		panel.setLayout(gl_panel);
-
 		boolean correcto = false;
 		List<Pelicula> arrayPeliculasNuevas = new ArrayList<Pelicula>();
 		// Primero obtenemos las películas de la base de datos:
@@ -817,22 +933,14 @@ public class PanelUsuario extends JPanel {
 				arrayBotones[i].setContentAreaFilled(false);
 				arrayBotones[i].setBorder(new LineBorder(SystemColor.textHighlight));
 				arrayBotonesPelicula.add(new BotonPelicula(arrayPeliculasNuevas.get(i)));
-
-				// Añadimos botón de la película al panel asignado para ello:
-				panel.add(arrayBotones[i]);
 			}
 		}
-
+		ultimoBotonAgregado = 0;
+		agregarBotonesPeliculasAlPanel(4);
 		eventosBotonesPeplicula();
 	}
 
 	private boolean obtenerPeliculasRecomendadas() {
-		// Nuevo panel:
-		panel = new JPanel();
-		panel.setBackground(Color.DARK_GRAY);
-		scrollPane.setViewportView(panel);
-		panel.setLayout(gl_panel);
-
 		boolean correcto = false;
 		boolean algunaRecomendacion = false;
 		int arraySize = 0;
@@ -874,28 +982,19 @@ public class PanelUsuario extends JPanel {
 					arrayBotones[posArrayBotones].setContentAreaFilled(false);
 					arrayBotones[posArrayBotones].setBorder(new LineBorder(SystemColor.textHighlight));
 					arrayBotonesPelicula.add(new BotonPelicula(arrayRecomendaciones.get(i).getPelicula()));
-
-					// Añadimos botón de la película al panel asignado para
-					// ello:
-					panel.add(arrayBotones[posArrayBotones]);
 					posArrayBotones++;
 					algunaRecomendacion = true;
 				}
 			}
 		}
-
+		ultimoBotonAgregado = 0;
+		agregarBotonesPeliculasAlPanel(2);
 		eventosBotonesPeplicula();
 
 		return algunaRecomendacion;
 	}
 
 	private boolean obtenerPeliculasAlquiladas() {
-		// Nuevo panel:
-		panel = new JPanel();
-		panel.setBackground(Color.DARK_GRAY);
-		scrollPane.setViewportView(panel);
-		panel.setLayout(gl_panel);
-
 		boolean correcto = false;
 		boolean algunaAlquilada = false;
 		int arraySize = 0;
@@ -935,16 +1034,13 @@ public class PanelUsuario extends JPanel {
 					arrayBotones[posArrayBotones].setBorder(new LineBorder(SystemColor.textHighlight));
 					arrayBotonesPelicula
 							.add(new BotonPelicula(arrayPeliculasAlquiladas.get(i).getInventario().getPelicula()));
-
-					// Añadimos botón de la película al panel asignado para
-					// ello:
-					panel.add(arrayBotones[posArrayBotones]);
 					posArrayBotones++;
 					algunaAlquilada = true;
 				}
 			}
 		}
-
+		ultimoBotonAgregado = 0;
+		agregarBotonesPeliculasAlPanel(4);
 		eventosBotonesPeplicula();
 
 		return algunaAlquilada;
@@ -992,5 +1088,10 @@ public class PanelUsuario extends JPanel {
 		public void setPelicula(Pelicula pelicula) {
 			this.pelicula = pelicula;
 		}
+	}
+
+	private void updatePanel() {
+		this.repaint();
+		this.validate();
 	}
 }

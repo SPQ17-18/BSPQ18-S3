@@ -1,35 +1,29 @@
 package videoclub.client.gui.paneles;
 
-import javax.imageio.ImageIO;
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.SystemColor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.Image;
-
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import videoclub.client.gui.ventanas.ClientRecomendacionFrame;
-import videoclub.client.utiles.Resaltador;
+import videoclub.client.utiles.UrlToImage;
 import videoclub.server.gui.ICollector;
 import videoclub.server.jdo.Amigo;
-import videoclub.server.jdo.Inventario;
 import videoclub.server.jdo.Usuario;
-
-import javax.swing.JScrollPane;
-import java.awt.SystemColor;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class PanelAmigosUsuarios extends JPanel {
 	/**
@@ -40,9 +34,9 @@ public class PanelAmigosUsuarios extends JPanel {
 	private JScrollPane scrollPane;
 	private TableModel tableModel;
 	private ICollector collector;
-	private ImageIcon imgConectado;
-	private ImageIcon imgDesconectado;
-	private ImageIcon imgRecomendacion;
+	private UrlToImage imgConectado;
+	private UrlToImage imgDesconectado;
+	private UrlToImage imgRecomendacion;
 	private Usuario usuarioActual;
 	public boolean tablaAmigosCargada = false;
 
@@ -51,9 +45,11 @@ public class PanelAmigosUsuarios extends JPanel {
 	 */
 	public PanelAmigosUsuarios(ICollector collector, String mostrar, Usuario usuarioActual) {
 		this.collector = collector;
-		this.imgConectado = getConectado();
-		this.imgDesconectado = getDesconectado();
-		this.imgRecomendacion = getRecomendacion();
+		this.imgConectado = new UrlToImage("http://icdn.pro/images/es/b/o/bola-verde-icono-8113-128.png");
+		this.imgDesconectado = new UrlToImage(
+				"http://www.clker.com/cliparts/j/N/m/m/d/2/glossy-red-icon-button-md.png");
+		this.imgRecomendacion = new UrlToImage(
+				"http://icons.iconarchive.com/icons/graphicloads/rounded-social-media/512/share-icon.png");
 		this.usuarioActual = usuarioActual;
 		inicializar();
 		añadir();
@@ -188,8 +184,8 @@ public class PanelAmigosUsuarios extends JPanel {
 	}
 
 	/**
-	 * Método para comprobar qué usuarios están conectados y mostrar un
-	 * indicativo de ello:
+	 * Método para comprobar qué usuarios están conectados y mostrar un indicativo
+	 * de ello:
 	 * 
 	 * @param usuario
 	 * @param usuariosConectados
@@ -239,60 +235,18 @@ public class PanelAmigosUsuarios extends JPanel {
 			else {
 				if (value.toString() != null) {
 					if (value.toString().equals("Y")) {
-						setIcon(new ImageIcon(imgConectado.getImage().getScaledInstance(12, 12, Image.SCALE_SMOOTH)));
+						setIcon(new ImageIcon(
+								imgConectado.getImageIcon().getImage().getScaledInstance(12, 12, Image.SCALE_SMOOTH)));
 					} else if (value.toString().equals("N")) {
-						setIcon(new ImageIcon(
-								imgDesconectado.getImage().getScaledInstance(10, 10, Image.SCALE_SMOOTH)));
+						setIcon(new ImageIcon(imgDesconectado.getImageIcon().getImage().getScaledInstance(10, 10,
+								Image.SCALE_SMOOTH)));
 					} else if (value.toString().equals("RECOMENDAR")) {
-						setIcon(new ImageIcon(
-								imgRecomendacion.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
+						setIcon(new ImageIcon(imgRecomendacion.getImageIcon().getImage().getScaledInstance(20, 20,
+								Image.SCALE_SMOOTH)));
 					}
 				}
 			}
 		}
 
 	}
-
-	private ImageIcon getConectado() {
-		Image imagen = null;
-		URL url;
-		try {
-			url = new URL("http://icdn.pro/images/es/b/o/bola-verde-icono-8113-128.png");
-			imagen = ImageIO.read(url);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		ImageIcon img = new ImageIcon(imagen);
-		return img;
-	}
-
-	private ImageIcon getDesconectado() {
-		Image imagen = null;
-		URL url;
-		try {
-			url = new URL("http://www.clker.com/cliparts/j/N/m/m/d/2/glossy-red-icon-button-md.png");
-			imagen = ImageIO.read(url);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		ImageIcon img = new ImageIcon(imagen);
-		return img;
-	}
-
-	private ImageIcon getRecomendacion() {
-		Image imagen = null;
-		URL url;
-		try {
-			url = new URL("http://icons.iconarchive.com/icons/graphicloads/rounded-social-media/512/share-icon.png");
-			imagen = ImageIO.read(url);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		ImageIcon img = new ImageIcon(imagen);
-		return img;
-	}
-
 }
