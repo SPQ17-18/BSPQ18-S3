@@ -8,6 +8,7 @@ import javax.swing.border.LineBorder;
 
 import videoclub.client.gui.ventanas.ClientAlquilerFrame;
 import videoclub.client.gui.ventanas.ClientPeliculaFrame;
+import videoclub.client.gui.ventanas.ClientPeliculaTrailerFrame;
 import videoclub.server.gui.ICollector;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Imagen;
@@ -62,6 +63,7 @@ public class PanelPelicula extends JPanel {
 	private Pelicula peliculaAVer;
 	private boolean peliculaAlquiladaAVer;
 	private JButton btnverPelculaAhora;
+	private JButton btnTrailer;
 
 	/**
 	 * Create the panel.
@@ -98,6 +100,7 @@ public class PanelPelicula extends JPanel {
 		scrollPane = new JScrollPane();
 		textPaneDescripcion = new JTextPane();
 		btnverPelculaAhora = new JButton("¡VER PELÍCULA AHORA¡");
+		btnTrailer = new JButton("TRAILER");
 	}
 
 	private void añadir() {
@@ -119,10 +122,16 @@ public class PanelPelicula extends JPanel {
 		add(label_5);
 		add(scrollPane);
 		add(btnverPelculaAhora);
+		add(btnTrailer);
 		scrollPane.setViewportView(textPaneDescripcion);
 	}
 
 	private void componentes() {
+		btnTrailer.setForeground(Color.CYAN);
+		btnTrailer.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnTrailer.setContentAreaFilled(false);
+		btnTrailer.setBorder(new LineBorder(Color.CYAN));
+		btnTrailer.setBounds(850, 0, 163, 34);
 		btnverPelculaAhora.setForeground(Color.GREEN);
 		btnverPelculaAhora.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnverPelculaAhora.setContentAreaFilled(false);
@@ -162,7 +171,7 @@ public class PanelPelicula extends JPanel {
 		btnalquilarYaMismo.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnalquilarYaMismo.setContentAreaFilled(false);
 		btnalquilarYaMismo.setBorder(new LineBorder(Color.GREEN));
-		btnalquilarYaMismo.setBounds(614, 0, 400, 34);
+		btnalquilarYaMismo.setBounds(614, 0, 224, 34);
 		label.setText("  TÍTULO");
 		label.setForeground(SystemColor.textHighlight);
 		label.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -223,6 +232,11 @@ public class PanelPelicula extends JPanel {
 
 					}
 				});
+			}
+		});
+		btnTrailer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ClientPeliculaTrailerFrame();
 			}
 		});
 	}
@@ -310,6 +324,7 @@ public class PanelPelicula extends JPanel {
 			label_4.setVisible(false);
 			labelPrecio.setVisible(false);
 			labelDisponibles.setVisible(false);
+			btnTrailer.setVisible(false);
 
 			// Mostramos componenets solo para películas a ver:
 			btnverPelculaAhora.setVisible(true);
@@ -323,6 +338,7 @@ public class PanelPelicula extends JPanel {
 			label_4.setVisible(true);
 			labelPrecio.setVisible(true);
 			labelDisponibles.setVisible(true);
+			btnTrailer.setVisible(true);
 
 			// Ocultamos componentes que no queremos mostrar:
 			btnverPelculaAhora.setVisible(false);
