@@ -31,6 +31,7 @@ import videoclub.server.jdo.Inventario;
 import videoclub.server.jdo.Mensaje;
 import videoclub.server.jdo.Novedad;
 import videoclub.server.jdo.Pelicula;
+import videoclub.server.jdo.PeliculaFavorita;
 import videoclub.server.jdo.PeliculaVista;
 import videoclub.server.jdo.Recomendacion;
 import videoclub.server.jdo.Usuario;
@@ -814,6 +815,78 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 			}
 		}
 		return arrayPeliculasAlquiladas;
+	}
+
+	@Override
+	public boolean setPeliculaFavorita(Pelicula pelicula, Cliente cliente) throws RemoteException {
+		// TODO Auto-generated method stub
+		boolean peliculaVistaGuardada = false;
+		try {
+			tx.begin();
+
+			Cliente _cliente = null;
+			Pelicula _pelicula = null;
+
+			@SuppressWarnings("unchecked")
+			Query<Cliente> q = pm.newQuery("SELECT FROM " + Cliente.class.getName());
+			List<Cliente> clientes = (List<Cliente>) q.executeList();
+			for (Cliente c : clientes) {
+				if (c.getNombre().equals(cliente.getNombre()) && c.getApellidos().equals(cliente.getApellidos())) {
+					_cliente = c;
+					break;
+				}
+			}
+
+			@SuppressWarnings("unchecked")
+			Query<Pelicula> q1 = pm.newQuery("SELECT FROM " + Pelicula.class.getName());
+			List<Pelicula> peliculas = (List<Pelicula>) q1.executeList();
+			for (Pelicula pel : peliculas) {
+				if (pel.getNombre().equals(pelicula.getNombre())) {
+					_pelicula = pel;
+					break;
+				}
+			}
+
+			ServerFrame.textArea.append("Creando nueva pelicula favorita...\n");
+			PeliculaFavorita peliculaFavorita = new PeliculaFavorita(_pelicula, _cliente);
+			pm.makePersistent(peliculaFavorita);
+			ServerFrame.textArea.append("Pelicula favorita creada exitosamente!\n");
+
+			tx.commit();
+			peliculaVistaGuardada = true;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return peliculaVistaGuardada;
+
+	}
+
+	@Override
+	public List<PeliculaFavorita> obtenerPeliculasFavoritas(List<PeliculaFavorita> arrayPeliculasFavoritas)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		try {
+			tx.begin();
+
+			ServerFrame.textArea.append("Obteniendo peliculas favoritas de la BD...\n");
+			// Sacamos todas las categorias de la BD:
+			@SuppressWarnings("unchecked")
+			Query<PeliculaFavorita> q = pm.newQuery("SELECT FROM " + PeliculaFavorita.class.getName());
+			List<PeliculaFavorita> peliculasFavoritas = (List<PeliculaFavorita>) q.executeList();
+			for (PeliculaFavorita peliFavorita : peliculasFavoritas) {
+				// Vamos añadiendo las películas al array pasado:
+				arrayPeliculasFavoritas.add(peliFavorita);
+			}
+			ServerFrame.textArea.append("Peliculas favoritas obtenenidas ! :D\n");
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return arrayPeliculasFavoritas;
 	}
 
 	@Override
