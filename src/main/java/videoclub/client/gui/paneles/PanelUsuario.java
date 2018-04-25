@@ -499,8 +499,8 @@ public class PanelUsuario extends JPanel {
 	private int indexBotonesOpciones = 0;
 
 	/**
-	 * Método para agrupar todos los botones de las opciones con un
-	 * addMouseListener único:
+	 * Método para agrupar todos los botones de las opciones con un addMouseListener
+	 * único:
 	 */
 	private void eventosBotonesOpciones() {
 		for (indexBotonesOpciones = 0; indexBotonesOpciones < arrayBotonesOpciones.size(); indexBotonesOpciones++) {
@@ -531,8 +531,8 @@ public class PanelUsuario extends JPanel {
 	private int botonesMaximosPorPantalla = 0;
 
 	/**
-	 * Método que se va a encargar de agregar soloamente una cantidad de
-	 * películas al panel automáticamente:
+	 * Método que se va a encargar de agregar soloamente una cantidad de películas
+	 * al panel automáticamente:
 	 * 
 	 */
 	private void agregarBotonesPeliculasAlPanel(int maximosPorPantalla) {
@@ -605,8 +605,8 @@ public class PanelUsuario extends JPanel {
 	}
 
 	/**
-	 * Método para cargar todas las películas en el gridLayout creando botones
-	 * para cada una:
+	 * Método para cargar todas las películas en el gridLayout creando botones para
+	 * cada una:
 	 */
 	private void agregarPeliculasAlPanel() {
 		arrayPeliculas = new ArrayList<Pelicula>();
@@ -951,8 +951,8 @@ public class PanelUsuario extends JPanel {
 	 * Método que busca los nombres de las peliculas a partir de una serie de
 	 * caracteres, aunque el nombre no esté del todo puesto el buscador la
 	 * encontrará, o las encontrará, se va a buscar todos los string que sean
-	 * pareceidos a la búsqueda que hayas puesto, eso si no lo has escrito == a
-	 * una de las peliculas que exista!
+	 * pareceidos a la búsqueda que hayas puesto, eso si no lo has escrito == a una
+	 * de las peliculas que exista!
 	 */
 	private void buscarNombresPeliculasAproximadamente() {
 		arrayNombresPeliculasEncontradas = new ArrayList<String>();
@@ -1115,12 +1115,6 @@ public class PanelUsuario extends JPanel {
 	}
 
 	private boolean obtenerPeliculasFavoritas() {
-		// Nuevo panel:
-		panel = new JPanel();
-		panel.setBackground(Color.DARK_GRAY);
-		scrollPane.setViewportView(panel);
-		panel.setLayout(gl_panel);
-
 		boolean correcto = false;
 		boolean algunaFavorita = false;
 		int arraySize = 0;
@@ -1161,16 +1155,13 @@ public class PanelUsuario extends JPanel {
 					arrayBotones[posArrayBotones].setContentAreaFilled(false);
 					arrayBotones[posArrayBotones].setBorder(new LineBorder(SystemColor.textHighlight));
 					arrayBotonesPelicula.add(new BotonPelicula(arrayPeliculasFavoritas.get(i).getPelicula()));
-
-					// Añadimos botón de la película al panel asignado para
-					// ello:
-					panel.add(arrayBotones[posArrayBotones]);
 					posArrayBotones++;
 					algunaFavorita = true;
 				}
 			}
 		}
-
+		ultimoBotonAgregado = 0;
+		agregarBotonesPeliculasAlPanel(4);
 		eventosBotonesPeplicula();
 
 		return algunaFavorita;
