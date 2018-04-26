@@ -24,8 +24,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
@@ -42,6 +44,8 @@ import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Pelicula;
 import videoclub.server.jdo.PeliculaFavorita;
+import videoclub.server.jdo.PeliculaPendiente;
+import videoclub.server.jdo.PeliculaVista;
 import videoclub.server.jdo.Recomendacion;
 import videoclub.server.jdo.Usuario;
 
@@ -97,6 +101,12 @@ public class PanelUsuario extends JPanel {
 	public PanelAmigosUsuarios pau;
 	private UrlToImage imageIconBotonAnterio;
 	private UrlToImage imageIconBotonSiguiente;
+	
+	private ActionListener actionListenerPOP = new PopUpActionListener();
+	private JPopupMenu Pmenu;
+	private JMenuItem menuItem;
+	public Pelicula peliculaAGuardar;
+
 
 	/**
 	 * Create the panel.
@@ -482,7 +492,6 @@ public class PanelUsuario extends JPanel {
 				}
 			}
 		});
-
 		btnListaFavoritos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (obtenerPeliculasFavoritas() == false) {
@@ -492,7 +501,24 @@ public class PanelUsuario extends JPanel {
 				}
 			}
 		});
-
+		btnPeliculasPendientes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (obtenerPeliculasPendientes() == false) {
+					JOptionPane.showMessageDialog(null, "No tiene ninguna pelÌcula en pendientes.");
+				} else {
+					peliculaAlquiladaAVer = false;
+				}
+			}
+		});
+		btnPeliculasVistas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (obtenerPeliculasVistas() == false) {
+					JOptionPane.showMessageDialog(null, "No ha visto todavÌa ninguna pelÌcula.");
+				}else {
+					peliculaAlquiladaAVer = true;
+				}
+			}
+		});
 		eventosBotonesOpciones();
 	}
 
@@ -688,59 +714,12 @@ public class PanelUsuario extends JPanel {
 				public void mouseClicked(MouseEvent e) {
 					// MouseEvent.BUTTON3 es el boton derecho
 					if (e.getButton() == MouseEvent.BUTTON3) {
-						// Preguntamos si quiere guardar la película
-						// seleccionada en favoritos:
-						int opcion = JOptionPane.showConfirmDialog(null, "¿Quieres guardar la película: "
-								+ arrayBotonesPelicula.get(myIndex).getPelicula().getNombre() + " en favoritos?");
-						if (opcion == 0) {
-							// Se guardará:
-							// Comprobamos primero que la película a guardar no
-							// esté ya en favoritos:
-							List<PeliculaFavorita> arrayPeliculasFavoritas = new ArrayList<PeliculaFavorita>();
-							try {
-								arrayPeliculasFavoritas = collector.obtenerPeliculasFavoritas(arrayPeliculasFavoritas);
-							} catch (RemoteException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-
-							boolean peliculaExisteEnFavoritos = false;
-							for (PeliculaFavorita peli : arrayPeliculasFavoritas) {
-								if (peli.getPelicula().getNombre()
-										.equals(arrayBotonesPelicula.get(myIndex).getPelicula().getNombre())
-										&& peli.getCliente().getNombre().equals(clienteActual.getNombre())
-										&& peli.getCliente().getApellidos().equals(clienteActual.getApellidos())) {
-									peliculaExisteEnFavoritos = true;
-								}
-							}
-
-							if (peliculaExisteEnFavoritos == false) {
-								// Guardamos entonces en favoritos:
-								try {
-									if (collector.setPeliculaFavorita(arrayBotonesPelicula.get(myIndex).getPelicula(),
-											clienteActual) == true) {
-										JOptionPane.showMessageDialog(null,
-												"¡Película gaurdada correctamente en favoritos!");
-									} else {
-										JOptionPane.showMessageDialog(null, "¡Error al guardar película en favoritos!",
-												"¡ERROR!", JOptionPane.ERROR_MESSAGE);
-									}
-								} catch (RemoteException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-							} else {
-								JOptionPane.showMessageDialog(null, "¡Esa película ya existe en tu lista de favoritos!",
-										"¡ERROR!", JOptionPane.ERROR_MESSAGE);
-							}
-
-						} else {
-							// No se guardará:
-							JOptionPane.showMessageDialog(null, "¡Operación cancelada!");
-						}
+						// Preguntamos si quiere guardar la pelÌcula
+						// seleccionada en favoritos o en pendientes de ver:
+						CrearPopMenu(e);
+						peliculaAGuardar = arrayBotonesPelicula.get(myIndex).getPelicula();
 					}
 				}
-
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					arrayBotones[myIndex].setBorder(new LineBorder(Color.ORANGE, 3));
@@ -1166,7 +1145,200 @@ public class PanelUsuario extends JPanel {
 
 		return algunaFavorita;
 	}
+	private boolean obtenerPeliculasPendientes() {
+		boolean correcto = false;
+		boolean algunaPendiente = false;
+		int arraySize = 0;
+		List<PeliculaPendiente> arrayPeliculasPendientes = new ArrayList<PeliculaPendiente>();
+		try {
+			arrayPeliculasPendientes = collector.obtenerPeliculasPendientes(arrayPeliculasPendientes);
+			correcto = true;
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
+		// Comprobamos cuantas PeliculasFavoritas tenemos:
+		for (int i = 0; i < arrayPeliculasPendientes.size(); i++) {
+			if (arrayPeliculasPendientes.get(i).getCliente().getNombre().equals(clienteActual.getNombre())
+					&& arrayPeliculasPendientes.get(i).getCliente().getApellidos()
+							.equals(clienteActual.getApellidos())) {
+				arraySize++;
+			}
+		}
+
+		int posArrayBotones = 0;
+		if (correcto == true) {
+			arrayBotones = new JToggleButton[arraySize];
+			arrayBotonesPelicula = new ArrayList<BotonPelicula>();
+			for (int i = 0; i < arrayPeliculasPendientes.size(); i++) {
+				if (arrayPeliculasPendientes.get(i).getCliente().getNombre().equals(clienteActual.getNombre())
+						&& arrayPeliculasPendientes.get(i).getCliente().getApellidos()
+								.equals(clienteActual.getApellidos())) {
+					ImageIcon icon = null;
+					icon = getImageIconPelicula(arrayPeliculasPendientes.get(i).getPelicula().getImage());
+
+					arrayBotones[posArrayBotones] = new JToggleButton(icon);
+					arrayBotones[posArrayBotones].setForeground(Color.GREEN);
+					arrayBotones[posArrayBotones].setContentAreaFilled(false);
+					arrayBotones[posArrayBotones].setBorder(new LineBorder(SystemColor.textHighlight));
+					arrayBotonesPelicula.add(new BotonPelicula(arrayPeliculasPendientes.get(i).getPelicula()));
+					posArrayBotones++;
+					algunaPendiente = true;
+				}
+			}
+		}
+		ultimoBotonAgregado = 0;
+		agregarBotonesPeliculasAlPanel(4);
+		eventosBotonesPeplicula();
+
+		return algunaPendiente;
+	}
+
+	public void guardarPeliculaEnFavoritos() {
+		int opcion = JOptionPane.showConfirmDialog(null,
+				"øQuieres guardar la pelÌcula: " + peliculaAGuardar.getNombre() + " en favoritos?");
+		if (opcion == 0) {
+			// Se guardar·:
+			// Comprobamos primero que la pelÌcula a guardar no
+			// estÈ ya en favoritos:
+			List<PeliculaFavorita> arrayPeliculasFavoritas = new ArrayList<PeliculaFavorita>();
+			try {
+				arrayPeliculasFavoritas = collector.obtenerPeliculasFavoritas(arrayPeliculasFavoritas);
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			boolean peliculaExisteEnFavoritos = false;
+			for (PeliculaFavorita peli : arrayPeliculasFavoritas) {
+				if (peli.getPelicula().getNombre().equals(peliculaAGuardar.getNombre())
+						&& peli.getCliente().getNombre().equals(clienteActual.getNombre())
+						&& peli.getCliente().getApellidos().equals(clienteActual.getApellidos())) {
+					peliculaExisteEnFavoritos = true;
+				}
+			}
+
+			if (peliculaExisteEnFavoritos == false) {
+				// Guardamos entonces en favoritos:
+				try {
+					if (collector.setPeliculaFavorita(peliculaAGuardar, clienteActual) == true) {
+						JOptionPane.showMessageDialog(null, "°PelÌcula gaurdada correctamente en favoritos!");
+					} else {
+						JOptionPane.showMessageDialog(null, "°Error al guardar pelÌcula en favoritos!", "°ERROR!",
+								JOptionPane.ERROR_MESSAGE);
+					}
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "°Esa pelÌcula ya existe en tu lista de favoritos!", "°ERROR!",
+						JOptionPane.ERROR_MESSAGE);
+			}
+
+		} else {
+			// No se guardar·:
+			JOptionPane.showMessageDialog(null, "°OperaciÛn cancelada!");
+		}
+	}
+
+	public void guardarPeliculaEnPendientes() {
+		int opcion = JOptionPane.showConfirmDialog(null,
+				"øQuieres guardar la pelÌcula: " + peliculaAGuardar.getNombre() + " en la lista de pendientes?");
+		if (opcion == 0) {
+			// Se guardar·:
+			// Comprobamos primero que la pelÌcula a guardar no
+			// estÈ ya en pendientes:
+			List<PeliculaPendiente> arrayPeliculasPendientes = new ArrayList<PeliculaPendiente>();
+			try {
+				arrayPeliculasPendientes = collector.obtenerPeliculasPendientes(arrayPeliculasPendientes);
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			boolean peliculaExisteEnPendiente = false;
+			for (PeliculaPendiente peli : arrayPeliculasPendientes) {
+				if (peli.getPelicula().getNombre().equals(peliculaAGuardar.getNombre())
+						&& peli.getCliente().getNombre().equals(clienteActual.getNombre())
+						&& peli.getCliente().getApellidos().equals(clienteActual.getApellidos())) {
+					peliculaExisteEnPendiente = true;
+				}
+			}
+
+			if (peliculaExisteEnPendiente == false) {
+				// Guardamos entonces en pendientes:
+				try {
+					if (collector.setPeliculaPendiente(peliculaAGuardar, clienteActual) == true) {
+						JOptionPane.showMessageDialog(null, "°PelÌcula gaurdada correctamente en pendientes!");
+					} else {
+						JOptionPane.showMessageDialog(null, "°Error al guardar pelÌcula en pendientes!", "°ERROR!",
+								JOptionPane.ERROR_MESSAGE);
+					}
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "°Esa pelÌcula ya existe en tu lista de pendientes!", "°ERROR!",
+						JOptionPane.ERROR_MESSAGE);
+			}
+
+		} else {
+			// No se guardar·:
+			JOptionPane.showMessageDialog(null, "°OperaciÛn cancelada!");
+		}
+	}
+	private boolean obtenerPeliculasVistas() {
+		boolean correcto = false;
+		boolean algunaVista = false;
+		int arraySize = 0;
+		List<PeliculaVista> arrayPeliculasVistas = new ArrayList<PeliculaVista>();
+		try {
+			arrayPeliculasVistas = collector.obtenerPeliculasVistas(arrayPeliculasVistas);
+			correcto = true;
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// Comprobamos cuantas PeliculasFavoritas tenemos:
+		for (int i = 0; i < arrayPeliculasVistas.size(); i++) {
+			if (arrayPeliculasVistas.get(i).getCliente().getNombre().equals(clienteActual.getNombre())
+					&& arrayPeliculasVistas.get(i).getCliente().getApellidos().equals(clienteActual.getApellidos())) {
+				arraySize++;
+			}
+		}
+
+		int posArrayBotones = 0;
+		if (correcto == true) {
+			arrayBotones = new JToggleButton[arraySize];
+			arrayBotonesPelicula = new ArrayList<BotonPelicula>();
+			for (int i = 0; i < arrayPeliculasVistas.size(); i++) {
+				if (arrayPeliculasVistas.get(i).getCliente().getNombre().equals(clienteActual.getNombre())
+						&& arrayPeliculasVistas.get(i).getCliente().getApellidos()
+								.equals(clienteActual.getApellidos())) {
+					ImageIcon icon = null;
+					icon = getImageIconPelicula(arrayPeliculasVistas.get(i).getPelicula().getImage());
+
+					arrayBotones[posArrayBotones] = new JToggleButton(icon);
+					arrayBotones[posArrayBotones].setForeground(Color.GREEN);
+					arrayBotones[posArrayBotones].setContentAreaFilled(false);
+					arrayBotones[posArrayBotones].setBorder(new LineBorder(SystemColor.textHighlight));
+					arrayBotonesPelicula.add(new BotonPelicula(arrayPeliculasVistas.get(i).getPelicula()));
+					posArrayBotones++;
+					algunaVista = true;
+				}
+			}
+		}
+		ultimoBotonAgregado = 0;
+		agregarBotonesPeliculasAlPanel(4);
+		eventosBotonesPeplicula();
+
+		return algunaVista;
+	}
+	
 	public void actualizarPanelUsuariosAmigos() {
 		pau = new PanelAmigosUsuarios(collector, "USUARIOS", usuarioActual);
 		scrollPane_1.setViewportView(pau);
@@ -1210,9 +1382,53 @@ public class PanelUsuario extends JPanel {
 			this.pelicula = pelicula;
 		}
 	}
-
-	private void updatePanel() {
+		private void updatePanel() {
 		this.repaint();
 		this.validate();
 	}
+		
+		// Define ActionListener:
+		// Clase para las escuchas del Popup:
+		public class PopUpActionListener implements ActionListener {
+
+			public void actionPerformed(ActionEvent actionEvent) {
+				// Obtenemos lo que ha elegido el cliente:
+				String opcion = actionEvent.getActionCommand();
+
+				// Comprobamos opciones:
+				if (opcion.equals("Guardar en favoritos.")) {
+					guardarPeliculaEnFavoritos();
+				} else if (opcion.equals("Guardar como pendiente de ver.")) {
+					guardarPeliculaEnPendientes();
+				}
+			}
+		}
+
+		/*
+		 * MÈtodo para crear un PopMen˙:
+		 */
+		private void CrearPopMenu(MouseEvent evt) {
+			// AÒadimos items al PopMun˙:
+			Pmenu = new JPopupMenu();
+			// Creamos una nueva instancia
+			menuItem = new JMenuItem("Guardar en favoritos.");
+			// Creamos nuevo item
+			Pmenu.addSeparator();
+			// AÒadimos separador
+			menuItem.addActionListener(actionListenerPOP);
+			// AÒadimos escucha al item
+			Pmenu.add(menuItem);
+			// AÒadimos item al men˙
+			menuItem = new JMenuItem("Guardar como pendiente de ver.");
+			// Creamos nuevo item
+			Pmenu.addSeparator();
+			// AÒadimos separador
+			menuItem.addActionListener(actionListenerPOP);
+			// AÒadimos escucha al item
+			Pmenu.add(menuItem);
+			// AÒadimos item al men˙
+			Pmenu.show(evt.getComponent(), evt.getX(), evt.getY());
+			// Mostramos men˙ en la pos 0,0 del ratÛn
+		}
+
 }

@@ -32,6 +32,7 @@ import videoclub.server.jdo.Mensaje;
 import videoclub.server.jdo.Novedad;
 import videoclub.server.jdo.Pelicula;
 import videoclub.server.jdo.PeliculaFavorita;
+import videoclub.server.jdo.PeliculaPendiente;
 import videoclub.server.jdo.PeliculaVista;
 import videoclub.server.jdo.Recomendacion;
 import videoclub.server.jdo.Usuario;
@@ -887,6 +888,101 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 			}
 		}
 		return arrayPeliculasFavoritas;
+	}
+	
+	@Override
+	public List<PeliculaPendiente> obtenerPeliculasPendientes(List<PeliculaPendiente> arrayPeliculasPendientes)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		try {
+			tx.begin();
+
+			ServerFrame.textArea.append("Obteniendo peliculas pendientes de la BD...\n");
+			@SuppressWarnings("unchecked")
+			Query<PeliculaPendiente> q = pm.newQuery("SELECT FROM " + PeliculaPendiente.class.getName());
+			List<PeliculaPendiente> peliculasPendientes = (List<PeliculaPendiente>) q.executeList();
+			for (PeliculaPendiente peliculaPendiente : peliculasPendientes) {
+				// Vamos aÒadiendo las pelÌculas al array pasado:
+				arrayPeliculasPendientes.add(peliculaPendiente);
+			}
+			ServerFrame.textArea.append("Peliculas pendientes obtenenidas ! :D\n");
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return arrayPeliculasPendientes;
+	}
+
+	@Override
+	public boolean setPeliculaPendiente(Pelicula pelicula, Cliente cliente) throws RemoteException {
+		// TODO Auto-generated method stub
+		boolean peliculaPendienteGuardada = false;
+		try {
+			tx.begin();
+
+			Cliente _cliente = null;
+			Pelicula _pelicula = null;
+
+			@SuppressWarnings("unchecked")
+			Query<Cliente> q = pm.newQuery("SELECT FROM " + Cliente.class.getName());
+			List<Cliente> clientes = (List<Cliente>) q.executeList();
+			for (Cliente c : clientes) {
+				if (c.getNombre().equals(cliente.getNombre()) && c.getApellidos().equals(cliente.getApellidos())) {
+					_cliente = c;
+					break;
+				}
+			}
+
+			@SuppressWarnings("unchecked")
+			Query<Pelicula> q1 = pm.newQuery("SELECT FROM " + Pelicula.class.getName());
+			List<Pelicula> peliculas = (List<Pelicula>) q1.executeList();
+			for (Pelicula pel : peliculas) {
+				if (pel.getNombre().equals(pelicula.getNombre())) {
+					_pelicula = pel;
+					break;
+				}
+			}
+
+			ServerFrame.textArea.append("Creando nueva pelicula pendiente...\n");
+			PeliculaPendiente peliculaFavorita = new PeliculaPendiente(_pelicula, _cliente);
+			pm.makePersistent(peliculaFavorita);
+			ServerFrame.textArea.append("Pelicula pendiente creada exitosamente!\n");
+
+			tx.commit();
+			peliculaPendienteGuardada = true;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return peliculaPendienteGuardada;
+	}
+	
+	@Override
+	public List<PeliculaVista> obtenerPeliculasVistas(List<PeliculaVista> arrayPeliculasVistas) throws RemoteException {
+		// TODO Auto-generated method stub
+		try {
+			tx.begin();
+
+			ServerFrame.textArea.append("Obteniendo peliculas vistas de la BD...\n");
+			// Sacamos todas las categorias de la BD:
+			@SuppressWarnings("unchecked")
+			Query<PeliculaVista> q = pm.newQuery("SELECT FROM " + PeliculaVista.class.getName());
+			List<PeliculaVista> peliculasVistas = (List<PeliculaVista>) q.executeList();
+			for (PeliculaVista peliculaVista : peliculasVistas) {
+				// Vamos aÒadiendo las pelÌculas al array pasado:
+				arrayPeliculasVistas.add(peliculaVista);
+			}
+			ServerFrame.textArea.append("Peliculas vistas obtenenidas ! :D\n");
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return arrayPeliculasVistas;
 	}
 
 	@Override

@@ -10,6 +10,9 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -28,6 +31,7 @@ import videoclub.server.gui.ICollector;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Pelicula;
+import videoclub.server.jdo.PeliculaVista;
 
 /**
  * Panel para ver los detalles de las películas:
@@ -223,9 +227,10 @@ public class PanelPelicula extends JPanel {
 								"C:\\SoftLabs\\SPQ_GitHub\\Peliculas\\Completas\\" + peliculaAVer.getNombre() + ".mp4");
 						if (file.exists()) {
 							new ClientPeliculaFrame(peliculaAVer, false).setVisible(true);
+							guardarPeliculaComoVista();                                                                           
 						} else {
 							JOptionPane.showMessageDialog(null,
-									"Lo sentimos, ahora mismo no tenemos actualizada la pelÌcula.");
+									"Lo sentimos, ahora mismo no tenemos actualizada la pelÃcula.");
 						}
 					}
 				});
@@ -296,7 +301,44 @@ public class PanelPelicula extends JPanel {
 		}
 		return dev;
 	}
+	/**
+	 * MÈtodo para guardar la pelÌcula que se est· viendo en la base de datos como
+	 * pelÌcula ya vista:
+	 */
+	private void guardarPeliculaComoVista() {
+		// Se guardar·:
+		// Comprobamos primero que la pelÌcula a guardar no
+		// estÈ ya en la lista:
+		List<PeliculaVista> arrayPeliculasVistas = new ArrayList<PeliculaVista>();
+		try {
+			arrayPeliculasVistas = collector.obtenerPeliculasVistas(arrayPeliculasVistas);
+		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
+		boolean peliculaExisteEnFavoritos = false;
+		for (PeliculaVista peli : arrayPeliculasVistas) {
+			if (peli.getPelicula().getNombre().equals(peliculaAVer.getNombre())
+					&& peli.getCliente().getNombre().equals(clienteActual.getNombre())
+					&& peli.getCliente().getApellidos().equals(clienteActual.getApellidos())) {
+				peliculaExisteEnFavoritos = true;
+			}
+		}
+
+		if (peliculaExisteEnFavoritos == false) {
+			try {
+				if (collector.setPeliculaVista(peliculaAVer, clienteActual) == false) {
+					JOptionPane.showMessageDialog(null, "°No se ha podido guardar la pelÌcula en vistas!", "°ERROR!",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+	}
+	
 	/**
 	 * Método para pasar bytes a string:
 	 * 
