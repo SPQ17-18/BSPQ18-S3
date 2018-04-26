@@ -30,6 +30,7 @@ import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Inventario;
 import videoclub.server.jdo.Mensaje;
 import videoclub.server.jdo.Novedad;
+import videoclub.server.jdo.Opinion;
 import videoclub.server.jdo.Pelicula;
 import videoclub.server.jdo.PeliculaFavorita;
 import videoclub.server.jdo.PeliculaPendiente;
@@ -983,6 +984,74 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 			}
 		}
 		return arrayPeliculasVistas;
+	}
+	
+	@Override
+	public List<Opinion> obtenerOpiniones(List<Opinion> arrayOpiniones) throws RemoteException {
+		// TODO Auto-generated method stub
+		try {
+			tx.begin();
+
+			ServerFrame.textArea.append("Obteniendo opiniones de la BD...\n");
+			@SuppressWarnings("unchecked")
+			Query<Opinion> q = pm.newQuery("SELECT FROM " + Opinion.class.getName());
+			List<Opinion> opiniones = (List<Opinion>) q.executeList();
+			for (Opinion opi : opiniones) {
+				arrayOpiniones.add(opi);
+			}
+			ServerFrame.textArea.append("Opiniones obtenenidas ! :D\n");
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return arrayOpiniones;
+	}
+
+	@Override
+	public boolean setOpinion(Pelicula pelicula, Usuario user, String opinion) throws RemoteException {
+		// TODO Auto-generated method stub
+		boolean opinionGuardada = false;
+		try {
+			tx.begin();
+
+			Usuario _usuario = null;
+			Pelicula _pelicula = null;
+
+			@SuppressWarnings("unchecked")
+			Query<Usuario> q = pm.newQuery("SELECT FROM " + Usuario.class.getName());
+			List<Usuario> usuarios = (List<Usuario>) q.executeList();
+			for (Usuario u : usuarios) {
+				if (u.getNombreUsuario().equals(user.getNombreUsuario())) {
+					_usuario = u;
+					break;
+				}
+			}
+
+			@SuppressWarnings("unchecked")
+			Query<Pelicula> q1 = pm.newQuery("SELECT FROM " + Pelicula.class.getName());
+			List<Pelicula> peliculas = (List<Pelicula>) q1.executeList();
+			for (Pelicula pel : peliculas) {
+				if (pel.getNombre().equals(pelicula.getNombre())) {
+					_pelicula = pel;
+					break;
+				}
+			}
+
+			ServerFrame.textArea.append("Creando nueva opinion...\n");
+			Opinion opinar = new Opinion(_pelicula, _usuario, opinion);
+			pm.makePersistent(opinar);
+			ServerFrame.textArea.append("Opinion creada exitosamente!\n");
+
+			tx.commit();
+			opinionGuardada = true;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return opinionGuardada;
 	}
 
 	@Override

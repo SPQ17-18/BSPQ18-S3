@@ -26,12 +26,14 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import videoclub.client.gui.ventanas.ClientAlquilerFrame;
+import videoclub.client.gui.ventanas.ClientOpinionesFrame;
 import videoclub.client.gui.ventanas.ClientPeliculaFrame;
 import videoclub.server.gui.ICollector;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Pelicula;
 import videoclub.server.jdo.PeliculaVista;
+import videoclub.server.jdo.Usuario;
 
 /**
  * Panel para ver los detalles de las películas:
@@ -66,6 +68,8 @@ public class PanelPelicula extends JPanel {
 	private boolean peliculaAlquiladaAVer;
 	private JButton btnverPelculaAhora;
 	private JButton btnTrailer;
+	private JButton btnVerLasOpiniones;
+	private JButton btnOpinarPelcula;
 
 	/**
 	 * Create the panel.
@@ -103,6 +107,8 @@ public class PanelPelicula extends JPanel {
 		textPaneDescripcion = new JTextPane();
 		btnverPelculaAhora = new JButton("¡VER PELÍCULA AHORA¡");
 		btnTrailer = new JButton("TRAILER");
+		btnOpinarPelcula = new JButton("Opinar pelÌcula");
+		btnVerLasOpiniones = new JButton("Ver las opiniones de la pelÌcula");
 	}
 
 	private void añadir() {
@@ -125,10 +131,18 @@ public class PanelPelicula extends JPanel {
 		add(scrollPane);
 		add(btnverPelculaAhora);
 		add(btnTrailer);
+		add(btnOpinarPelcula);
+		add(btnVerLasOpiniones);
 		scrollPane.setViewportView(textPaneDescripcion);
 	}
 
 	private void componentes() {
+		btnOpinarPelcula.setForeground(Color.GREEN);
+		btnOpinarPelcula.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnOpinarPelcula.setBounds(207, 91, 265, 25);
+		btnVerLasOpiniones.setForeground(Color.GREEN);
+		btnVerLasOpiniones.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnVerLasOpiniones.setBounds(484, 91, 532, 25);
 		btnTrailer.setForeground(Color.CYAN);
 		btnTrailer.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnTrailer.setContentAreaFilled(false);
@@ -204,7 +218,7 @@ public class PanelPelicula extends JPanel {
 		label_5.setFont(new Font("Tahoma", Font.BOLD, 15));
 		label_5.setBorder(new LineBorder(new Color(255, 0, 0)));
 		label_5.setBounds(463, 0, 140, 34);
-		scrollPane.setBounds(209, 91, 806, 186);
+		scrollPane.setBounds(209, 126, 806, 151);
 		textPaneDescripcion.setForeground(Color.WHITE);
 		textPaneDescripcion.setEditable(false);
 		textPaneDescripcion.setBorder(new LineBorder(SystemColor.textHighlight));
@@ -245,6 +259,23 @@ public class PanelPelicula extends JPanel {
 				} else {
 					JOptionPane.showMessageDialog(null, "Lo sentimos, ahora mismo no tenemos actualizada la pelÌcula.");
 				}
+			}
+		});
+		btnOpinarPelcula.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Preguntamos al usuario que escriba su opiniÛn:
+				// Solo se guardar· la opiniÛn se no es nula:
+				String mensaje = JOptionPane.showInputDialog(null, "Escriba su opiniÛn: ",
+						"OpiniÛn del cliente: " + clienteActual.getNombre(), JOptionPane.QUESTION_MESSAGE);
+				if (mensaje != null) {
+					guardarOpinionDePelicula(mensaje);
+				}
+			}
+		});
+		btnVerLasOpiniones.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ClientOpinionesFrame clientOF = new ClientOpinionesFrame(collector, peliculaAVer);
+				clientOF.setVisible(true);
 			}
 		});
 	}
@@ -388,6 +419,42 @@ public class PanelPelicula extends JPanel {
 			btnverPelculaAhora.setVisible(false);
 
 			mostrarPeliculaAAlquilar();
+		}
+	}
+	
+	/**
+	 * MÈtodo para guardar la opiniÛn de la pelÌcula ya vista:
+	 */
+	private void guardarOpinionDePelicula(String opinion) {
+
+		// Primero sacamos los usuarios de la BD:
+		List<Usuario> arrayUsuarios = new ArrayList<Usuario>();
+		try {
+			arrayUsuarios = collector.obtenerUsuarios(arrayUsuarios);
+		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		// Sacamos el usuario que tenga el mismo cliente que ela ctual:
+		Usuario user = null;
+
+		for (Usuario us : arrayUsuarios) {
+			if (us.getCliente().getNombre().equals(clienteActual.getNombre())
+					&& us.getCliente().getApellidos().equals(clienteActual.getApellidos())) {
+				user = us; // Ya tenemos a nuestro usuario.
+			}
+		}
+
+		// Ahora ya podemos guardar la opiniÛn:
+		try {
+			if (collector.setOpinion(peliculaAVer, user, opinion) == false) {
+				JOptionPane.showMessageDialog(null, "°No se ha podido guardar su opiniÛn!", "°ERROR!",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	}
 }
