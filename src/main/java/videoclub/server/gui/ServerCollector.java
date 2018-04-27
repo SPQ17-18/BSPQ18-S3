@@ -29,12 +29,14 @@ import videoclub.server.jdo.Direccion;
 import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Inventario;
 import videoclub.server.jdo.Mensaje;
+import videoclub.server.jdo.Noticia;
 import videoclub.server.jdo.Novedad;
 import videoclub.server.jdo.Opinion;
 import videoclub.server.jdo.Pelicula;
 import videoclub.server.jdo.PeliculaFavorita;
 import videoclub.server.jdo.PeliculaPendiente;
 import videoclub.server.jdo.PeliculaVista;
+import videoclub.server.jdo.ProximoEstreno;
 import videoclub.server.jdo.Recomendacion;
 import videoclub.server.jdo.Usuario;
 
@@ -1052,6 +1054,97 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 			}
 		}
 		return opinionGuardada;
+	}
+	
+	@Override
+	public List<Noticia> obtenerNoticias(List<Noticia> arrayNoticias) throws RemoteException {
+		// TODO Auto-generated method stub
+		try {
+			tx.begin();
+
+			ServerFrame.textArea.append("Obteniendo noticias de la BD...\n");
+			@SuppressWarnings("unchecked")
+			Query<Noticia> q = pm.newQuery("SELECT FROM " + Noticia.class.getName());
+			List<Noticia> noticias = (List<Noticia>) q.executeList();
+			for (Noticia noticia : noticias) {
+				arrayNoticias.add(noticia);
+			}
+			ServerFrame.textArea.append("Noticias obtenenidas ! :D\n");
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return arrayNoticias;
+	}
+
+	@Override
+	public boolean setNoticia(String noticia) throws RemoteException {
+		// TODO Auto-generated method stub
+		boolean noticiaGuardada = false;
+		try {
+			tx.begin();
+
+			ServerFrame.textArea.append("Creando nueva noticia...\n");
+			Noticia not = new Noticia(noticia);
+			pm.makePersistent(not);
+			ServerFrame.textArea.append("Noticia creada exitosamente!\n");
+
+			tx.commit();
+			noticiaGuardada = true;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return noticiaGuardada;
+	}
+
+	@Override
+	public List<ProximoEstreno> obtenerProximosEstrenos(List<ProximoEstreno> arrayProximosEstrenos)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		try {
+			tx.begin();
+
+			ServerFrame.textArea.append("Obteniendo proximos estrenos de la BD...\n");
+			@SuppressWarnings("unchecked")
+			Query<ProximoEstreno> q = pm.newQuery("SELECT FROM " + ProximoEstreno.class.getName());
+			List<ProximoEstreno> estrenos = (List<ProximoEstreno>) q.executeList();
+			for (ProximoEstreno estreno : estrenos) {
+				arrayProximosEstrenos.add(estreno);
+			}
+			ServerFrame.textArea.append("Proximos estrenos obtenenidas ! :D\n");
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return arrayProximosEstrenos;
+	}
+
+	@Override
+	public boolean setProximoEstreno(String pelicula) throws RemoteException {
+		// TODO Auto-generated method stub
+		boolean estrenoGuardado = false;
+		try {
+			tx.begin();
+
+			ServerFrame.textArea.append("Creando nuevo estreno...\n");
+			ProximoEstreno estreno = new ProximoEstreno(pelicula);
+			pm.makePersistent(estreno);
+			ServerFrame.textArea.append("Proximo estreno creado exitosamente!\n");
+
+			tx.commit();
+			estrenoGuardado = true;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return estrenoGuardado;
 	}
 
 	@Override

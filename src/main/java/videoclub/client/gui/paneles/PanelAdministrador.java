@@ -1,7 +1,6 @@
 package videoclub.client.gui.paneles;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.HeadlessException;
 import java.awt.SystemColor;
@@ -24,6 +23,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -33,12 +33,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
 import videoclub.client.utiles.Resaltador;
 import videoclub.server.gui.ICollector;
@@ -46,7 +43,6 @@ import videoclub.server.jdo.Alquiler;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Inventario;
-import javax.swing.JCheckBox;
 
 public class PanelAdministrador extends JPanel {
 
@@ -92,7 +88,9 @@ public class PanelAdministrador extends JPanel {
 	private int alturaInicialTabla = 146;
 	private int alturaFinalTabla = 640;
 	private boolean isExpanded = false;
-
+	private JButton btnAadirNuevaNoticia;
+	private JButton btnAadirNuevoPrximo;
+	
 	/**
 	 * Create the panel.
 	 */
@@ -111,6 +109,8 @@ public class PanelAdministrador extends JPanel {
 	}
 
 	private void inicializar() {
+		btnAadirNuevoPrximo = new JButton("Añadir nuevo próximo estreno");
+		btnAadirNuevaNoticia = new JButton("Añadir nueva noticia");
 		btnMostrarInventarioDe = new JButton("Mostrar inventario de pel\u00EDculas");
 		btnMostrarAlquileresDe = new JButton("Mostrar alquileres de pel\u00EDculas");
 		btnMostrarClientes = new JButton("Mostrar clientes");
@@ -136,6 +136,10 @@ public class PanelAdministrador extends JPanel {
 	}
 
 	private void componentes() {
+		btnAadirNuevaNoticia.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnAadirNuevaNoticia.setBounds(637, 13, 185, 41);
+		btnAadirNuevoPrximo.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnAadirNuevoPrximo.setBounds(834, 13, 234, 41);
 		btnMostrarInventarioDe.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnMostrarInventarioDe.setBounds(12, 13, 232, 41);
 		btnMostrarAlquileresDe.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -232,6 +236,8 @@ public class PanelAdministrador extends JPanel {
 		add(comboBoxCantidad);
 		add(scrollPane_3);
 		add(chckbxNovedad);
+		add(btnAadirNuevaNoticia);
+		add(btnAadirNuevoPrximo);
 
 		scrollPane_3.setViewportView(textPaneMostrarDescripcion);
 		scrollPane.setViewportView(table);
@@ -371,6 +377,42 @@ public class PanelAdministrador extends JPanel {
 						e1.printStackTrace();
 					}
 
+				}
+			}
+		});
+		btnAadirNuevaNoticia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String noticia = JOptionPane.showInputDialog("Inserte una nueva noticia: ");
+				if (noticia != null) {
+					try {
+						if (collector.setNoticia(noticia) != false) {
+							JOptionPane.showMessageDialog(null, "Noticia guardada con éxito.");
+						} else {
+							JOptionPane.showMessageDialog(null, "Error al guardar noticia.", "ERRRO!",
+									JOptionPane.ERROR_MESSAGE);
+						}
+					} catch (RemoteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		btnAadirNuevoPrximo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String estreno = JOptionPane.showInputDialog("Inserte un nuevo estreno: ");
+				if (estreno != null) {
+					try {
+						if (collector.setProximoEstreno(estreno) != false) {
+							JOptionPane.showMessageDialog(null, "Estreno guardado con éxito.");
+						} else {
+							JOptionPane.showMessageDialog(null, "Error al guardar estreno.", "ERRRO!",
+									JOptionPane.ERROR_MESSAGE);
+						}
+					} catch (RemoteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
 		});

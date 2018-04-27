@@ -101,12 +101,13 @@ public class PanelUsuario extends JPanel {
 	public PanelAmigosUsuarios pau;
 	private UrlToImage imageIconBotonAnterio;
 	private UrlToImage imageIconBotonSiguiente;
-	
+
 	private ActionListener actionListenerPOP = new PopUpActionListener();
 	private JPopupMenu Pmenu;
 	private JMenuItem menuItem;
 	public Pelicula peliculaAGuardar;
-
+	private PanelCalendario PC;
+	private JButton btnCalendarioNoticias;
 
 	/**
 	 * Create the panel.
@@ -136,6 +137,7 @@ public class PanelUsuario extends JPanel {
 
 	private void inicializar() {
 		// Numero de filas, Numero de columnas, Separaciones h y v:
+		btnCalendarioNoticias = new JButton("Calendario - Noticias - Próximos estrenos");
 		gl_panel = new GridLayout(1, 5, 5, 5);
 		Anterior = new JButton();
 		Siguiente = new JButton();
@@ -171,6 +173,9 @@ public class PanelUsuario extends JPanel {
 	}
 
 	private void componentes() {
+		btnCalendarioNoticias.setForeground(Color.CYAN);
+		btnCalendarioNoticias.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnCalendarioNoticias.setBounds(503, 13, 603, 29);
 		Anterior.setBorderPainted(false);
 		Siguiente.setBorderPainted(false);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -315,6 +320,7 @@ public class PanelUsuario extends JPanel {
 		add(scrollPane_1);
 		add(Anterior);
 		add(Siguiente);
+		add(btnCalendarioNoticias);
 
 		panelOpciones.add(lblOpciones);
 		panelOpciones.add(btnListaPeliculas);
@@ -514,9 +520,15 @@ public class PanelUsuario extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (obtenerPeliculasVistas() == false) {
 					JOptionPane.showMessageDialog(null, "No ha visto todavÌa ninguna pelÌcula.");
-				}else {
+				} else {
 					peliculaAlquiladaAVer = true;
 				}
+			}
+		});
+		btnCalendarioNoticias.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelCalendario PC = new PanelCalendario(collector);
+				scrollContenedorPaneles.setViewportView(PC);
 			}
 		});
 		eventosBotonesOpciones();
@@ -525,8 +537,8 @@ public class PanelUsuario extends JPanel {
 	private int indexBotonesOpciones = 0;
 
 	/**
-	 * Método para agrupar todos los botones de las opciones con un addMouseListener
-	 * único:
+	 * Método para agrupar todos los botones de las opciones con un
+	 * addMouseListener único:
 	 */
 	private void eventosBotonesOpciones() {
 		for (indexBotonesOpciones = 0; indexBotonesOpciones < arrayBotonesOpciones.size(); indexBotonesOpciones++) {
@@ -557,8 +569,8 @@ public class PanelUsuario extends JPanel {
 	private int botonesMaximosPorPantalla = 0;
 
 	/**
-	 * Método que se va a encargar de agregar soloamente una cantidad de películas
-	 * al panel automáticamente:
+	 * Método que se va a encargar de agregar soloamente una cantidad de
+	 * películas al panel automáticamente:
 	 * 
 	 */
 	private void agregarBotonesPeliculasAlPanel(int maximosPorPantalla) {
@@ -631,8 +643,8 @@ public class PanelUsuario extends JPanel {
 	}
 
 	/**
-	 * Método para cargar todas las películas en el gridLayout creando botones para
-	 * cada una:
+	 * Método para cargar todas las películas en el gridLayout creando botones
+	 * para cada una:
 	 */
 	private void agregarPeliculasAlPanel() {
 		arrayPeliculas = new ArrayList<Pelicula>();
@@ -720,6 +732,7 @@ public class PanelUsuario extends JPanel {
 						peliculaAGuardar = arrayBotonesPelicula.get(myIndex).getPelicula();
 					}
 				}
+
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					arrayBotones[myIndex].setBorder(new LineBorder(Color.ORANGE, 3));
@@ -930,8 +943,8 @@ public class PanelUsuario extends JPanel {
 	 * Método que busca los nombres de las peliculas a partir de una serie de
 	 * caracteres, aunque el nombre no esté del todo puesto el buscador la
 	 * encontrará, o las encontrará, se va a buscar todos los string que sean
-	 * pareceidos a la búsqueda que hayas puesto, eso si no lo has escrito == a una
-	 * de las peliculas que exista!
+	 * pareceidos a la búsqueda que hayas puesto, eso si no lo has escrito == a
+	 * una de las peliculas que exista!
 	 */
 	private void buscarNombresPeliculasAproximadamente() {
 		arrayNombresPeliculasEncontradas = new ArrayList<String>();
@@ -1145,6 +1158,7 @@ public class PanelUsuario extends JPanel {
 
 		return algunaFavorita;
 	}
+
 	private boolean obtenerPeliculasPendientes() {
 		boolean correcto = false;
 		boolean algunaPendiente = false;
@@ -1290,6 +1304,7 @@ public class PanelUsuario extends JPanel {
 			JOptionPane.showMessageDialog(null, "°OperaciÛn cancelada!");
 		}
 	}
+
 	private boolean obtenerPeliculasVistas() {
 		boolean correcto = false;
 		boolean algunaVista = false;
@@ -1338,7 +1353,7 @@ public class PanelUsuario extends JPanel {
 
 		return algunaVista;
 	}
-	
+
 	public void actualizarPanelUsuariosAmigos() {
 		pau = new PanelAmigosUsuarios(collector, "USUARIOS", usuarioActual);
 		scrollPane_1.setViewportView(pau);
@@ -1382,53 +1397,54 @@ public class PanelUsuario extends JPanel {
 			this.pelicula = pelicula;
 		}
 	}
-		private void updatePanel() {
+
+	private void updatePanel() {
 		this.repaint();
 		this.validate();
 	}
-		
-		// Define ActionListener:
-		// Clase para las escuchas del Popup:
-		public class PopUpActionListener implements ActionListener {
 
-			public void actionPerformed(ActionEvent actionEvent) {
-				// Obtenemos lo que ha elegido el cliente:
-				String opcion = actionEvent.getActionCommand();
+	// Define ActionListener:
+	// Clase para las escuchas del Popup:
+	public class PopUpActionListener implements ActionListener {
 
-				// Comprobamos opciones:
-				if (opcion.equals("Guardar en favoritos.")) {
-					guardarPeliculaEnFavoritos();
-				} else if (opcion.equals("Guardar como pendiente de ver.")) {
-					guardarPeliculaEnPendientes();
-				}
+		public void actionPerformed(ActionEvent actionEvent) {
+			// Obtenemos lo que ha elegido el cliente:
+			String opcion = actionEvent.getActionCommand();
+
+			// Comprobamos opciones:
+			if (opcion.equals("Guardar en favoritos.")) {
+				guardarPeliculaEnFavoritos();
+			} else if (opcion.equals("Guardar como pendiente de ver.")) {
+				guardarPeliculaEnPendientes();
 			}
 		}
+	}
 
-		/*
-		 * MÈtodo para crear un PopMen˙:
-		 */
-		private void CrearPopMenu(MouseEvent evt) {
-			// AÒadimos items al PopMun˙:
-			Pmenu = new JPopupMenu();
-			// Creamos una nueva instancia
-			menuItem = new JMenuItem("Guardar en favoritos.");
-			// Creamos nuevo item
-			Pmenu.addSeparator();
-			// AÒadimos separador
-			menuItem.addActionListener(actionListenerPOP);
-			// AÒadimos escucha al item
-			Pmenu.add(menuItem);
-			// AÒadimos item al men˙
-			menuItem = new JMenuItem("Guardar como pendiente de ver.");
-			// Creamos nuevo item
-			Pmenu.addSeparator();
-			// AÒadimos separador
-			menuItem.addActionListener(actionListenerPOP);
-			// AÒadimos escucha al item
-			Pmenu.add(menuItem);
-			// AÒadimos item al men˙
-			Pmenu.show(evt.getComponent(), evt.getX(), evt.getY());
-			// Mostramos men˙ en la pos 0,0 del ratÛn
-		}
+	/*
+	 * MÈtodo para crear un PopMen˙:
+	 */
+	private void CrearPopMenu(MouseEvent evt) {
+		// AÒadimos items al PopMun˙:
+		Pmenu = new JPopupMenu();
+		// Creamos una nueva instancia
+		menuItem = new JMenuItem("Guardar en favoritos.");
+		// Creamos nuevo item
+		Pmenu.addSeparator();
+		// AÒadimos separador
+		menuItem.addActionListener(actionListenerPOP);
+		// AÒadimos escucha al item
+		Pmenu.add(menuItem);
+		// AÒadimos item al men˙
+		menuItem = new JMenuItem("Guardar como pendiente de ver.");
+		// Creamos nuevo item
+		Pmenu.addSeparator();
+		// AÒadimos separador
+		menuItem.addActionListener(actionListenerPOP);
+		// AÒadimos escucha al item
+		Pmenu.add(menuItem);
+		// AÒadimos item al men˙
+		Pmenu.show(evt.getComponent(), evt.getX(), evt.getY());
+		// Mostramos men˙ en la pos 0,0 del ratÛn
+	}
 
 }

@@ -12,15 +12,21 @@ import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Inventario;
 import videoclub.server.jdo.Mensaje;
+import videoclub.server.jdo.Noticia;
 import videoclub.server.jdo.Opinion;
 import videoclub.server.jdo.Pelicula;
 import videoclub.server.jdo.PeliculaFavorita;
 import videoclub.server.jdo.PeliculaPendiente;
 import videoclub.server.jdo.PeliculaVista;
+import videoclub.server.jdo.ProximoEstreno;
 import videoclub.server.jdo.Recomendacion;
 import videoclub.server.jdo.Usuario;
 
 public interface ICollector extends IRemoteObservable {
+	List<ProximoEstreno> obtenerProximosEstrenos(List<ProximoEstreno> arrayProximosEstrenos) throws RemoteException;
+	boolean setProximoEstreno(String pelicula) throws RemoteException;
+	List<Noticia> obtenerNoticias(List<Noticia> arrayNoticias) throws RemoteException;
+	boolean setNoticia(String noticia) throws RemoteException;
 	List<Opinion> obtenerOpiniones(List<Opinion> arrayOpiniones) throws RemoteException;
 	boolean setOpinion(Pelicula pelicula, Usuario user, String opinion) throws RemoteException;
 	List<PeliculaVista> obtenerPeliculasVistas(List<PeliculaVista> arrayPeliculasVistas) throws RemoteException;
