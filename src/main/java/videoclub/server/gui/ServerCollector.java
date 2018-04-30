@@ -49,11 +49,19 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 	private Cliente cliente;
 	private Usuario usuario;
 	private List<Usuario> usuariosConectados = new ArrayList<Usuario>();
+	private String datanucleusProperties = "datanucleus.properties";
 
-	public ServerCollector() throws RemoteException {
+	public ServerCollector(boolean isTest) throws RemoteException {
 		super();
 		this.remoteObservable = new RemoteObservable();
-		PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
+
+		if (isTest == false) {
+			this.datanucleusProperties = "datanucleus.properties";
+		} else {
+			this.datanucleusProperties = "datanucleusTEST.properties";
+		}
+
+		PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory(datanucleusProperties);
 		this.pm = pmf.getPersistenceManager();
 		this.tx = pm.currentTransaction();
 
@@ -129,7 +137,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 				System.out.println(" * Server name: " + name);
 
 				try {
-					ICollector iCollector = new ServerCollector();
+					ICollector iCollector = new ServerCollector(false);
 					Naming.rebind(name, iCollector);
 
 				} catch (RemoteException re) {
@@ -792,8 +800,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 	 * Creado metodo para obtener las peliculas en la base de datos que serán
 	 * pasadas al cliente. (non-Javadoc)
 	 * 
-	 * @see
-	 * videoclub.server.gui.ICollector#obtenerPeliculasAlquiladas(java.util.
+	 * @see videoclub.server.gui.ICollector#obtenerPeliculasAlquiladas(java.util.
 	 * List)
 	 */
 	@Override
@@ -892,7 +899,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		}
 		return arrayPeliculasFavoritas;
 	}
-	
+
 	@Override
 	public List<PeliculaPendiente> obtenerPeliculasPendientes(List<PeliculaPendiente> arrayPeliculasPendientes)
 			throws RemoteException {
@@ -962,7 +969,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		}
 		return peliculaPendienteGuardada;
 	}
-	
+
 	@Override
 	public List<PeliculaVista> obtenerPeliculasVistas(List<PeliculaVista> arrayPeliculasVistas) throws RemoteException {
 		// TODO Auto-generated method stub
@@ -987,7 +994,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		}
 		return arrayPeliculasVistas;
 	}
-	
+
 	@Override
 	public List<Opinion> obtenerOpiniones(List<Opinion> arrayOpiniones) throws RemoteException {
 		// TODO Auto-generated method stub
@@ -1055,7 +1062,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		}
 		return opinionGuardada;
 	}
-	
+
 	@Override
 	public List<Noticia> obtenerNoticias(List<Noticia> arrayNoticias) throws RemoteException {
 		// TODO Auto-generated method stub

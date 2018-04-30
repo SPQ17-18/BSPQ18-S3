@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.jdo.JDOHelper;
@@ -67,7 +69,7 @@ public class JDOTest {
 	 * 
 	 * @throws ParseException
 	 */
-	// @Ignore("IGNORAR PARA ELIMINAR DATOS DE LA BD")
+	@Ignore("IGNORAR PARA ELIMINAR DATOS DE LA BD")
 	@Test
 	public void testCrearUsuarios() throws ParseException {
 		try {
@@ -107,7 +109,8 @@ public class JDOTest {
 
 			for (Usuario user : arrayUsuarios) {
 				pm.makePersistent(user);
-				System.out.println(convert2Upcase("User: " + user.getNombreUsuario() + " persistente..."));
+				Logger.getLogger(getClass().getName()).log(Level.INFO,
+						"User: " + user.getNombreUsuario() + " persistente...");
 			}
 
 			tx.commit();
@@ -125,7 +128,7 @@ public class JDOTest {
 	 * 
 	 * @throws ParseException
 	 */
-	// @Ignore("IGNORAR PARA ELIMINAR DATOS DE LA BD")
+	@Ignore("IGNORAR PARA ELIMINAR DATOS DE LA BD")
 	@Test
 	public void testCrearPeliculas() throws ParseException {
 		try {
@@ -192,6 +195,10 @@ public class JDOTest {
 
 					// Añadimos película:
 					pm.makePersistent(pelicula);
+
+					// LOG:
+					Logger.getLogger(getClass().getName()).log(Level.INFO,
+							"MAKE PERSISTEN PELICULA: " + pelicula.getNombre());
 				}
 
 			} else {
@@ -219,7 +226,7 @@ public class JDOTest {
 	 * 
 	 * @throws ParseException
 	 */
-	// @Ignore("IGNORAR PARA ELIMINAR DATOS DE LA BD")
+	@Ignore("IGNORAR PARA ELIMINAR DATOS DE LA BD")
 	@Test
 	public void testCrearNoticias() throws ParseException {
 		try {
@@ -235,7 +242,9 @@ public class JDOTest {
 			arrayNoticias.add(new Noticia("Noticia [5] creada a las: " + new Date()));
 			for (Noticia noticia : arrayNoticias) {
 				pm.makePersistent(noticia);
-				System.out.println(convert2Upcase("Noticia: " + noticia.getNoticia() + " persistente..."));
+				// LOG:
+				Logger.getLogger(getClass().getName()).log(Level.INFO,
+						"Noticia: " + noticia.getNoticia() + " persistente...");
 			}
 
 			tx.commit();
