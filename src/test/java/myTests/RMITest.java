@@ -82,10 +82,8 @@ public class RMITest {
 				String name = "//127.0.0.1:1099/TestVideoclub";
 				Logger.getLogger(RMIServerRunnable.class.getName()).log(Level.INFO, " * TestServer name: " + name);
 				try {
-					// Obtención de datos:
-					collector = new ServerCollector(false);
-					// Insercción de datos:
-					// collector = new ServerCollector(true);
+					// Insercción de datos "videoclubTEST database, datanuclesTEST.properties":
+					collector = new ServerCollector(true);
 					Naming.rebind(name, collector);
 				} catch (RemoteException re) {
 					Logger.getLogger(RMIServerRunnable.class.getName()).log(Level.WARNING,
