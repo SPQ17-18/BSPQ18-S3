@@ -83,9 +83,9 @@ public class RMITest {
 				Logger.getLogger(RMIServerRunnable.class.getName()).log(Level.INFO, " * TestServer name: " + name);
 				try {
 					// Obtención de datos:
-					// collector = new ServerCollector(false);
+					collector = new ServerCollector(false);
 					// Insercción de datos:
-					collector = new ServerCollector(true);
+					// collector = new ServerCollector(true);
 					Naming.rebind(name, collector);
 				} catch (RemoteException re) {
 					Logger.getLogger(RMIServerRunnable.class.getName()).log(Level.WARNING,
@@ -189,7 +189,7 @@ public class RMITest {
 
 	// Lanzamiento del proceso Client:
 	@Test
-	@PerfTest(invocations = 200, threads = 1, timer = RandomTimer.class, timerParams = { 30, 80 })
+	@PerfTest(invocations = 10, threads = 1, timer = RandomTimer.class, timerParams = { 30, 80 })
 	public void testRMIApp() {
 		Client client = new Client();
 		client.start(arg);
