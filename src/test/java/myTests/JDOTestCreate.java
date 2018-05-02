@@ -108,7 +108,15 @@ public class JDOTestCreate {
 			for (Usuario user : arrayUsuarios) {
 				pm.makePersistent(user);
 				Logger.getLogger(getClass().getName()).log(Level.INFO,
-						"User: " + user.getNombreUsuario() + " persistente...");
+						"User: " + user.getNombreUsuario() + "," + user.getContraseña() + "," + user.getCorreo() + ","
+								+ user.getCliente().getNombre() + " persistente...");
+				Logger.getLogger(getClass().getName()).log(Level.INFO,
+						"Client: " + user.getCliente().getNombre() + "," + user.getCliente().getApellidos() + ","
+								+ user.getCliente().getFecha_nacimiento() + " persistente...");
+				Logger.getLogger(getClass().getName()).log(Level.INFO,
+						"Client Dir: " + user.getCliente().getDireccion().getCalle() + ","
+								+ user.getCliente().getDireccion().getCiudad() + ","
+								+ user.getCliente().getDireccion().getPais() + " persistente...");
 			}
 
 			tx.commit();
@@ -195,7 +203,8 @@ public class JDOTestCreate {
 
 					// LOG:
 					Logger.getLogger(getClass().getName()).log(Level.INFO,
-							"MAKE PERSISTEN PELICULA: " + pelicula.getNombre());
+							"MAKE PERSISTENT PELICULA: " + pelicula.getNombre() + "," + pelicula.getAnyo() + ","
+									+ pelicula.getDuracion() + "," + pelicula.getPrecio());
 				}
 
 			} else {
