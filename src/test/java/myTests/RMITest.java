@@ -111,7 +111,7 @@ public class RMITest {
 
 	// @PerfTest(invocations = 20000, threads = 10, timer = RandomTimer.class,
 	// timerParams = { 3, 8 })//RÁPIDO PERO NO SEGURO
-	@PerfTest(invocations = 200, threads = 1, timer = RandomTimer.class, timerParams = { 3, 8 }) // LENTO PERO
+	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 3, 8 }) // LENTO PERO
 	@Test // SEGURO
 	public void registroUsuariosTest() {
 		try {
@@ -129,7 +129,7 @@ public class RMITest {
 	@Test
 	// @PerfTest(invocations = 20000, threads = 1000, timer = RandomTimer.class,
 	// timerParams = { 300, 800 })//RÁPIDO PERO NO SEGURO
-	@PerfTest(invocations = 200, threads = 1, timer = RandomTimer.class, timerParams = { 30, 80 })
+	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 30, 80 })
 	public void inicioSesionIncorrectoTest() {
 		boolean dev = false;
 		try {
@@ -144,7 +144,7 @@ public class RMITest {
 	@Test
 	// @PerfTest(invocations = 20000, threads = 1000, timer = RandomTimer.class,
 	// timerParams = { 300, 800 })//RÁPIDO PERO NO SEGURO
-	@PerfTest(invocations = 200, threads = 1, timer = RandomTimer.class, timerParams = { 30, 80 })
+	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 30, 80 })
 	public void inicioSesionCorrectoTest() {
 		boolean dev = false;
 		try {
@@ -159,11 +159,16 @@ public class RMITest {
 	@Test
 	// @PerfTest(invocations = 20000, threads = 1000, timer = RandomTimer.class,
 	// timerParams = { 300, 800 })//RÁPIDO PERO NO SEGURO
-	@PerfTest(invocations = 200, threads = 1, timer = RandomTimer.class, timerParams = { 30, 80 })
+	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 30, 80 })
 	public void obtencionPeliculasTest() {
 		try {
 			List<Pelicula> arrayPeliculas = new ArrayList<Pelicula>();
 			arrayPeliculas = collector.obtenerPeliculas(arrayPeliculas);
+			for (Pelicula pelicula : arrayPeliculas) {
+				// LOG:
+				Logger.getLogger(getClass().getName()).log(Level.INFO, "PELICULA: " + pelicula.getNombre() + ","
+						+ pelicula.getAnyo() + "," + pelicula.getDuracion() + "," + pelicula.getPrecio());
+			}
 			Logger.getLogger(getClass().getName()).log(Level.INFO, " # OBTENCIÓN PELICULAS TEST: " + arrayPeliculas);
 		} catch (Exception ex) {
 			Logger.getLogger(getClass().getName()).log(Level.WARNING, ex.getMessage());
@@ -174,11 +179,23 @@ public class RMITest {
 	@Test
 	// @PerfTest(invocations = 20000, threads = 1000, timer = RandomTimer.class,
 	// timerParams = { 300, 800 })//RÁPIDO PERO NO SEGURO
-	@PerfTest(invocations = 200, threads = 1, timer = RandomTimer.class, timerParams = { 30, 80 })
+	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 30, 80 })
 	public void obtencionAlquileresTest() {
 		try {
 			List<Alquiler> arrayAlquileres = new ArrayList<Alquiler>();
 			arrayAlquileres = collector.obtenerAlquileres(arrayAlquileres);
+			for (Alquiler alquiler : arrayAlquileres) {
+				// LOG:
+				Logger.getLogger(getClass().getName()).log(Level.INFO,
+						"ALQUILER: " + alquiler.getFecha_alquiler() + "," + alquiler.getFecha_devolucion());
+				// LOG:
+				Logger.getLogger(getClass().getName()).log(Level.INFO,
+						"CLIENTE: " + alquiler.getCliente().getNombre() + "," + alquiler.getCliente().getApellidos());
+				// LOG:
+				Logger.getLogger(getClass().getName()).log(Level.INFO,
+						"INVENTARIO PELICULA: " + alquiler.getInventario().getPelicula().getNombre() + ","
+								+ alquiler.getInventario().getDisponibles());
+			}
 			Logger.getLogger(getClass().getName()).log(Level.INFO, " # OBTENCIÓN ALQUILERES TEST: " + arrayAlquileres);
 		} catch (Exception ex) {
 			Logger.getLogger(getClass().getName()).log(Level.WARNING, ex.getMessage());
