@@ -58,7 +58,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -160,7 +160,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.7</version>
+				<version>2.6</version>
 				<configuration>
 					<formats>
 						<format>xml</format>
@@ -174,16 +174,6 @@
 						<totalLineRate>85</totalLineRate>
 						<packageLineRate>86</packageLineRate>
 						<packageBranchRate>85</packageBranchRate>
-						<regexes>
-
-							<regex>
-								<pattern>myTests.*</pattern>
-								<branchRate>85</branchRate>
-								<lineRate>85</lineRate>
-							</regex>
-							<!-- <regex> <pattern>com.example.boringcode.*</pattern> <branchRate>40</branchRate> 
-								<lineRate>30</lineRate> </regex> -->
-						</regexes>
 					</check>
 				</configuration>
 			</plugin>

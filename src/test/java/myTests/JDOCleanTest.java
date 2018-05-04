@@ -13,6 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import junit.framework.JUnit4TestAdapter;
 import videoclub.server.jdo.Categoria;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Direccion;
@@ -21,10 +22,14 @@ import videoclub.server.jdo.Noticia;
 import videoclub.server.jdo.Pelicula;
 import videoclub.server.jdo.Usuario;
 
-public class JDOTestClean {
+public class JDOCleanTest {
 	private PersistenceManagerFactory pmf = null;
 	private PersistenceManager pm = null;
 	private Transaction tx = null;
+//
+//	public static junit.framework.Test suite() {
+//		return new JUnit4TestAdapter(RMITest.class);
+//	}
 
 	@Before
 	public void setUp() throws Exception {

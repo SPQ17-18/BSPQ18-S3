@@ -83,7 +83,7 @@ public class RMITest {
 				Logger.getLogger(RMIServerRunnable.class.getName()).log(Level.INFO, " * TestServer name: " + name);
 				try {
 					// Insercción de datos "videoclubTEST database, datanuclesTEST.properties":
-					collector = new ServerCollector(true);
+					collector = new ServerCollector(false);
 					Naming.rebind(name, collector);
 				} catch (RemoteException re) {
 					Logger.getLogger(RMIServerRunnable.class.getName()).log(Level.WARNING,
@@ -111,7 +111,7 @@ public class RMITest {
 
 	// @PerfTest(invocations = 20000, threads = 10, timer = RandomTimer.class,
 	// timerParams = { 3, 8 })//RÁPIDO PERO NO SEGURO
-	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 3, 8 }) // LENTO PERO
+	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 300, 800 }) // LENTO PERO
 	@Test // SEGURO
 	public void registroUsuariosTest() {
 		try {
@@ -129,7 +129,7 @@ public class RMITest {
 	@Test
 	// @PerfTest(invocations = 20000, threads = 1000, timer = RandomTimer.class,
 	// timerParams = { 300, 800 })//RÁPIDO PERO NO SEGURO
-	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 30, 80 })
+	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 300, 800 })
 	public void inicioSesionIncorrectoTest() {
 		boolean dev = false;
 		try {
@@ -144,7 +144,7 @@ public class RMITest {
 	@Test
 	// @PerfTest(invocations = 20000, threads = 1000, timer = RandomTimer.class,
 	// timerParams = { 300, 800 })//RÁPIDO PERO NO SEGURO
-	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 30, 80 })
+	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 300, 800 })
 	public void inicioSesionCorrectoTest() {
 		boolean dev = false;
 		try {
@@ -159,7 +159,7 @@ public class RMITest {
 	@Test
 	// @PerfTest(invocations = 20000, threads = 1000, timer = RandomTimer.class,
 	// timerParams = { 300, 800 })//RÁPIDO PERO NO SEGURO
-	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 30, 80 })
+	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 300, 800 })
 	public void obtencionPeliculasTest() {
 		try {
 			List<Pelicula> arrayPeliculas = new ArrayList<Pelicula>();
@@ -179,7 +179,7 @@ public class RMITest {
 	@Test
 	// @PerfTest(invocations = 20000, threads = 1000, timer = RandomTimer.class,
 	// timerParams = { 300, 800 })//RÁPIDO PERO NO SEGURO
-	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 30, 80 })
+	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 300, 800 })
 	public void obtencionAlquileresTest() {
 		try {
 			List<Alquiler> arrayAlquileres = new ArrayList<Alquiler>();
@@ -204,7 +204,7 @@ public class RMITest {
 
 	// Lanzamiento del proceso Client:
 	@Test
-	@PerfTest(invocations = 10, threads = 1, timer = RandomTimer.class, timerParams = { 30, 80 })
+	@PerfTest(invocations = 10, threads = 1, timer = RandomTimer.class, timerParams = { 300, 800 })
 	public void testRMIApp() {
 		Client client = new Client();
 		client.start(arg);

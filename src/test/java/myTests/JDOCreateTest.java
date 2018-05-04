@@ -39,7 +39,7 @@ import videoclub.server.jdo.Noticia;
 import videoclub.server.jdo.Pelicula;
 import videoclub.server.jdo.Usuario;
 
-public class JDOTestCreate {
+public class JDOCreateTest {
 	private PersistenceManagerFactory pmf = null;
 	private PersistenceManager pm = null;
 	private Transaction tx = null;
