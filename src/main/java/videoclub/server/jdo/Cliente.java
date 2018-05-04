@@ -7,8 +7,8 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.InheritanceStrategy;
 
 @PersistenceCapable
-@Inheritance(strategy=InheritanceStrategy.NEW_TABLE)
-public class Cliente  implements java.io.Serializable{
+@Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+public class Cliente implements java.io.Serializable {
 	/**
 	 * 
 	 */
@@ -17,14 +17,13 @@ public class Cliente  implements java.io.Serializable{
 	private String apellidos;
 	private Date fecha_nacimiento;
 	private Direccion direccion;
-	
-	public Cliente(String nombre, String apellidos, Date fecha_nacimiento, Direccion direccion) {
-		this.nombre = nombre;
-		this.apellidos = apellidos;
-		this.fecha_nacimiento = fecha_nacimiento;
-		this.direccion = direccion;
-	}
 
+	public Cliente(String nombre, String apellidos, Date fecha_nacimiento, Direccion direccion) {
+		this.setApellidos(apellidos);
+		this.setDireccion(direccion);
+		this.setFecha_nacimiento(fecha_nacimiento);
+		this.setNombre(nombre);
+	}
 
 	public String getNombre() {
 		return nombre;
@@ -56,6 +55,12 @@ public class Cliente  implements java.io.Serializable{
 
 	public void setDireccion(Direccion direccion) {
 		this.direccion = direccion;
+	}
+
+	@Override
+	public String toString() {
+		return "Cliente [getNombre()=" + getNombre() + ", getApellidos()=" + getApellidos() + ", getFecha_nacimiento()="
+				+ getFecha_nacimiento() + ", getDireccion()=" + getDireccion().toString() + "]";
 	}
 
 }

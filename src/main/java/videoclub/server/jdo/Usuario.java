@@ -1,12 +1,13 @@
 package videoclub.server.jdo;
+
 import javax.jdo.annotations.Inheritance;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 
 @PersistenceCapable
-@Inheritance(strategy=InheritanceStrategy.NEW_TABLE)
-public class Usuario  implements java.io.Serializable{
-	
+@Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+public class Usuario implements java.io.Serializable {
+
 	/**
 	 * 
 	 */
@@ -15,13 +16,12 @@ public class Usuario  implements java.io.Serializable{
 	private String contraseña;
 	private String correo;
 	private Cliente cliente;
-	
-	public Usuario(String nombreUsuario, String contraseña, String correo, Cliente cliente)
-	{
-		this.nombreUsuario = nombreUsuario;
-		this.contraseña = contraseña;
-		this.correo = correo;
+
+	public Usuario(String nombreUsuario, String contraseña, String correo, Cliente cliente) {
 		this.setCliente(cliente);
+		this.setContraseña(contraseña);
+		this.setCorreo(correo);
+		this.setNombreUsuario(nombreUsuario);
 	}
 
 	public String getNombreUsuario() {
@@ -54,5 +54,12 @@ public class Usuario  implements java.io.Serializable{
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
-	}	
+	}
+
+	@Override
+	public String toString() {
+		return "Usuario [getNombreUsuario()=" + getNombreUsuario() + ", getContraseña()=" + getContraseña()
+				+ ", getCorreo()=" + getCorreo() + ", getCliente()=" + getCliente().toString() + "]";
+	}
+
 }

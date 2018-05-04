@@ -15,8 +15,8 @@ public class PeliculaPendiente implements java.io.Serializable {
 	private Cliente cliente;
 
 	public PeliculaPendiente(Pelicula pelicula, Cliente cliente) {
-		this.pelicula = pelicula;
-		this.cliente = cliente;
+		this.setCliente(cliente);
+		this.setPelicula(pelicula);
 	}
 
 	public Pelicula getPelicula() {
@@ -33,6 +33,12 @@ public class PeliculaPendiente implements java.io.Serializable {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	@Override
+	public String toString() {
+		return "PeliculaPendiente [getPelicula()=" + getPelicula().toString() + ", getCliente()="
+				+ getCliente().toString() + "]";
 	}
 
 }

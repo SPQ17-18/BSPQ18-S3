@@ -14,7 +14,7 @@ public class Categoria  implements java.io.Serializable{
 	private String nombre;
 	
 	public Categoria(String nombre) {
-		this.nombre = nombre;
+		this.setNombre(nombre);
 	}
 
 	public String getNombre() {
@@ -24,4 +24,11 @@ public class Categoria  implements java.io.Serializable{
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+
+	@Override
+	public String toString() {
+		return "Categoria [getNombre()=" + getNombre() + "]";
+	}
+	
+	
 }

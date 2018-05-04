@@ -1,4 +1,4 @@
-package myTests;
+package myJDOTests;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
@@ -35,6 +35,7 @@ import videoclub.server.jdo.Categoria;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Direccion;
 import videoclub.server.jdo.Imagen;
+import videoclub.server.jdo.Inventario;
 import videoclub.server.jdo.Noticia;
 import videoclub.server.jdo.Pelicula;
 import videoclub.server.jdo.Usuario;
@@ -201,10 +202,19 @@ public class JDOCreateTest {
 					// Añadimos película:
 					pm.makePersistent(pelicula);
 
+					Inventario inv = new Inventario(5, pelicula);
+
+					// Añadimos el inventario de la película:
+					pm.makePersistent(inv);
+
 					// LOG:
 					Logger.getLogger(getClass().getName()).log(Level.INFO,
 							"MAKE PERSISTENT PELICULA: " + pelicula.getNombre() + "," + pelicula.getAnyo() + ","
 									+ pelicula.getDuracion() + "," + pelicula.getPrecio());
+
+					// LOG:
+					Logger.getLogger(getClass().getName()).log(Level.INFO, "MAKE PERSISTENT INVENTARIO: "
+							+ inv.getPelicula() + " -> DISPONIBLES: " + inv.getDisponibles());
 				}
 
 			} else {

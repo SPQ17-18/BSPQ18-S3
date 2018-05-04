@@ -5,8 +5,8 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.InheritanceStrategy;
 
 @PersistenceCapable
-@Inheritance(strategy=InheritanceStrategy.NEW_TABLE)
-public class Direccion  implements java.io.Serializable{
+@Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+public class Direccion implements java.io.Serializable {
 	/**
 	 * 
 	 */
@@ -14,11 +14,11 @@ public class Direccion  implements java.io.Serializable{
 	private String calle;
 	private String ciudad;
 	private String pais;
-	
+
 	public Direccion(String calle, String ciudad, String pais) {
-		this.calle = calle;
-		this.ciudad = ciudad;
-		this.pais = pais;
+		this.setCalle(calle);
+		this.setCiudad(ciudad);
+		this.setCalle(calle);
 	}
 
 	public String getCalle() {
@@ -44,6 +44,11 @@ public class Direccion  implements java.io.Serializable{
 	public void setPais(String pais) {
 		this.pais = pais;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "Direccion [getCalle()=" + getCalle() + ", getCiudad()=" + getCiudad() + ", getPais()=" + getPais()
+				+ "]";
+	}
+
 }

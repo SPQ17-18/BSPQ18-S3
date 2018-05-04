@@ -6,7 +6,7 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.InheritanceStrategy;
 
 @PersistenceCapable
-@Inheritance(strategy=InheritanceStrategy.NEW_TABLE)
+@Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
 public class Alquiler implements java.io.Serializable {
 	/**
 	 * 
@@ -16,12 +16,12 @@ public class Alquiler implements java.io.Serializable {
 	private Date fecha_devolucion;
 	private Cliente cliente;
 	private Inventario inventario;
-	
+
 	public Alquiler(Date fecha_alquiler, Date fecha_devolucion, Cliente cliente, Inventario inventario) {
-		this.fecha_alquiler = fecha_alquiler;
-		this.fecha_devolucion = fecha_devolucion;
-		this.cliente = cliente;
-		this.inventario = inventario;
+		this.setCliente(cliente);
+		this.setFecha_alquiler(fecha_alquiler);
+		this.setFecha_devolucion(fecha_devolucion);
+		this.setInventario(inventario);
 	}
 
 	public Date getFecha_alquiler() {
@@ -55,4 +55,12 @@ public class Alquiler implements java.io.Serializable {
 	public void setInventario(Inventario inventario) {
 		this.inventario = inventario;
 	}
+
+	@Override
+	public String toString() {
+		return "Alquiler [getFecha_alquiler()=" + getFecha_alquiler() + ", getFecha_devolucion()="
+				+ getFecha_devolucion() + ", getCliente()=" + getCliente() + ", getInventario()=" + getInventario()
+				+ "]";
+	}
+
 }

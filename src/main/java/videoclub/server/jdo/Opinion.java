@@ -16,9 +16,9 @@ public class Opinion implements java.io.Serializable {
 	private String descripcionOpinion;
 
 	public Opinion(Pelicula pelicula, Usuario user, String descripcionOpinion) {
-		this.pelicula = pelicula;
-		this.user = user;
-		this.descripcionOpinion = descripcionOpinion;
+		this.setDescripcionOpinion(descripcionOpinion);
+		this.setPelicula(pelicula);
+		this.setUser(user);
 	}
 
 	public Pelicula getPelicula() {
@@ -43,6 +43,12 @@ public class Opinion implements java.io.Serializable {
 
 	public void setDescripcionOpinion(String descripcionOpinion) {
 		this.descripcionOpinion = descripcionOpinion;
+	}
+
+	@Override
+	public String toString() {
+		return "Opinion [getPelicula()=" + getPelicula().toString() + ", getUser()=" + getUser().toString()
+				+ ", getDescripcionOpinion()=" + getDescripcionOpinion() + "]";
 	}
 
 }

@@ -15,7 +15,7 @@ public class ProximoEstreno implements java.io.Serializable {
 	private String nombrePelicula;
 
 	public ProximoEstreno(String nombrePelicula) {
-		this.nombrePelicula = nombrePelicula;
+		this.setNombrePelicula(nombrePelicula);
 	}
 
 	public String getNombrePelicula() {
@@ -25,4 +25,10 @@ public class ProximoEstreno implements java.io.Serializable {
 	public void setNombrePelicula(String nombrePelicula) {
 		this.nombrePelicula = nombrePelicula;
 	}
+
+	@Override
+	public String toString() {
+		return "ProximoEstreno [getNombrePelicula()=" + getNombrePelicula() + "]";
+	}
+
 }

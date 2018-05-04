@@ -48,4 +48,12 @@ public class Mensaje implements java.io.Serializable{
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
+
+	@Override
+	public String toString() {
+		return "Mensaje [getFecha()=" + getFecha() + ", getMensaje()=" + getMensaje() + ", getUsuario()=" + getUsuario()
+				+ "]";
+	}
+	
+	
 }

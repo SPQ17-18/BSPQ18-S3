@@ -15,7 +15,7 @@ public class Noticia implements java.io.Serializable {
 	private String noticia;
 
 	public Noticia(String noticia) {
-		this.noticia = noticia;
+		this.setNoticia(noticia);
 	}
 
 	public String getNoticia() {
@@ -25,4 +25,11 @@ public class Noticia implements java.io.Serializable {
 	public void setNoticia(String noticia) {
 		this.noticia = noticia;
 	}
+
+	@Override
+	public String toString() {
+		return "Noticia [getNoticia()=" + getNoticia() + "]";
+	}
+	
+	
 }

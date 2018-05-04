@@ -16,8 +16,8 @@ public class Amigo  implements java.io.Serializable{
 	private Usuario amigo;
 	
 	public Amigo(Usuario usuario, Usuario amigo) {
-		this.usuario = usuario;
-		this.amigo = amigo;
+		this.setAmigo(amigo);
+		this.setUsuario(usuario);
 	}
 	public Usuario getUsuario() {
 		return usuario;
@@ -31,6 +31,11 @@ public class Amigo  implements java.io.Serializable{
 	public void setAmigo(Usuario amigo) {
 		this.amigo = amigo;
 	}
+	@Override
+	public String toString() {
+		return "Amigo [getUsuario()=" + getUsuario() + ", getAmigo()=" + getAmigo() + "]";
+	}
+	
 	
 	
 

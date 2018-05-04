@@ -1,12 +1,14 @@
 package videoclub.server.jdo;
 
+import java.util.Arrays;
+
 import javax.jdo.annotations.Inheritance;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 
 @PersistenceCapable
-@Inheritance(strategy=InheritanceStrategy.NEW_TABLE)
-public class Pelicula implements java.io.Serializable{
+@Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+public class Pelicula implements java.io.Serializable {
 	/**
 	 * 
 	 */
@@ -18,15 +20,16 @@ public class Pelicula implements java.io.Serializable{
 	private Categoria categoria;
 	private float precio;
 	private Imagen image;
-	
-	public Pelicula(String nombre, int duracion, byte[] descripcion, int anyo, float precio, Categoria categoria, Imagen image) {
-		this.nombre = nombre;
-		this.duracion = duracion;
-		this.descripcion = descripcion;
-		this.anyo = anyo;
-		this.categoria = categoria;
-		this.precio = precio;
-		this.image = image;
+
+	public Pelicula(String nombre, int duracion, byte[] descripcion, int anyo, float precio, Categoria categoria,
+			Imagen image) {
+		this.setAnyo(anyo);
+		this.setCategoria(categoria);
+		this.setDescripcion(descripcion);
+		this.setDuracion(duracion);
+		this.setImage(image);
+		this.setNombre(nombre);
+		this.setPrecio(precio);
 	}
 
 	public float getPrecio() {
@@ -83,6 +86,13 @@ public class Pelicula implements java.io.Serializable{
 
 	public void setImage(Imagen image) {
 		this.image = image;
+	}
+
+	@Override
+	public String toString() {
+		return "Pelicula [getPrecio()=" + getPrecio() + ", getNombre()=" + getNombre() + ", getDuracion()="
+				+ getDuracion() + ", getDescripcion()=" + Arrays.toString(getDescripcion()) + ", getAnyo()=" + getAnyo()
+				+ ", getCategoria()=" + getCategoria().toString() + ", getImage()=" + getImage().toString() + "]";
 	}
 
 }

@@ -1,5 +1,7 @@
 package videoclub.server.jdo;
 
+import java.util.Arrays;
+
 import javax.jdo.annotations.Inheritance;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
@@ -15,7 +17,7 @@ public class Imagen implements java.io.Serializable {
 	private String nombre;
 
 	public Imagen(String nombre, byte[] image) {
-		this.image = image;
+		this.setNombre(nombre);
 		this.setNombre(nombre);
 	}
 
@@ -34,4 +36,10 @@ public class Imagen implements java.io.Serializable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+
+	@Override
+	public String toString() {
+		return "Imagen [getImage()=" + Arrays.toString(getImage()) + ", getNombre()=" + getNombre() + "]";
+	}
+
 }

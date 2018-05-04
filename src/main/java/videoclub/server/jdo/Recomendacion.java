@@ -5,8 +5,8 @@ import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 
 @PersistenceCapable
-@Inheritance(strategy=InheritanceStrategy.NEW_TABLE)
-public class Recomendacion implements java.io.Serializable{
+@Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+public class Recomendacion implements java.io.Serializable {
 
 	/**
 	 * 
@@ -15,11 +15,11 @@ public class Recomendacion implements java.io.Serializable{
 	private Usuario usuario;
 	private Usuario amigo;
 	private Pelicula pelicula;
-	
+
 	public Recomendacion(Usuario usuario, Usuario amigo, Pelicula pelicula) {
-		this.usuario = usuario;
-		this.amigo = amigo;
-		this.pelicula = pelicula;
+		this.setAmigo(amigo);
+		this.setPelicula(pelicula);
+		this.setUsuario(usuario);
 	}
 
 	public Usuario getUsuario() {
@@ -44,6 +44,12 @@ public class Recomendacion implements java.io.Serializable{
 
 	public void setPelicula(Pelicula pelicula) {
 		this.pelicula = pelicula;
+	}
+
+	@Override
+	public String toString() {
+		return "Recomendacion [getUsuario()=" + getUsuario().toString() + ", getAmigo()=" + getAmigo().toString()
+				+ ", getPelicula()=" + getPelicula().toString() + "]";
 	}
 
 }
