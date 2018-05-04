@@ -170,13 +170,6 @@
 						<totalLineRate>85</totalLineRate>
 						<packageLineRate>85</packageLineRate>
 						<packageBranchRate>85</packageBranchRate>
-						<regexes>
-							<regex>
-								<pattern>myTests.*</pattern>
-								<branchRate>90</branchRate>
-								<lineRate>90</lineRate>
-							</regex>
-						</regexes>
 					</check>
 				</configuration>
 
