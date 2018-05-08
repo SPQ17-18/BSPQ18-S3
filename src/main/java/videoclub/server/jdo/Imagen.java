@@ -18,7 +18,7 @@ public class Imagen implements java.io.Serializable {
 
 	public Imagen(String nombre, byte[] image) {
 		this.setNombre(nombre);
-		this.setNombre(nombre);
+		this.setImage(image);
 	}
 
 	public byte[] getImage() {

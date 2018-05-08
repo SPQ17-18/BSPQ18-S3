@@ -8,6 +8,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
@@ -73,7 +75,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 					ServerFrame serverFrame = new ServerFrame();
 					serverFrame.setVisible(true);
 					// Mensaje del servidor saludo:
-					ServerFrame.textArea.append("Servidor activo y a la espera...");
+					Logger.getLogger(getClass().getName()).log(Level.INFO, "Servidor activo y a la espera...");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -108,9 +110,9 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 			public void run() {
 				try {
 					java.rmi.registry.LocateRegistry.createRegistry(1099);
-					System.out.println("RMI registry ready.");
+					Logger.getLogger(getClass().getName()).log(Level.INFO, "RMI registry ready.");
 				} catch (Exception e) {
-					System.out.println("Exception starting RMI registry:");
+					Logger.getLogger(getClass().getName()).log(Level.INFO, "Exception starting RMI registry:");
 					e.printStackTrace();
 				}
 			}
@@ -141,11 +143,13 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 					Naming.rebind(name, iCollector);
 
 				} catch (RemoteException re) {
-					System.err.println(" # Collector RemoteException: " + re.getMessage());
+					Logger.getLogger(getClass().getName()).log(Level.INFO,
+							" # Collector RemoteException: " + re.getMessage());
 					re.printStackTrace();
 					System.exit(-1);
 				} catch (MalformedURLException murle) {
-					System.err.println(" # Collector MalformedURLException: " + murle.getMessage());
+					Logger.getLogger(getClass().getName()).log(Level.INFO,
+							" # Collector MalformedURLException: " + murle.getMessage());
 					murle.printStackTrace();
 					System.exit(-1);
 				}
@@ -168,7 +172,8 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		boolean denegarRegistro = false;
 		try {
 			tx.begin();
-			ServerFrame.textArea.append("Comprobación de si el usuario: '" + nombreUsuario + "' ya existe\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO,
+					"Comprobación de si el usuario: '" + nombreUsuario + "' ya existe\n");
 			Usuario user = null;
 
 			// Ejecutamos consulta para comprobar todos los usuarios de la base
@@ -188,16 +193,20 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 
 			// Comprobamos si ha saltado el booleano de denegar regisro:
 			if (denegarRegistro == true) {
-				ServerFrame.textArea.append("El usuario: " + nombreUsuario + " ya está registrado!, ERROR!\n");
+				Logger.getLogger(getClass().getName()).log(Level.INFO,
+						"El usuario: " + nombreUsuario + " ya está registrado!, ERROR!\n");
 			} else {
-				ServerFrame.textArea.append("Creando nuevo cliente...");
+				Logger.getLogger(getClass().getName()).log(Level.INFO, "Creando nuevo cliente...");
 				Cliente cliente = new Cliente(nombre, apellidos, fechaNacimiento, new Direccion(calle, ciudad, pais));
-				ServerFrame.textArea.append("Cliente: " + nombre + " - " + apellidos + " creado exitosamente! :D\n");
-				ServerFrame.textArea.append("Creando nuevo usuario: " + nombreUsuario + "\n");
+				Logger.getLogger(getClass().getName()).log(Level.INFO,
+						"Cliente: " + nombre + " - " + apellidos + " creado exitosamente! :D\n");
+				Logger.getLogger(getClass().getName()).log(Level.INFO,
+						"Creando nuevo usuario: " + nombreUsuario + "\n");
 				user = new Usuario(nombreUsuario, contraseña, correo, cliente);
-				ServerFrame.textArea.append("Usuario creado: " + nombreUsuario + "\n");
+				Logger.getLogger(getClass().getName()).log(Level.INFO, "Usuario creado: " + nombreUsuario + "\n");
 				pm.makePersistent(user);
-				ServerFrame.textArea.append("Sincronizado con las bases de datos... ! Correcto\n");
+				Logger.getLogger(getClass().getName()).log(Level.INFO,
+						"Sincronizado con las bases de datos... ! Correcto\n");
 			}
 			tx.commit();
 		} finally {
@@ -216,7 +225,8 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		boolean inicioCorrecto = false;
 		try {
 			tx.begin();
-			ServerFrame.textArea.append("Comprobación de si el usuario '" + nombreUsuario + "' es correcto...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO,
+					"Comprobación de si el usuario '" + nombreUsuario + "' es correcto...\n");
 
 			// Ejecutamos consulta para comprobar si el usuario es correcto:
 			@SuppressWarnings("unchecked")
@@ -227,13 +237,14 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 				// Comprobamos que el usuario sea correcto:
 				if (usuario.getNombreUsuario().equals(nombreUsuario) && usuario.getContraseña().equals(contraseña)) {
 					inicioCorrecto = true;
-					ServerFrame.textArea.append("Usuario y contraseña correctas! :D\n");
-					ServerFrame.textArea.append("Obteniendo datos del cliente...\n");
+					Logger.getLogger(getClass().getName()).log(Level.INFO, "Usuario y contraseña correctas! :D\n");
+					Logger.getLogger(getClass().getName()).log(Level.INFO, "Obteniendo datos del cliente...\n");
 					this.cliente = usuario.getCliente();
 					this.usuario = usuario;
 					this.usuariosConectados.add(usuario);
-					ServerFrame.textArea.append("Datos del cliente obtenidos!\n");
-					ServerFrame.textArea.append("Bienvenido " + usuario.getCliente().getNombre() + " :D\n");
+					Logger.getLogger(getClass().getName()).log(Level.INFO, "Datos del cliente obtenidos!\n");
+					Logger.getLogger(getClass().getName()).log(Level.INFO,
+							"Bienvenido " + usuario.getCliente().getNombre() + " :D\n");
 				}
 			}
 			tx.commit();
@@ -253,7 +264,8 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		boolean categoriaExiste = false;
 		try {
 			tx.begin();
-			ServerFrame.textArea.append("Comprobación de la categoria: '" + categoria + "'\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO,
+					"Comprobación de la categoria: '" + categoria + "'\n");
 			Categoria cat = null;
 
 			// Sacamos todas las categorias de la BD:
@@ -274,30 +286,32 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 			// Comprobamos si la categoria existe:
 			if (categoriaExiste == false) {
 				// Hacer persistente:
-				ServerFrame.textArea.append("Creando nueva categoria...\n");
+				Logger.getLogger(getClass().getName()).log(Level.INFO, "Creando nueva categoria...\n");
 				cat = new Categoria(categoria);
 				pm.makePersistent(cat);
-				ServerFrame.textArea.append("Categoria creada con éxito!\n");
+				Logger.getLogger(getClass().getName()).log(Level.INFO, "Categoria creada con éxito!\n");
 			}
 
 			// Ahora toca crear la película:
-			ServerFrame.textArea.append("Creando nueva película...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Creando nueva película...\n");
 			Pelicula pelicula = new Pelicula(nombre, duracion, descripcion, anyo, precio, cat, imagen);
-			ServerFrame.textArea.append("Creando imagen: " + imagen.getNombre() + " \n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Creando imagen: " + imagen.getNombre() + " \n");
 			pm.makePersistent(pelicula);
-			ServerFrame.textArea.append("Pelicula: " + nombre + " creada exitosamente!\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Pelicula: " + nombre + " creada exitosamente!\n");
 
 			// Creamos el inventario con la cantidad de películas en stock!:
-			ServerFrame.textArea.append("Creando inventario para la película: " + nombre + "\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO,
+					"Creando inventario para la película: " + nombre + "\n");
 			pm.makePersistent(new Inventario(cantidad, pelicula));
-			ServerFrame.textArea.append("Inventario para le película " + nombre + " creado exitosamente..!\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO,
+					"Inventario para le película " + nombre + " creado exitosamente..!\n");
 
 			// Comprobamos si la casilla de novedad está activada:
 			if (novedad == true) {
 				// Enconten metemos la película a novedades:
-				ServerFrame.textArea.append("Metiendo película a novedades...\n");
+				Logger.getLogger(getClass().getName()).log(Level.INFO, "Metiendo película a novedades...\n");
 				pm.makePersistent(new Novedad(pelicula));
-				ServerFrame.textArea.append("Película metida en novedades!\n");
+				Logger.getLogger(getClass().getName()).log(Level.INFO, "Película metida en novedades!\n");
 			}
 
 			tx.commit();
@@ -318,7 +332,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 
 		try {
 			tx.begin();
-			ServerFrame.textArea.append("Obteniendo películas de la BD...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Obteniendo películas de la BD...\n");
 
 			// Sacamos todas las categorias de la BD:
 			@SuppressWarnings("unchecked")
@@ -328,7 +342,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 				// Vamos añadiendo las películas al array pasado:
 				arrayPeliculas.add(pelicula);
 			}
-			ServerFrame.textArea.append("Películas obteneidas ! :D\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Películas obteneidas ! :D\n");
 			tx.commit();
 		} finally {
 			if (tx.isActive()) {
@@ -351,7 +365,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		boolean alquilerCorrecto = false;
 		try {
 			tx.begin();
-			ServerFrame.textArea.append("Comprobando de cliente...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Comprobando de cliente...\n");
 			Cliente cliente = null;
 			@SuppressWarnings("unchecked")
 			Query<Cliente> q = pm.newQuery("SELECT FROM " + Cliente.class.getName());
@@ -364,7 +378,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 				}
 			}
 
-			ServerFrame.textArea.append("Comprobando de inventario...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Comprobando de inventario...\n");
 			Inventario inventario = null;
 			@SuppressWarnings("unchecked")
 			Query<Inventario> q2 = pm.newQuery("SELECT FROM " + Inventario.class.getName());
@@ -379,7 +393,8 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 			Alquiler nuevoAlquiler = new Alquiler(alquiler.getFecha_alquiler(), alquiler.getFecha_devolucion(), cliente,
 					inventario);
 			pm.makePersistent(nuevoAlquiler);
-			ServerFrame.textArea.append("Alquiler de " + alquiler.getCliente().getNombre() + " creado exitosamente!\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO,
+					"Alquiler de " + alquiler.getCliente().getNombre() + " creado exitosamente!\n");
 			tx.commit();
 
 			alquilerCorrecto = true;
@@ -397,7 +412,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		// TODO Auto-generated method stub
 		try {
 			tx.begin();
-			ServerFrame.textArea.append("Obteniendo inventarios de la BD...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Obteniendo inventarios de la BD...\n");
 
 			@SuppressWarnings("unchecked")
 			Query<Inventario> q = pm.newQuery("SELECT FROM " + Inventario.class.getName());
@@ -405,7 +420,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 			for (Inventario inventario : inventarios) {
 				arrayInventarios.add(inventario);
 			}
-			ServerFrame.textArea.append("Inventarios obteneidos ! :D\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Inventarios obteneidos ! :D\n");
 			tx.commit();
 		} finally {
 			if (tx.isActive()) {
@@ -420,7 +435,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		// TODO Auto-generated method stub
 		try {
 			tx.begin();
-			ServerFrame.textArea.append("Obteniendo clientes de la BD...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Obteniendo clientes de la BD...\n");
 
 			@SuppressWarnings("unchecked")
 			Query<Cliente> q = pm.newQuery("SELECT FROM " + Cliente.class.getName());
@@ -428,7 +443,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 			for (Cliente cliente : clientes) {
 				arrayClientes.add(cliente);
 			}
-			ServerFrame.textArea.append("Clientes obteneidos ! :D\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Clientes obteneidos ! :D\n");
 			tx.commit();
 		} finally {
 			if (tx.isActive()) {
@@ -444,8 +459,8 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		boolean mensajeCorrecto = false;
 		try {
 			tx.begin();
-			ServerFrame.textArea
-					.append("Comprobación del usuario: '" + mensaje.getUsuario().getNombreUsuario() + "'\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO,
+					"Comprobación del usuario: '" + mensaje.getUsuario().getNombreUsuario() + "'\n");
 			Usuario usuario = null;
 
 			@SuppressWarnings("unchecked")
@@ -459,10 +474,11 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 			}
 
 			// Ahora toca crear la película:
-			ServerFrame.textArea.append("Creando nuevo mensaje...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Creando nuevo mensaje...\n");
 			Mensaje nuevoMensaje = new Mensaje(mensaje.getMensaje(), mensaje.getFecha(), usuario);
 			pm.makePersistent(nuevoMensaje);
-			ServerFrame.textArea.append("Mensaje " + mensaje.getMensaje() + " enviado exitosamente!\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO,
+					"Mensaje " + mensaje.getMensaje() + " enviado exitosamente!\n");
 
 			tx.commit();
 
@@ -511,14 +527,14 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		// TODO Auto-generated method stub
 		try {
 			tx.begin();
-			ServerFrame.textArea.append("Obteniendo alquileres...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Obteniendo alquileres...\n");
 			@SuppressWarnings("unchecked")
 			Query<Alquiler> q = pm.newQuery("SELECT FROM " + Alquiler.class.getName());
 			List<Alquiler> alquileres = (List<Alquiler>) q.executeList();
 			for (Alquiler alquiler : alquileres) {
 				arrayAlquileres.add(alquiler);
 			}
-			ServerFrame.textArea.append("Alquileres obtenidos!\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Alquileres obtenidos!\n");
 			tx.commit();
 		} finally {
 			if (tx.isActive()) {
@@ -533,7 +549,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		// TODO Auto-generated method stub
 		try {
 			tx.begin();
-			ServerFrame.textArea.append("Obteniendo películas nuevas de la BD...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Obteniendo películas nuevas de la BD...\n");
 
 			// Sacamos todas las categorias de la BD:
 			@SuppressWarnings("unchecked")
@@ -543,7 +559,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 				// Vamos añadiendo las películas al array pasado:
 				arrayPeliculas.add(pelicula.getPelicula());
 			}
-			ServerFrame.textArea.append("Películas nuevas obteneidas ! :D\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Películas nuevas obteneidas ! :D\n");
 			tx.commit();
 		} finally {
 			if (tx.isActive()) {
@@ -558,7 +574,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		// TODO Auto-generated method stub
 		try {
 			tx.begin();
-			ServerFrame.textArea.append("Obteniendo usuarios de la BD...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Obteniendo usuarios de la BD...\n");
 
 			// Sacamos todas las categorias de la BD:
 			@SuppressWarnings("unchecked")
@@ -568,7 +584,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 				// Vamos añadiendo las películas al array pasado:
 				arrayUsuarios.add(usuario);
 			}
-			ServerFrame.textArea.append("Usuarios obtenenidos ! :D\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Usuarios obtenenidos ! :D\n");
 			tx.commit();
 		} finally {
 			if (tx.isActive()) {
@@ -584,7 +600,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		try {
 			tx.begin();
 
-			ServerFrame.textArea.append("Obteniendo usuarios amigos de la BD...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Obteniendo usuarios amigos de la BD...\n");
 			// Sacamos todas las categorias de la BD:
 			@SuppressWarnings("unchecked")
 			Query<Amigo> q = pm.newQuery("SELECT FROM " + Amigo.class.getName());
@@ -593,7 +609,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 				// Vamos añadiendo las películas al array pasado:
 				arrayAmigos.add(amigo);
 			}
-			ServerFrame.textArea.append("Usuarios amigos obtenenidos ! :D\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Usuarios amigos obtenenidos ! :D\n");
 			tx.commit();
 		} finally {
 			if (tx.isActive()) {
@@ -624,10 +640,11 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 				}
 			}
 
-			ServerFrame.textArea.append("Creando nuevo amigo...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Creando nuevo amigo...\n");
 			Amigo a = new Amigo(_usuario, _amigo);
 			pm.makePersistent(a);
-			ServerFrame.textArea.append("Amigo " + a.getAmigo().getNombreUsuario() + " creado exitosamente!\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO,
+					"Amigo " + a.getAmigo().getNombreUsuario() + " creado exitosamente!\n");
 			tx.commit();
 			amigoGuardado = true;
 		} finally {
@@ -671,10 +688,10 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 				}
 			}
 
-			ServerFrame.textArea.append("Creando nueva recomendacion de amigo...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Creando nueva recomendacion de amigo...\n");
 			Recomendacion r = new Recomendacion(_usuario, _amigo, _pelicula);
 			pm.makePersistent(r);
-			ServerFrame.textArea.append("Recomendacion creado exitosamente!\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Recomendacion creado exitosamente!\n");
 			tx.commit();
 			recomendacionCorrecta = true;
 		} finally {
@@ -691,7 +708,8 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		try {
 			tx.begin();
 
-			ServerFrame.textArea.append("Obteniendo recomendaciones de amigos de la BD...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO,
+					"Obteniendo recomendaciones de amigos de la BD...\n");
 			// Sacamos todas las categorias de la BD:
 			@SuppressWarnings("unchecked")
 			Query<Recomendacion> q = pm.newQuery("SELECT FROM " + Recomendacion.class.getName());
@@ -700,7 +718,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 				// Vamos añadiendo las películas al array pasado:
 				arrayRecomendaciones.add(recomendacion);
 			}
-			ServerFrame.textArea.append("Recomendaciones de amigos obtenenidos ! :D\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Recomendaciones de amigos obtenenidos ! :D\n");
 			tx.commit();
 		} finally {
 			if (tx.isActive()) {
@@ -716,7 +734,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		boolean clienteEliminado = false;
 		try {
 			tx.begin();
-			ServerFrame.textArea.append("Obteniendo usuarios de la BD...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Obteniendo usuarios de la BD...\n");
 			@SuppressWarnings("unchecked")
 			Query<Usuario> q = pm.newQuery("SELECT FROM " + Usuario.class.getName());
 			List<Usuario> usuarios = (List<Usuario>) q.executeList();
@@ -781,10 +799,10 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 				}
 			}
 
-			ServerFrame.textArea.append("Creando nueva pelicula ya vista...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Creando nueva pelicula ya vista...\n");
 			PeliculaVista peliculaVista = new PeliculaVista(_pelicula, _cliente);
 			pm.makePersistent(peliculaVista);
-			ServerFrame.textArea.append("Pelicula vista creada exitosamente!\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Pelicula vista creada exitosamente!\n");
 
 			tx.commit();
 			peliculaVistaGuardada = true;
@@ -809,7 +827,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		try {
 			tx.begin();
 
-			ServerFrame.textArea.append("Obteniendo peliculas alquiladas de la BD...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Obteniendo peliculas alquiladas de la BD...\n");
 			// Sacamos todas las categorias de la BD:
 			@SuppressWarnings("unchecked")
 			Query<Alquiler> q = pm.newQuery("SELECT FROM " + Alquiler.class.getName());
@@ -818,7 +836,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 				// Vamos añadiendo las películas al array pasado:
 				arrayPeliculasAlquiladas.add(alquiler);
 			}
-			ServerFrame.textArea.append("Peliculas alquiladas obtenenidas ! :D\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Peliculas alquiladas obtenenidas ! :D\n");
 			tx.commit();
 		} finally {
 			if (tx.isActive()) {
@@ -858,10 +876,10 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 				}
 			}
 
-			ServerFrame.textArea.append("Creando nueva pelicula favorita...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Creando nueva pelicula favorita...\n");
 			PeliculaFavorita peliculaFavorita = new PeliculaFavorita(_pelicula, _cliente);
 			pm.makePersistent(peliculaFavorita);
-			ServerFrame.textArea.append("Pelicula favorita creada exitosamente!\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Pelicula favorita creada exitosamente!\n");
 
 			tx.commit();
 			peliculaVistaGuardada = true;
@@ -881,7 +899,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		try {
 			tx.begin();
 
-			ServerFrame.textArea.append("Obteniendo peliculas favoritas de la BD...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Obteniendo peliculas favoritas de la BD...\n");
 			// Sacamos todas las categorias de la BD:
 			@SuppressWarnings("unchecked")
 			Query<PeliculaFavorita> q = pm.newQuery("SELECT FROM " + PeliculaFavorita.class.getName());
@@ -890,7 +908,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 				// Vamos añadiendo las películas al array pasado:
 				arrayPeliculasFavoritas.add(peliFavorita);
 			}
-			ServerFrame.textArea.append("Peliculas favoritas obtenenidas ! :D\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Peliculas favoritas obtenenidas ! :D\n");
 			tx.commit();
 		} finally {
 			if (tx.isActive()) {
@@ -907,7 +925,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		try {
 			tx.begin();
 
-			ServerFrame.textArea.append("Obteniendo peliculas pendientes de la BD...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Obteniendo peliculas pendientes de la BD...\n");
 			@SuppressWarnings("unchecked")
 			Query<PeliculaPendiente> q = pm.newQuery("SELECT FROM " + PeliculaPendiente.class.getName());
 			List<PeliculaPendiente> peliculasPendientes = (List<PeliculaPendiente>) q.executeList();
@@ -915,7 +933,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 				// Vamos aÒadiendo las pelÌculas al array pasado:
 				arrayPeliculasPendientes.add(peliculaPendiente);
 			}
-			ServerFrame.textArea.append("Peliculas pendientes obtenenidas ! :D\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Peliculas pendientes obtenenidas ! :D\n");
 			tx.commit();
 		} finally {
 			if (tx.isActive()) {
@@ -955,10 +973,10 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 				}
 			}
 
-			ServerFrame.textArea.append("Creando nueva pelicula pendiente...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Creando nueva pelicula pendiente...\n");
 			PeliculaPendiente peliculaFavorita = new PeliculaPendiente(_pelicula, _cliente);
 			pm.makePersistent(peliculaFavorita);
-			ServerFrame.textArea.append("Pelicula pendiente creada exitosamente!\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Pelicula pendiente creada exitosamente!\n");
 
 			tx.commit();
 			peliculaPendienteGuardada = true;
@@ -976,7 +994,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		try {
 			tx.begin();
 
-			ServerFrame.textArea.append("Obteniendo peliculas vistas de la BD...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Obteniendo peliculas vistas de la BD...\n");
 			// Sacamos todas las categorias de la BD:
 			@SuppressWarnings("unchecked")
 			Query<PeliculaVista> q = pm.newQuery("SELECT FROM " + PeliculaVista.class.getName());
@@ -985,7 +1003,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 				// Vamos aÒadiendo las pelÌculas al array pasado:
 				arrayPeliculasVistas.add(peliculaVista);
 			}
-			ServerFrame.textArea.append("Peliculas vistas obtenenidas ! :D\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Peliculas vistas obtenenidas ! :D\n");
 			tx.commit();
 		} finally {
 			if (tx.isActive()) {
@@ -1001,14 +1019,14 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		try {
 			tx.begin();
 
-			ServerFrame.textArea.append("Obteniendo opiniones de la BD...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Obteniendo opiniones de la BD...\n");
 			@SuppressWarnings("unchecked")
 			Query<Opinion> q = pm.newQuery("SELECT FROM " + Opinion.class.getName());
 			List<Opinion> opiniones = (List<Opinion>) q.executeList();
 			for (Opinion opi : opiniones) {
 				arrayOpiniones.add(opi);
 			}
-			ServerFrame.textArea.append("Opiniones obtenenidas ! :D\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Opiniones obtenenidas ! :D\n");
 			tx.commit();
 		} finally {
 			if (tx.isActive()) {
@@ -1048,10 +1066,10 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 				}
 			}
 
-			ServerFrame.textArea.append("Creando nueva opinion...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Creando nueva opinion...\n");
 			Opinion opinar = new Opinion(_pelicula, _usuario, opinion);
 			pm.makePersistent(opinar);
-			ServerFrame.textArea.append("Opinion creada exitosamente!\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Opinion creada exitosamente!\n");
 
 			tx.commit();
 			opinionGuardada = true;
@@ -1069,14 +1087,14 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		try {
 			tx.begin();
 
-			ServerFrame.textArea.append("Obteniendo noticias de la BD...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Obteniendo noticias de la BD...\n");
 			@SuppressWarnings("unchecked")
 			Query<Noticia> q = pm.newQuery("SELECT FROM " + Noticia.class.getName());
 			List<Noticia> noticias = (List<Noticia>) q.executeList();
 			for (Noticia noticia : noticias) {
 				arrayNoticias.add(noticia);
 			}
-			ServerFrame.textArea.append("Noticias obtenenidas ! :D\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Noticias obtenenidas ! :D\n");
 			tx.commit();
 		} finally {
 			if (tx.isActive()) {
@@ -1093,10 +1111,10 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		try {
 			tx.begin();
 
-			ServerFrame.textArea.append("Creando nueva noticia...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Creando nueva noticia...\n");
 			Noticia not = new Noticia(noticia);
 			pm.makePersistent(not);
-			ServerFrame.textArea.append("Noticia creada exitosamente!\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Noticia creada exitosamente!\n");
 
 			tx.commit();
 			noticiaGuardada = true;
@@ -1115,14 +1133,14 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		try {
 			tx.begin();
 
-			ServerFrame.textArea.append("Obteniendo proximos estrenos de la BD...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Obteniendo proximos estrenos de la BD...\n");
 			@SuppressWarnings("unchecked")
 			Query<ProximoEstreno> q = pm.newQuery("SELECT FROM " + ProximoEstreno.class.getName());
 			List<ProximoEstreno> estrenos = (List<ProximoEstreno>) q.executeList();
 			for (ProximoEstreno estreno : estrenos) {
 				arrayProximosEstrenos.add(estreno);
 			}
-			ServerFrame.textArea.append("Proximos estrenos obtenenidas ! :D\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Proximos estrenos obtenenidas ! :D\n");
 			tx.commit();
 		} finally {
 			if (tx.isActive()) {
@@ -1139,10 +1157,10 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		try {
 			tx.begin();
 
-			ServerFrame.textArea.append("Creando nuevo estreno...\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Creando nuevo estreno...\n");
 			ProximoEstreno estreno = new ProximoEstreno(pelicula);
 			pm.makePersistent(estreno);
-			ServerFrame.textArea.append("Proximo estreno creado exitosamente!\n");
+			Logger.getLogger(getClass().getName()).log(Level.INFO, "Proximo estreno creado exitosamente!\n");
 
 			tx.commit();
 			estrenoGuardado = true;

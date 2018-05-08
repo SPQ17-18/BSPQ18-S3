@@ -18,7 +18,7 @@ public class Direccion implements java.io.Serializable {
 	public Direccion(String calle, String ciudad, String pais) {
 		this.setCalle(calle);
 		this.setCiudad(ciudad);
-		this.setCalle(calle);
+		this.setPais(pais);
 	}
 
 	public String getCalle() {
