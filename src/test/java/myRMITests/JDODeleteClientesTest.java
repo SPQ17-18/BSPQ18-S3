@@ -20,7 +20,7 @@ import org.junit.Test;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Usuario;
 
-//@Ignore
+@Ignore
 public class JDODeleteClientesTest {
 	private PersistenceManagerFactory pmf = null;
 	private PersistenceManager pm = null;

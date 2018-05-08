@@ -23,7 +23,7 @@ import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Inventario;
 import videoclub.server.jdo.Pelicula;
 
-//@Ignore
+@Ignore
 public class JDODeletePeliculasTest {
 	private PersistenceManagerFactory pmf = null;
 	private PersistenceManager pm = null;

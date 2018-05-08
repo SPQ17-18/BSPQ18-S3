@@ -29,7 +29,7 @@ import videoclub.server.jdo.PeliculaVista;
 import videoclub.server.jdo.ProximoEstreno;
 import videoclub.server.jdo.Recomendacion;
 
-//@Ignore
+@Ignore
 public class JDODeleteAllLessPeliculasTest {
 	private PersistenceManagerFactory pmf = null;
 	private PersistenceManager pm = null;
@@ -56,11 +56,10 @@ public class JDODeleteAllLessPeliculasTest {
 			Query<?> q = pm.newQuery(Noticia.class);
 			@SuppressWarnings("unchecked")
 			Collection<Noticia> list = (Collection<Noticia>) q.execute();
-			 Iterator<Noticia> iterator = list.iterator();
-			 while (iterator.hasNext()) {
-			 Logger.getLogger(getClass().getName()).log(Level.INFO,
-			 iterator.next().toString());
-			 }
+			Iterator<Noticia> iterator = list.iterator();
+			while (iterator.hasNext()) {
+				Logger.getLogger(getClass().getName()).log(Level.INFO, iterator.next().toString());
+			}
 			pm.deletePersistentAll(list);
 			tx.commit();
 		} finally {
@@ -83,11 +82,10 @@ public class JDODeleteAllLessPeliculasTest {
 			Query<?> q = pm.newQuery(Alquiler.class);
 			@SuppressWarnings("unchecked")
 			Collection<Alquiler> list = (Collection<Alquiler>) q.execute();
-			 Iterator<Alquiler> iterator = list.iterator();
-			 while (iterator.hasNext()) {
-			 Logger.getLogger(getClass().getName()).log(Level.INFO,
-			 iterator.next().toString());
-			 }
+			Iterator<Alquiler> iterator = list.iterator();
+			while (iterator.hasNext()) {
+				Logger.getLogger(getClass().getName()).log(Level.INFO, iterator.next().toString());
+			}
 			pm.deletePersistentAll(list);
 			tx.commit();
 		} finally {
@@ -110,11 +108,10 @@ public class JDODeleteAllLessPeliculasTest {
 			Query<?> q = pm.newQuery(Amigo.class);
 			@SuppressWarnings("unchecked")
 			Collection<Amigo> list = (Collection<Amigo>) q.execute();
-			 Iterator<Amigo> iterator = list.iterator();
-			 while (iterator.hasNext()) {
-			 Logger.getLogger(getClass().getName()).log(Level.INFO,
-			 iterator.next().toString());
-			 }
+			Iterator<Amigo> iterator = list.iterator();
+			while (iterator.hasNext()) {
+				Logger.getLogger(getClass().getName()).log(Level.INFO, iterator.next().toString());
+			}
 			pm.deletePersistentAll(list);
 			tx.commit();
 		} finally {
@@ -137,11 +134,10 @@ public class JDODeleteAllLessPeliculasTest {
 			Query<?> q = pm.newQuery(Mensaje.class);
 			@SuppressWarnings("unchecked")
 			Collection<Mensaje> list = (Collection<Mensaje>) q.execute();
-			 Iterator<Mensaje> iterator = list.iterator();
-			 while (iterator.hasNext()) {
-			 Logger.getLogger(getClass().getName()).log(Level.INFO,
-			 iterator.next().toString());
-			 }
+			Iterator<Mensaje> iterator = list.iterator();
+			while (iterator.hasNext()) {
+				Logger.getLogger(getClass().getName()).log(Level.INFO, iterator.next().toString());
+			}
 			pm.deletePersistentAll(list);
 			tx.commit();
 		} finally {
@@ -164,11 +160,10 @@ public class JDODeleteAllLessPeliculasTest {
 			Query<?> q = pm.newQuery(Opinion.class);
 			@SuppressWarnings("unchecked")
 			Collection<Opinion> list = (Collection<Opinion>) q.execute();
-			 Iterator<Opinion> iterator = list.iterator();
-			 while (iterator.hasNext()) {
-			 Logger.getLogger(getClass().getName()).log(Level.INFO,
-			 iterator.next().toString());
-			 }
+			Iterator<Opinion> iterator = list.iterator();
+			while (iterator.hasNext()) {
+				Logger.getLogger(getClass().getName()).log(Level.INFO, iterator.next().toString());
+			}
 			pm.deletePersistentAll(list);
 			tx.commit();
 		} finally {
@@ -191,11 +186,10 @@ public class JDODeleteAllLessPeliculasTest {
 			Query<?> q = pm.newQuery(Novedad.class);
 			@SuppressWarnings("unchecked")
 			Collection<Novedad> list = (Collection<Novedad>) q.execute();
-			 Iterator<Novedad> iterator = list.iterator();
-			 while (iterator.hasNext()) {
-			 Logger.getLogger(getClass().getName()).log(Level.INFO,
-			 iterator.next().toString());
-			 }
+			Iterator<Novedad> iterator = list.iterator();
+			while (iterator.hasNext()) {
+				Logger.getLogger(getClass().getName()).log(Level.INFO, iterator.next().toString());
+			}
 			pm.deletePersistentAll(list);
 			tx.commit();
 		} finally {
@@ -218,11 +212,10 @@ public class JDODeleteAllLessPeliculasTest {
 			Query<?> q = pm.newQuery(PeliculaFavorita.class);
 			@SuppressWarnings("unchecked")
 			Collection<PeliculaFavorita> list = (Collection<PeliculaFavorita>) q.execute();
-			 Iterator<PeliculaFavorita> iterator = list.iterator();
-			 while (iterator.hasNext()) {
-			 Logger.getLogger(getClass().getName()).log(Level.INFO,
-			 iterator.next().toString());
-			 }
+			Iterator<PeliculaFavorita> iterator = list.iterator();
+			while (iterator.hasNext()) {
+				Logger.getLogger(getClass().getName()).log(Level.INFO, iterator.next().toString());
+			}
 			pm.deletePersistentAll(list);
 			tx.commit();
 		} finally {
@@ -245,11 +238,10 @@ public class JDODeleteAllLessPeliculasTest {
 			Query<?> q = pm.newQuery(ProximoEstreno.class);
 			@SuppressWarnings("unchecked")
 			Collection<ProximoEstreno> list = (Collection<ProximoEstreno>) q.execute();
-			 Iterator<ProximoEstreno> iterator = list.iterator();
-			 while (iterator.hasNext()) {
-			 Logger.getLogger(getClass().getName()).log(Level.INFO,
-			 iterator.next().toString());
-			 }
+			Iterator<ProximoEstreno> iterator = list.iterator();
+			while (iterator.hasNext()) {
+				Logger.getLogger(getClass().getName()).log(Level.INFO, iterator.next().toString());
+			}
 			pm.deletePersistentAll(list);
 			tx.commit();
 		} finally {
@@ -272,11 +264,10 @@ public class JDODeleteAllLessPeliculasTest {
 			Query<?> q = pm.newQuery(PeliculaPendiente.class);
 			@SuppressWarnings("unchecked")
 			Collection<PeliculaPendiente> list = (Collection<PeliculaPendiente>) q.execute();
-			 Iterator<PeliculaPendiente> iterator = list.iterator();
-			 while (iterator.hasNext()) {
-			 Logger.getLogger(getClass().getName()).log(Level.INFO,
-			 iterator.next().toString());
-			 }
+			Iterator<PeliculaPendiente> iterator = list.iterator();
+			while (iterator.hasNext()) {
+				Logger.getLogger(getClass().getName()).log(Level.INFO, iterator.next().toString());
+			}
 			pm.deletePersistentAll(list);
 			tx.commit();
 		} finally {
@@ -299,11 +290,10 @@ public class JDODeleteAllLessPeliculasTest {
 			Query<?> q = pm.newQuery(PeliculaVista.class);
 			@SuppressWarnings("unchecked")
 			Collection<PeliculaVista> list = (Collection<PeliculaVista>) q.execute();
-			 Iterator<PeliculaVista> iterator = list.iterator();
-			 while (iterator.hasNext()) {
-			 Logger.getLogger(getClass().getName()).log(Level.INFO,
-			 iterator.next().toString());
-			 }
+			Iterator<PeliculaVista> iterator = list.iterator();
+			while (iterator.hasNext()) {
+				Logger.getLogger(getClass().getName()).log(Level.INFO, iterator.next().toString());
+			}
 			pm.deletePersistentAll(list);
 			tx.commit();
 		} finally {
