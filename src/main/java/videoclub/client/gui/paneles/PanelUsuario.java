@@ -38,7 +38,7 @@ import javax.swing.border.LineBorder;
 
 import videoclub.client.utiles.Temas;
 import videoclub.client.utiles.UrlToImage;
-import videoclub.server.gui.ICollector;
+import videoclub.server.collector.ICollector;
 import videoclub.server.jdo.Alquiler;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Imagen;

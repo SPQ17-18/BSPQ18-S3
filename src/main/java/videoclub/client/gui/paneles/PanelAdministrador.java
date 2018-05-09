@@ -38,7 +38,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import videoclub.client.utiles.Resaltador;
-import videoclub.server.gui.ICollector;
+import videoclub.server.collector.ICollector;
 import videoclub.server.jdo.Alquiler;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Imagen;

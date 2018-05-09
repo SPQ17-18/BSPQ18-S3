@@ -177,6 +177,9 @@
 							<exclude>videoclub/client/utiles/**/*.class</exclude>
 							<exclude>videoclub/client/gui/paneles/**/*.class</exclude>
 							<exclude>videoclub/client/gui/ventanas/**/*.class</exclude>
+							<exclude>videoclub/client/main/**/*.class</exclude>
+							<exclude>videoclub/server/gui/**/*.class</exclude>
+							<exclude>videoclub/server/main/**/*.class</exclude>
 						</excludes>
 					</instrumentation>
 				</configuration>

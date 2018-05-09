@@ -1,8 +1,6 @@
-package videoclub.server.gui;
+package videoclub.server.collector;
 
 import java.awt.EventQueue;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -23,6 +21,7 @@ import org.pushingpixels.substance.api.skin.SubstanceRavenLookAndFeel;
 
 import videoclub.observer.RMI.IRemoteObserver;
 import videoclub.observer.RMI.RemoteObservable;
+import videoclub.server.gui.ServerFrame;
 import videoclub.server.jdo.Alquiler;
 import videoclub.server.jdo.Amigo;
 import videoclub.server.jdo.Categoria;
@@ -56,12 +55,7 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 	public ServerCollector(boolean isTest) throws RemoteException {
 		super();
 		this.remoteObservable = new RemoteObservable();
-
-		if (isTest == false) {
-			this.datanucleusProperties = "datanucleus.properties";
-		} else {
-			this.datanucleusProperties = "datanucleusTEST.properties";
-		}
+		this.datanucleusProperties = "datanucleus.properties";
 
 		PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory(datanucleusProperties);
 		this.pm = pmf.getPersistenceManager();
@@ -100,69 +94,12 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 		this.remoteObservable.deleteRemoteObserver(observer);
 	}
 
-	private static Thread rmiRegistryThread = null;
-	private static Thread rmiServerThread = null;
+	public synchronized void deleteRemoteObservers() {
+		this.remoteObservable.deleteRemoteObservers();
+	}
 
-	public static void main(String[] args) {
-		// Launch the RMI registry
-		class RMIRegistryRunnable implements Runnable {
-
-			public void run() {
-				try {
-					java.rmi.registry.LocateRegistry.createRegistry(1099);
-					Logger.getLogger(getClass().getName()).log(Level.INFO, "RMI registry ready.");
-				} catch (Exception e) {
-					Logger.getLogger(getClass().getName()).log(Level.INFO, "Exception starting RMI registry:");
-					e.printStackTrace();
-				}
-			}
-		}
-
-		rmiRegistryThread = new Thread(new RMIRegistryRunnable());
-		rmiRegistryThread.start();
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException ie) {
-			ie.printStackTrace();
-		}
-
-		class RMIServerRunnable implements Runnable {
-
-			public void run() {
-				System.setProperty("java.security.policy", "target\\classes\\security\\java.policy");
-
-				if (System.getSecurityManager() == null) {
-					System.setSecurityManager(new SecurityManager());
-				}
-
-				String name = "//" + args[0] + ":" + args[1] + "/" + args[2];
-				System.out.println(" * Server name: " + name);
-
-				try {
-					ICollector iCollector = new ServerCollector(false);
-					Naming.rebind(name, iCollector);
-
-				} catch (RemoteException re) {
-					Logger.getLogger(getClass().getName()).log(Level.INFO,
-							" # Collector RemoteException: " + re.getMessage());
-					re.printStackTrace();
-					System.exit(-1);
-				} catch (MalformedURLException murle) {
-					Logger.getLogger(getClass().getName()).log(Level.INFO,
-							" # Collector MalformedURLException: " + murle.getMessage());
-					murle.printStackTrace();
-					System.exit(-1);
-				}
-			}
-		}
-
-		rmiServerThread = new Thread(new RMIServerRunnable());
-		rmiServerThread.start();
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException ie) {
-			ie.printStackTrace();
-		}
+	public synchronized int countRemoteObservers() {
+		return this.remoteObservable.countRemoteObservers();
 	}
 
 	@Override

@@ -14,7 +14,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import videoclub.server.gui.ICollector;
+import videoclub.server.collector.ICollector;
 import videoclub.server.jdo.Opinion;
 import videoclub.server.jdo.Pelicula;
 

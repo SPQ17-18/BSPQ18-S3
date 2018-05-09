@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JCalendar;
 
-import videoclub.server.gui.ICollector;
+import videoclub.server.collector.ICollector;
 import videoclub.server.jdo.Noticia;
 import videoclub.server.jdo.ProximoEstreno;
 

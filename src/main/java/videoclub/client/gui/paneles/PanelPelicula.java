@@ -28,7 +28,7 @@ import javax.swing.border.LineBorder;
 import videoclub.client.gui.ventanas.ClientAlquilerFrame;
 import videoclub.client.gui.ventanas.ClientOpinionesFrame;
 import videoclub.client.gui.ventanas.ClientPeliculaFrame;
-import videoclub.server.gui.ICollector;
+import videoclub.server.collector.ICollector;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Pelicula;

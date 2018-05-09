@@ -1,4 +1,4 @@
-package videoclub.server.gui;
+package videoclub.server.collector;
 
 import java.rmi.RemoteException;
 

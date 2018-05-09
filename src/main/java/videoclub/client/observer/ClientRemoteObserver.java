@@ -1,9 +1,10 @@
-package videoclub.client.gui.ventanas;
+package videoclub.client.observer;
 
 import java.rmi.RemoteException;
 
+import videoclub.client.main.Client;
 import videoclub.observer.RMI.RemoteObserver;
-import videoclub.server.gui.ICollector;
+import videoclub.server.collector.ICollector;
 
 public class ClientRemoteObserver extends RemoteObserver {
 

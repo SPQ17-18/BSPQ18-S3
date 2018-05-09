@@ -1,7 +1,10 @@
 package videoclub.observer.RMI;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RemoteObservable {
 
@@ -15,16 +18,12 @@ public class RemoteObservable {
 	}
 
 	public synchronized void addRemoteObserver(IRemoteObserver observer) {
-		if (observer != null) {
-			this.remoteObservers.add(observer);
-			// System.out.println(observer.toString());
-		}
+		this.remoteObservers.add(observer);
+		Logger.getLogger(getClass().getName()).log(Level.INFO, observer.toString());
 	}
 
 	public synchronized void deleteRemoteObserver(IRemoteObserver observer) {
-		if (observer != null) {
-			this.remoteObservers.remove(observer);
-		}
+		this.remoteObservers.remove(observer);
 	}
 
 	public synchronized void deleteRemoteObservers() {
@@ -35,39 +34,21 @@ public class RemoteObservable {
 		return this.remoteObservers.size();
 	}
 
-	public synchronized void notifyRemoteObserversChatMessages(Object arg) {
+	public synchronized void notifyRemoteObserversChatMessages(Object arg) throws RemoteException {
 		for (IRemoteObserver observer : remoteObservers) {
-			try {
-				observer.updateChatMessages(arg);
-			} catch (Exception ex) {
-				// System.err.println(this.getClass().getName() + ".notifyRemoteObservers(): " +
-				// ex);
-				ex.printStackTrace();
-			}
+			observer.updateChatMessages(arg);
 		}
 	}
 
-	public synchronized void notifyRemoteObserversUsuarioDesconectado() {
+	public synchronized void notifyRemoteObserversUsuarioDesconectado() throws RemoteException {
 		for (IRemoteObserver observer : remoteObservers) {
-			try {
-				observer.updateUsuarioDesconecatdo();
-			} catch (Exception ex) {
-				// System.err.println(this.getClass().getName() + ".notifyRemoteObservers(): " +
-				// ex);
-				ex.printStackTrace();
-			}
+			observer.updateUsuarioDesconecatdo();
 		}
 	}
 
-	public synchronized void notifyRemoteObserversUsuarioConectado() {
+	public synchronized void notifyRemoteObserversUsuarioConectado() throws RemoteException {
 		for (IRemoteObserver observer : remoteObservers) {
-			try {
-				observer.updateUsuarioDesconecatdo();
-			} catch (Exception ex) {
-				// System.err.println(this.getClass().getName() + ".notifyRemoteObservers(): " +
-				// ex);
-				ex.printStackTrace();
-			}
+			observer.updateUsuarioDesconecatdo();
 		}
 	}
 

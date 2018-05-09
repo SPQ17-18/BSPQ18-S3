@@ -17,9 +17,9 @@ import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import videoclub.client.gui.ventanas.Client;
 import videoclub.client.gui.ventanas.ClientFrame;
-import videoclub.server.gui.ICollector;
+import videoclub.client.main.Client;
+import videoclub.server.collector.ICollector;
 import videoclub.server.jdo.Cliente;
 
 public class PanelIniciarSesion extends JPanel {

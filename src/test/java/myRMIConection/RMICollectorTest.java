@@ -1,5 +1,7 @@
 package myRMIConection;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
@@ -31,9 +33,9 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import junit.framework.JUnit4TestAdapter;
-import videoclub.client.gui.ventanas.Client;
-import videoclub.server.gui.ICollector;
-import videoclub.server.gui.ServerCollector;
+import videoclub.client.main.Client;
+import videoclub.server.collector.ICollector;
+import videoclub.server.collector.ServerCollector;
 import videoclub.server.jdo.Alquiler;
 import videoclub.server.jdo.Amigo;
 import videoclub.server.jdo.Cliente;
@@ -94,7 +96,6 @@ public class RMICollectorTest {
 					java.rmi.registry.LocateRegistry.createRegistry(1099);
 					Logger.getLogger(getClass().getName()).log(Level.INFO, "RMI registry ready.");
 				} catch (Exception e) {
-					System.out.println("Exception starting RMI registry:");
 					Logger.getLogger(getClass().getName()).log(Level.WARNING, "Exception starting RMI registry: ");
 					Logger.getLogger(getClass().getName()).log(Level.WARNING, e.getMessage());
 				}
@@ -182,11 +183,11 @@ public class RMICollectorTest {
 		Logger.getLogger(getClass().getName()).log(Level.INFO, " # CLIENTES CREADOS!");
 
 		arrayUsuarios = new ArrayList<Usuario>();
-		arrayUsuarios.add(new Usuario("dgpUser", "12345", "dgp.g.p@opendeusto.es", arrayClientes.get(0)));
-		arrayUsuarios.add(new Usuario("auUser", "12345", "au.g.p@opendeusto.es", arrayClientes.get(1)));
-		arrayUsuarios.add(new Usuario("aaUser", "12345", "aa.g.p@opendeusto.es", arrayClientes.get(2)));
-		arrayUsuarios.add(new Usuario("amUser", "12345", "am.g.p@opendeusto.es", arrayClientes.get(3)));
-		arrayUsuarios.add(new Usuario("jpeUser", "12345", "jpe.g.p@opendeusto.es", arrayClientes.get(4)));
+		arrayUsuarios.add(new Usuario("dgpUser1", "12345", "dgp.g.p@opendeusto.es", arrayClientes.get(0)));
+		arrayUsuarios.add(new Usuario("auUser2", "12345", "au.g.p@opendeusto.es", arrayClientes.get(1)));
+		arrayUsuarios.add(new Usuario("aaUser3", "12345", "aa.g.p@opendeusto.es", arrayClientes.get(2)));
+		arrayUsuarios.add(new Usuario("amUser4", "12345", "am.g.p@opendeusto.es", arrayClientes.get(3)));
+		arrayUsuarios.add(new Usuario("jpeUser5", "12345", "jpe.g.p@opendeusto.es", arrayClientes.get(4)));
 
 		Logger.getLogger(getClass().getName()).log(Level.INFO, " # USUARIOS CREADOS!");
 
@@ -207,7 +208,7 @@ public class RMICollectorTest {
 		arrayMensajes.add(new Mensaje("Hay alguien?", new Date(), arrayUsuarios.get(3)));
 		arrayMensajes.add(new Mensaje("Yo estoy conectado!", new Date(), arrayUsuarios.get(4)));
 		for (Mensaje mensaje : arrayMensajes) {
-			collector.setMensaje(mensaje);
+			assertTrue(collector.setMensaje(mensaje));
 		}
 
 		Logger.getLogger(getClass().getName()).log(Level.INFO, " # MENSAJES CREADOS!");
@@ -241,9 +242,9 @@ public class RMICollectorTest {
 				byte[] data = extractBytes(url);
 
 				// Añadimos película:
-				collector.insertarPelicula(titulo, Integer.parseInt(obtenerDuracion(duracion)),
+				assertTrue(collector.insertarPelicula(titulo, Integer.parseInt(obtenerDuracion(duracion)),
 						obtenerDescripcion(descripcion).getBytes(), Integer.parseInt(obtenerAnyo(anyo)), 5F,
-						obtenerGenero(categoria), 5, new Imagen(obtenerSrcUrl(srcImage), data), true);
+						obtenerGenero(categoria), 5, new Imagen(obtenerSrcUrl(srcImage), data), true));
 				Logger.getLogger(getClass().getName()).log(Level.INFO, " # INSERTADA PELICULA: " + titulo);
 			}
 
@@ -269,27 +270,27 @@ public class RMICollectorTest {
 				"Está bien, 7/10" + arrayPeliculas.get(4).getNombre() + "..5"));
 
 		for (Opinion opinion : arrayOpiniones) {
-			collector.setOpinion(opinion.getPelicula(), opinion.getUser(), opinion.getDescripcionOpinion());
+			assertTrue(collector.setOpinion(opinion.getPelicula(), opinion.getUser(), opinion.getDescripcionOpinion()));
 		}
 
 		// CREANDO PELICULAS FAVORITAS:
 		for (Pelicula pelicula : arrayPeliculas) {
-			collector.setPeliculaFavorita(pelicula, arrayClientes.get(0));
+			assertTrue(collector.setPeliculaFavorita(pelicula, arrayClientes.get(0)));
 		}
 
 		// CREANDO PELICULAS PENDIENTES:
 		for (Pelicula pelicula : arrayPeliculas) {
-			collector.setPeliculaPendiente(pelicula, arrayClientes.get(0));
+			assertTrue(collector.setPeliculaPendiente(pelicula, arrayClientes.get(0)));
 		}
 
 		// CREANDO PELICULAS VISTAS:
 		for (Pelicula pelicula : arrayPeliculas) {
-			collector.setPeliculaVista(pelicula, arrayClientes.get(0));
+			assertTrue(collector.setPeliculaVista(pelicula, arrayClientes.get(0)));
 		}
 
 		// CREANDO RECOMENDACIONES:
 		for (Pelicula pelicula : arrayPeliculas) {
-			collector.setRecomendacion("dgpUser", "aaUser", pelicula);
+			assertTrue(collector.setRecomendacion("dgpUser", "aaUser", pelicula));
 		}
 
 		// CREANDO AMIGOS:
@@ -303,8 +304,8 @@ public class RMICollectorTest {
 		arrayInventarios = collector.obtenerInventarios(arrayInventarios);
 
 		for (Inventario inventario : arrayInventarios) {
-			collector.alquilarPelicula(new Alquiler(new SimpleDateFormat("yyyy-MM-dd").parse("2018-5-15"),
-					new SimpleDateFormat("yyyy-MM-dd").parse("2018-6-15"), arrayClientes.get(0), inventario));
+			assertTrue(collector.alquilarPelicula(new Alquiler(new SimpleDateFormat("yyyy-MM-dd").parse("2018-5-15"),
+					new SimpleDateFormat("yyyy-MM-dd").parse("2018-6-15"), arrayClientes.get(0), inventario)));
 		}
 
 	}
@@ -326,7 +327,7 @@ public class RMICollectorTest {
 		arrayNoticias.add(new Noticia("¡Nuevos descuentos durante esta semana!"));
 		arrayNoticias.add(new Noticia("¡Habrá próximos estrenos pronto!"));
 		for (Noticia noticia : arrayNoticias) {
-			collector.setNoticia(noticia.getNoticia());
+			assertTrue(collector.setNoticia(noticia.getNoticia()));
 		}
 
 		Logger.getLogger(getClass().getName()).log(Level.INFO, " # NOTICIAS CREADAS!");
@@ -350,7 +351,7 @@ public class RMICollectorTest {
 		arrayProximosEstrenos.add(new ProximoEstreno("El Padrino III"));
 
 		for (ProximoEstreno proximoEstreno : arrayProximosEstrenos) {
-			collector.setProximoEstreno(proximoEstreno.getNombrePelicula());
+			assertTrue(collector.setProximoEstreno(proximoEstreno.getNombrePelicula()));
 		}
 
 		Logger.getLogger(getClass().getName()).log(Level.INFO, " # ESTRENOS CREADOS!");
@@ -359,13 +360,11 @@ public class RMICollectorTest {
 	// Registro de usuarios en paralelo:
 	private int invocacion = 0;
 
-	// @PerfTest(invocations = 20000, threads = 10, timer = RandomTimer.class,
-	// timerParams = { 3, 8 })//RÁPIDO PERO NO SEGURO
 	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 300, 800 }) // LENTO PERO
 	@Test // SEGURO
 	public void registroUsuariosTest() {
 		try {
-			collector.registerUser("DGP" + invocacion, "12345" + invocacion, "DGP@opendeusto.es" + invocacion,
+			collector.registerUser("DGP1" + invocacion, "123451" + invocacion, "DGP@opendeusto.es" + invocacion,
 					"David" + invocacion, "García Pérez" + invocacion, new Date(), "La Paz" + invocacion,
 					"Bilbao" + invocacion, "España" + invocacion);
 			Logger.getLogger(getClass().getName()).log(Level.INFO, " # REGISTRO USUARIO: DGP" + invocacion);
@@ -377,48 +376,39 @@ public class RMICollectorTest {
 
 	// Consultas paralelas de inicio de sesión incorrectas:
 	@Test
-	// @PerfTest(invocations = 20000, threads = 1000, timer = RandomTimer.class,
-	// timerParams = { 300, 800 })//RÁPIDO PERO NO SEGURO
 	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 300, 800 })
 	public void inicioSesionIncorrectoTest() throws RemoteException {
-		boolean dev = false;
 		try {
-			dev = collector.login("DGP0", "11111"); // ERROR DE CONTRASEÑA!
-			Logger.getLogger(getClass().getName()).log(Level.INFO, " # INICIO SESION TEST INCORRECTO: " + dev);
+			assertFalse(collector.login("DGP04", "111111"));
+			Logger.getLogger(getClass().getName()).log(Level.INFO, " # INICIO SESION TEST INCORRECTO");
 		} catch (Exception ex) {
 			Logger.getLogger(getClass().getName()).log(Level.WARNING, ex.getMessage());
 		}
 	}
 
-	// Consultas paralelas de inicio de sesión incorrectas:
-	@Test
-	// @PerfTest(invocations = 20000, threads = 1000, timer = RandomTimer.class,
-	// timerParams = { 300, 800 })//RÁPIDO PERO NO SEGURO
-	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 300, 800 })
-	public void inicioSesionCorrecto() throws RemoteException {
-		boolean dev = false;
-		try {
-			collector.registerUser("DGP" + invocacion, "12345" + invocacion, "DGP@opendeusto.es" + invocacion,
-					"David" + invocacion, "García Pérez" + invocacion, new Date(), "La Paz" + invocacion,
-					"Bilbao" + invocacion, "España" + invocacion);
-			dev = collector.login("DGP0", "12345");
-			Logger.getLogger(getClass().getName()).log(Level.INFO, " # INICIO SESION TEST CORRECTO: " + dev);
-		} catch (Exception ex) {
-			Logger.getLogger(getClass().getName()).log(Level.WARNING, ex.getMessage());
-		}
-	}
+	private int clientInvocados = 0;
 
 	// Lanzamiento del proceso Client:
 	@Test
-	public void testRMIApp() {
-		Client client = new Client();
+	@PerfTest(invocations = 100, threads = 1, timer = RandomTimer.class, timerParams = { 30, 80 })
+	public void testRMIApp() throws RemoteException, ParseException {
+		collector.registerUser("DGP23" + invocacion, "12345" + invocacion, "DGP@opendeusto.es" + invocacion,
+				"David" + invocacion, "García Pérez" + invocacion, new Date(), "La Paz" + invocacion,
+				"Bilbao" + invocacion, "España" + invocacion);
+		Client client = new Client(false);
 		client.start(arg);
+		client.collector
+				.broadcastMessage(new Object[] { "FECHA: " + new SimpleDateFormat("yyyy-MM-dd").parse("2018-05-9")
+						+ "[CLIENT " + clientInvocados + "]: Hola soy el cliente nº " + clientInvocados });
+		client.collector.conectarUsuario();
+		client.collector.desconectarUsuario("DGP");
+		Logger.getLogger(getClass().getName()).log(Level.INFO, " # testRMIApp CLIENT [" + clientInvocados + "]");
 		assertTrue(true);
-		try {
+		clientInvocados++;
+		if (clientInvocados >= 100) {
+			assertEquals(String.valueOf(collector.countRemoteObservers()), "100");
+			client.remoteClient.end();
 			obtenerTodo();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 
@@ -570,6 +560,15 @@ public class RMICollectorTest {
 
 	@AfterClass
 	static public void tearDown() {
+
+		try {
+			assertEquals(String.valueOf(collector.countRemoteObservers()), "99");
+			collector.deleteRemoteObservers();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		try {
 			rmiServerThread.join();
 			rmiRegistryThread.join();

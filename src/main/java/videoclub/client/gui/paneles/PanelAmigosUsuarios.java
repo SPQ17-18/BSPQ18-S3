@@ -21,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
 
 import videoclub.client.gui.ventanas.ClientRecomendacionFrame;
 import videoclub.client.utiles.UrlToImage;
-import videoclub.server.gui.ICollector;
+import videoclub.server.collector.ICollector;
 import videoclub.server.jdo.Amigo;
 import videoclub.server.jdo.Usuario;
 

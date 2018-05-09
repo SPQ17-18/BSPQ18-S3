@@ -20,7 +20,7 @@ import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
 
-import videoclub.server.gui.ICollector;
+import videoclub.server.collector.ICollector;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Direccion;
 import videoclub.server.jdo.Usuario;
