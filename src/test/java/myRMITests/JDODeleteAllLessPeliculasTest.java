@@ -29,7 +29,7 @@ import videoclub.server.jdo.PeliculaVista;
 import videoclub.server.jdo.ProximoEstreno;
 import videoclub.server.jdo.Recomendacion;
 
-@Ignore
+//@Ignore
 public class JDODeleteAllLessPeliculasTest {
 	private PersistenceManagerFactory pmf = null;
 	private PersistenceManager pm = null;

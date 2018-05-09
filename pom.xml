@@ -16,6 +16,7 @@
 		<server.Name>Collector</server.Name>
 		<policy.file>${basedir}/src/main/resources/security/java.policy</policy.file>
 		<config.files.dir>${basedir}/src/main/resources</config.files.dir>
+		<doxygen.config.file>${basedir}/src/main/resources/Doxyfile</doxygen.config.file>
 	</properties>
 
 
@@ -171,8 +172,28 @@
 						<packageLineRate>85</packageLineRate>
 						<packageBranchRate>85</packageBranchRate>
 					</check>
+					<instrumentation>
+						<excludes>
+							<exclude>videoclub/client/utiles/**/*.class</exclude>
+							<exclude>videoclub/client/gui/paneles/**/*.class</exclude>
+							<exclude>videoclub/client/gui/ventanas/**/*.class</exclude>
+						</excludes>
+					</instrumentation>
 				</configuration>
 
+			</plugin>
+
+			<!-- 1. To generate doxygen reports: mvn doxygen:report 2. To copy generated 
+				html directory into docs folder: mvn validate 3. To remove generated target 
+				files including dir docs with html code: mvn clean -->
+
+			<plugin>
+				<groupId>com.soebes.maven.plugins.dmg</groupId>
+				<artifactId>doxygen-maven-plugin</artifactId>
+				<version>1.1.0</version>
+				<configuration>
+					<configurationFile>${doxygen.config.file}</configurationFile>
+				</configuration>
 			</plugin>
 
 		</plugins>
