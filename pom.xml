@@ -290,7 +290,7 @@
 						<artifactId>exec-maven-plugin</artifactId>
 						<version>1.2.1</version>
 						<configuration>
-							<mainClass>videoclub.server.gui.ServerCollector</mainClass>
+							<mainClass>videoclub.server.main.Server</mainClass>
 							<systemProperties>
 
 								<systemProperty>
@@ -329,7 +329,7 @@
 						<artifactId>exec-maven-plugin</artifactId>
 						<version>1.2.1</version>
 						<configuration>
-							<mainClass>videoclub.client.gui.ventanas.Client</mainClass>
+							<mainClass>videoclub.client.main.Client</mainClass>
 							<systemProperties>
 								<systemProperty>
 									<key>java.security.manager</key>

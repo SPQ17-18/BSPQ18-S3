@@ -108,8 +108,9 @@ public class ClientAlquilerFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (comprobarAlquilerRepetido() == false) {
 					alquilarPelicula();
-				}else{
-					JOptionPane.showMessageDialog(null, "La película: "+pelicula.getNombre()+" ya fue alquilada", "¡ERROR!",JOptionPane.ERROR_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null, "La película: " + pelicula.getNombre() + " ya fue alquilada",
+							"¡ERROR!", JOptionPane.ERROR_MESSAGE);
 					ClientAlquilerFrame.this.dispose();
 				}
 			}
@@ -152,11 +153,14 @@ public class ClientAlquilerFrame extends JFrame {
 						// MakePersistent:
 						try {
 							if (collector.alquilarPelicula(alquiler) == true) {
+								// Notificamos al administrador:
+								collector.setNotificacionAlquiler(new Date());
 								JOptionPane.showMessageDialog(null,
 										"Película: " + pelicula.getNombre() + ", alquilada correctamente, gracias.");
 								ClientAlquilerFrame.this.dispose();
 							} else {
-								JOptionPane.showMessageDialog(null, "ERROR! VUELVA A INTENTARLO!", "¡ERROR!",JOptionPane.ERROR_MESSAGE);
+								JOptionPane.showMessageDialog(null, "ERROR! VUELVA A INTENTARLO!", "¡ERROR!",
+										JOptionPane.ERROR_MESSAGE);
 								ClientAlquilerFrame.this.dispose();
 							}
 						} catch (RemoteException e1) {

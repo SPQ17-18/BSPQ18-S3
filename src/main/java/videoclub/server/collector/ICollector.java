@@ -13,6 +13,7 @@ import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Inventario;
 import videoclub.server.jdo.Mensaje;
 import videoclub.server.jdo.Noticia;
+import videoclub.server.jdo.NotificarAlquiler;
 import videoclub.server.jdo.Opinion;
 import videoclub.server.jdo.Pelicula;
 import videoclub.server.jdo.PeliculaFavorita;
@@ -23,6 +24,8 @@ import videoclub.server.jdo.Recomendacion;
 import videoclub.server.jdo.Usuario;
 
 public interface ICollector extends IRemoteObservable {
+	boolean setNotificacionAlquiler(Date fechaNotificacion) throws RemoteException;
+	List<NotificarAlquiler> obtenerNotificacionesAlquileres(List<NotificarAlquiler> arrayNotificacionesAlquileres) throws RemoteException;
 	List<ProximoEstreno> obtenerProximosEstrenos(List<ProximoEstreno> arrayProximosEstrenos) throws RemoteException;
 	boolean setProximoEstreno(String pelicula) throws RemoteException;
 	List<Noticia> obtenerNoticias(List<Noticia> arrayNoticias) throws RemoteException;

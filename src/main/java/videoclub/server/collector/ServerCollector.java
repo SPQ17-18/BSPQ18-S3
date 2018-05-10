@@ -31,6 +31,7 @@ import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Inventario;
 import videoclub.server.jdo.Mensaje;
 import videoclub.server.jdo.Noticia;
+import videoclub.server.jdo.NotificarAlquiler;
 import videoclub.server.jdo.Novedad;
 import videoclub.server.jdo.Opinion;
 import videoclub.server.jdo.Pelicula;
@@ -1107,6 +1108,56 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 			}
 		}
 		return estrenoGuardado;
+	}
+
+	@Override
+	public boolean setNotificacionAlquiler(Date fechaNotificacion) throws RemoteException {
+		// TODO Auto-generated method stub
+		boolean notificacionAlquilerCorrecto = false;
+		try {
+			tx.begin();
+
+			Logger.getLogger(getClass().getName()).log(Level.INFO,
+					"Creando nueva notificación de alquiler para el administrador...\n");
+			NotificarAlquiler notificacion = new NotificarAlquiler(fechaNotificacion);
+			pm.makePersistent(notificacion);
+			Logger.getLogger(getClass().getName()).log(Level.INFO,
+					"Notificación de alquiler para el administrador creada exitosamente!\n");
+
+			tx.commit();
+			notificacionAlquilerCorrecto = true;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return notificacionAlquilerCorrecto;
+	}
+
+	@Override
+	public List<NotificarAlquiler> obtenerNotificacionesAlquileres(
+			List<NotificarAlquiler> arrayNotificacionesAlquileres) throws RemoteException {
+		// TODO Auto-generated method stub
+		try {
+			tx.begin();
+
+			Logger.getLogger(getClass().getName()).log(Level.INFO,
+					"Obteniendo notificaciones de alquileres para el administrador de la BD...\n");
+			@SuppressWarnings("unchecked")
+			Query<NotificarAlquiler> q = pm.newQuery("SELECT FROM " + NotificarAlquiler.class.getName());
+			List<NotificarAlquiler> notificaciones = (List<NotificarAlquiler>) q.executeList();
+			for (NotificarAlquiler notificacion : notificaciones) {
+				arrayNotificacionesAlquileres.add(notificacion);
+			}
+			Logger.getLogger(getClass().getName()).log(Level.INFO,
+					"Notificaciones de alquileres para el administrador obtenenidas ! :D\n");
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return arrayNotificacionesAlquileres;
 	}
 
 	@Override

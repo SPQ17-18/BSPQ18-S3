@@ -44,6 +44,7 @@ import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Inventario;
 import videoclub.server.jdo.Mensaje;
 import videoclub.server.jdo.Noticia;
+import videoclub.server.jdo.NotificarAlquiler;
 import videoclub.server.jdo.Opinion;
 import videoclub.server.jdo.Pelicula;
 import videoclub.server.jdo.PeliculaFavorita;
@@ -81,6 +82,7 @@ public class RMICollectorTest {
 	private List<PeliculaPendiente> arrayPeliculasPendientes = null;
 	private List<PeliculaVista> arrayPeliculasVistas = null;
 	private List<Recomendacion> arrayRecomendaciones = null;
+	private List<NotificarAlquiler> arrayNotificacionesAlquileres = null;
 
 	public static junit.framework.Test suite() {
 		return new JUnit4TestAdapter(RMICollectorTest.class);
@@ -307,6 +309,19 @@ public class RMICollectorTest {
 			assertTrue(collector.alquilarPelicula(new Alquiler(new SimpleDateFormat("yyyy-MM-dd").parse("2018-5-15"),
 					new SimpleDateFormat("yyyy-MM-dd").parse("2018-6-15"), arrayClientes.get(0), inventario)));
 		}
+		// CREANDO NOTIFICACIONES DE ALQUILERES:
+		arrayNotificacionesAlquileres = new ArrayList<NotificarAlquiler>();
+		arrayNotificacionesAlquileres.add(new NotificarAlquiler(new Date()));
+		arrayNotificacionesAlquileres.add(new NotificarAlquiler(new Date()));
+		arrayNotificacionesAlquileres.add(new NotificarAlquiler(new Date()));
+		arrayNotificacionesAlquileres.add(new NotificarAlquiler(new Date()));
+		arrayNotificacionesAlquileres.add(new NotificarAlquiler(new Date()));
+
+		for (NotificarAlquiler notificar : arrayNotificacionesAlquileres) {
+			assertTrue(collector.setNotificacionAlquiler(notificar.getFechaNotificacion()));
+		}
+
+		Logger.getLogger(getClass().getName()).log(Level.INFO, " # NOTIFICACIONES DE ALQUILERES CREADOS!");
 
 	}
 

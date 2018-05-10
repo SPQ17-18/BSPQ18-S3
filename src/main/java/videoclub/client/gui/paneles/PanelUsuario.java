@@ -1,6 +1,7 @@
 package videoclub.client.gui.paneles;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -17,6 +18,8 @@ import java.io.InputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
@@ -106,7 +109,6 @@ public class PanelUsuario extends JPanel {
 	private JPopupMenu Pmenu;
 	private JMenuItem menuItem;
 	public Pelicula peliculaAGuardar;
-	private PanelCalendario PC;
 	private JButton btnCalendarioNoticias;
 
 	/**
@@ -357,8 +359,6 @@ public class PanelUsuario extends JPanel {
 	private boolean comboBoxGeneroPresionado = false;
 	private List<String> arrayNombresPeliculasEncontradas = new ArrayList<String>();
 	private JComboBox<String> comboBoxTema;
-	@SuppressWarnings("unused")
-	private Temas tema;
 	private JPanel panelAmigosUsuarios;
 	private JScrollPane scrollPane_1;
 
@@ -389,16 +389,20 @@ public class PanelUsuario extends JPanel {
 		comboBoxTema.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					tema = new Temas((String) comboBoxTema.getSelectedItem());
-					// Actualizamos componentes:
-					SwingUtilities.updateComponentTreeUI(getRootPane());
+					new Temas((String) comboBoxTema.getSelectedItem());
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					Logger.getLogger(getClass().getName()).log(Level.WARNING,
+							" # Error (NullPointerException) comboBoxTema.addActionListener(new ActionListener())"
+									+ " FileNotFoundException e1");
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					Logger.getLogger(getClass().getName()).log(Level.WARNING,
+							" # Error (NullPointerException) comboBoxTema.addActionListener(new ActionListener())"
+									+ " IOException e1");
 				}
+				// Actualizamos componentes:
+				SwingUtilities.updateComponentTreeUI(getRootPane());
 			}
 		});
 		btnChat.addActionListener(new ActionListener() {
@@ -537,8 +541,8 @@ public class PanelUsuario extends JPanel {
 	private int indexBotonesOpciones = 0;
 
 	/**
-	 * Método para agrupar todos los botones de las opciones con un
-	 * addMouseListener único:
+	 * Método para agrupar todos los botones de las opciones con un addMouseListener
+	 * único:
 	 */
 	private void eventosBotonesOpciones() {
 		for (indexBotonesOpciones = 0; indexBotonesOpciones < arrayBotonesOpciones.size(); indexBotonesOpciones++) {
@@ -569,8 +573,8 @@ public class PanelUsuario extends JPanel {
 	private int botonesMaximosPorPantalla = 0;
 
 	/**
-	 * Método que se va a encargar de agregar soloamente una cantidad de
-	 * películas al panel automáticamente:
+	 * Método que se va a encargar de agregar soloamente una cantidad de películas
+	 * al panel automáticamente:
 	 * 
 	 */
 	private void agregarBotonesPeliculasAlPanel(int maximosPorPantalla) {
@@ -643,8 +647,8 @@ public class PanelUsuario extends JPanel {
 	}
 
 	/**
-	 * Método para cargar todas las películas en el gridLayout creando botones
-	 * para cada una:
+	 * Método para cargar todas las películas en el gridLayout creando botones para
+	 * cada una:
 	 */
 	private void agregarPeliculasAlPanel() {
 		arrayPeliculas = new ArrayList<Pelicula>();
@@ -716,6 +720,7 @@ public class PanelUsuario extends JPanel {
 
 		for (indexBotonesPelicula = 0; indexBotonesPelicula < arrayBotones.length; indexBotonesPelicula++) {
 			arrayBotones[indexBotonesPelicula].addMouseListener(new MouseAdapter() {
+
 				private int myIndex;
 
 				{
@@ -770,6 +775,7 @@ public class PanelUsuario extends JPanel {
 
 					arrayBotones[myIndex].setIcon(dev);
 				}
+
 			});
 		}
 	}
@@ -943,8 +949,8 @@ public class PanelUsuario extends JPanel {
 	 * Método que busca los nombres de las peliculas a partir de una serie de
 	 * caracteres, aunque el nombre no esté del todo puesto el buscador la
 	 * encontrará, o las encontrará, se va a buscar todos los string que sean
-	 * pareceidos a la búsqueda que hayas puesto, eso si no lo has escrito == a
-	 * una de las peliculas que exista!
+	 * pareceidos a la búsqueda que hayas puesto, eso si no lo has escrito == a una
+	 * de las peliculas que exista!
 	 */
 	private void buscarNombresPeliculasAproximadamente() {
 		arrayNombresPeliculasEncontradas = new ArrayList<String>();

@@ -75,7 +75,16 @@ public class Client {
 					collector.desconectarUsuario(frame.panelUsuario.usuarioActual.getNombreUsuario());
 				} catch (RemoteException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					Logger.getLogger(Client.class.getName()).log(Level.WARNING,
+							" # (setFrame) error al desconectar (RemoteException) usuario...!");
+
+				} catch (NullPointerException e2) {
+					Logger.getLogger(Client.class.getName()).log(Level.WARNING,
+							" # (setFrame) posible fallo (NullPointerException): usuario no ha iniciado sesión!");
+					Logger.getLogger(Client.class.getName()).log(Level.WARNING,
+							" # (setFrame) posible fallo (NullPointerException): administrador no existe en la BD!");
+					// Se cierra programa!
+					System.exit(1);
 				}
 			}
 		});

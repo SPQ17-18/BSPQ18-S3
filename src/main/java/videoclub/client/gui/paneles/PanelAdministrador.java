@@ -33,6 +33,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
@@ -90,7 +91,7 @@ public class PanelAdministrador extends JPanel {
 	private boolean isExpanded = false;
 	private JButton btnAadirNuevaNoticia;
 	private JButton btnAadirNuevoPrximo;
-	
+
 	/**
 	 * Create the panel.
 	 */
@@ -109,11 +110,11 @@ public class PanelAdministrador extends JPanel {
 	}
 
 	private void inicializar() {
-		btnAadirNuevoPrximo = new JButton("Añadir nuevo próximo estreno");
-		btnAadirNuevaNoticia = new JButton("Añadir nueva noticia");
-		btnMostrarInventarioDe = new JButton("Mostrar inventario de pel\u00EDculas");
-		btnMostrarAlquileresDe = new JButton("Mostrar alquileres de pel\u00EDculas");
-		btnMostrarClientes = new JButton("Mostrar clientes");
+		btnAadirNuevoPrximo = new JButton("CREAR NUEVO ESTRENO");
+		btnAadirNuevaNoticia = new JButton("CREAR NUEVA NOTICIA");
+		btnMostrarInventarioDe = new JButton("INVENTARIO");
+		btnMostrarAlquileresDe = new JButton("ALQUILERES");
+		btnMostrarClientes = new JButton("CLIENTES");
 		btnInsertarNuevaPelcula = new JButton("Insertar nueva pel\u00EDcula");
 		label = new JLabel();
 		scrollPane_1 = new JScrollPane();
@@ -136,16 +137,21 @@ public class PanelAdministrador extends JPanel {
 	}
 
 	private void componentes() {
-		btnAadirNuevaNoticia.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnAadirNuevaNoticia.setBounds(637, 13, 185, 41);
-		btnAadirNuevoPrximo.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnAadirNuevoPrximo.setBounds(834, 13, 234, 41);
-		btnMostrarInventarioDe.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnMostrarInventarioDe.setBounds(12, 13, 232, 41);
-		btnMostrarAlquileresDe.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnMostrarAlquileresDe.setBounds(255, 13, 225, 41);
-		btnMostrarClientes.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnMostrarClientes.setBounds(492, 13, 135, 41);
+		btnAadirNuevoPrximo.setHorizontalAlignment(SwingConstants.CENTER);
+		btnAadirNuevaNoticia.setHorizontalAlignment(SwingConstants.CENTER);
+		btnMostrarInventarioDe.setHorizontalAlignment(SwingConstants.CENTER);
+		btnMostrarAlquileresDe.setHorizontalAlignment(SwingConstants.CENTER);
+		btnMostrarClientes.setHorizontalAlignment(SwingConstants.CENTER);
+		btnAadirNuevaNoticia.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnAadirNuevaNoticia.setBounds(692, 13, 179, 41);
+		btnAadirNuevoPrximo.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnAadirNuevoPrximo.setBounds(883, 13, 185, 41);
+		btnMostrarInventarioDe.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnMostrarInventarioDe.setBounds(12, 13, 120, 41);
+		btnMostrarAlquileresDe.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnMostrarAlquileresDe.setBounds(144, 13, 120, 41);
+		btnMostrarClientes.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnMostrarClientes.setBounds(276, 13, 100, 41);
 		btnInsertarNuevaPelcula.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnInsertarNuevaPelcula.setBounds(22, 667, 267, 27);
 		scrollPane.setBounds(12, 67, 1056, 146);
@@ -242,6 +248,7 @@ public class PanelAdministrador extends JPanel {
 		scrollPane_3.setViewportView(textPaneMostrarDescripcion);
 		scrollPane.setViewportView(table);
 		scrollPane_1.setViewportView(table_1);
+
 	}
 
 	private void eventos() {
@@ -305,7 +312,7 @@ public class PanelAdministrador extends JPanel {
 					if (table.isCellSelected(table.getSelectedRow(), 2)) {
 						mostrarDescripcionDePeliculas();
 					}
-				}else if (clientesDescripcionEnTabla == true) { 
+				} else if (clientesDescripcionEnTabla == true) {
 					if (table.isCellSelected(table.getSelectedRow(), 0)) {
 						DefaultTableModel tm = (DefaultTableModel) table.getModel();
 						String cliente = (String) tm.getValueAt(table.getSelectedRow(), 0);
@@ -641,8 +648,8 @@ public class PanelAdministrador extends JPanel {
 	}
 
 	/*
-	 * MÈtodo que eliminar un cliente y sus correspondientes relacinones de la
-	 * base de datos del programa:
+	 * MÈtodo que eliminar un cliente y sus correspondientes relacinones de la base
+	 * de datos del programa:
 	 */
 	private void eliminarCliente(String nombre, String apellidos, String fechaNacimiento) {
 		// Eliminamos cliente:
@@ -658,7 +665,7 @@ public class PanelAdministrador extends JPanel {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void resaltarColumnas(JTable tabla, int numeroColumnas, int[] columnasAResaltar, boolean coumnaModificable,
 			int[] columnaAModificar) {
 		for (int i = 0; i < numeroColumnas; i++) {
@@ -691,5 +698,4 @@ public class PanelAdministrador extends JPanel {
 
 		return file_string;
 	}
-
 }

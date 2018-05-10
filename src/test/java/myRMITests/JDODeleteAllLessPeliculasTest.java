@@ -21,6 +21,7 @@ import videoclub.server.jdo.Alquiler;
 import videoclub.server.jdo.Amigo;
 import videoclub.server.jdo.Mensaje;
 import videoclub.server.jdo.Noticia;
+import videoclub.server.jdo.NotificarAlquiler;
 import videoclub.server.jdo.Novedad;
 import videoclub.server.jdo.Opinion;
 import videoclub.server.jdo.PeliculaFavorita;
@@ -29,7 +30,7 @@ import videoclub.server.jdo.PeliculaVista;
 import videoclub.server.jdo.ProximoEstreno;
 import videoclub.server.jdo.Recomendacion;
 
-//@Ignore
+@Ignore
 public class JDODeleteAllLessPeliculasTest {
 	private PersistenceManagerFactory pmf = null;
 	private PersistenceManager pm = null;
@@ -42,6 +43,32 @@ public class JDODeleteAllLessPeliculasTest {
 		// Persistence of a Product and a Book.
 		this.pm = this.pmf.getPersistenceManager();
 		this.tx = this.pm.currentTransaction();
+	}
+
+	/**
+	 * 
+	 * @throws ParseException
+	 */
+	@Test
+	public void testEliminarTodasLasNotificacionesAlquileres() throws ParseException {
+		Logger.getLogger(getClass().getName()).log(Level.INFO, " # ELIMINANDO NOTIFICACIONES DE ALQUILERES...");
+		try {
+			tx.begin();
+			Query<?> q = pm.newQuery(NotificarAlquiler.class);
+			@SuppressWarnings("unchecked")
+			Collection<NotificarAlquiler> list = (Collection<NotificarAlquiler>) q.execute();
+			Iterator<NotificarAlquiler> iterator = list.iterator();
+			while (iterator.hasNext()) {
+				Logger.getLogger(getClass().getName()).log(Level.INFO, iterator.next().toString());
+			}
+			pm.deletePersistentAll(list);
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
 
 	/**
