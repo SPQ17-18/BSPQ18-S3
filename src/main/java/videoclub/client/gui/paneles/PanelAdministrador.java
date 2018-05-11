@@ -33,7 +33,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
@@ -44,6 +43,9 @@ import videoclub.server.jdo.Alquiler;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Inventario;
+import videoclub.server.jdo.NotificarAlquiler;
+
+import javax.swing.SwingConstants;
 
 public class PanelAdministrador extends JPanel {
 
@@ -70,7 +72,7 @@ public class PanelAdministrador extends JPanel {
 	private JTextPane textPaneMostrarDescripcion;
 	private JScrollPane scrollPane_3;
 
-	// Para obtener ruta imágenes:
+	// Para obtener ruta im·genes:
 	private JFileChooser jF1 = new JFileChooser();
 	private JLabel LabelImage;
 	private boolean imagenSubida = false;
@@ -99,11 +101,11 @@ public class PanelAdministrador extends JPanel {
 		this.collector = collector;
 		inicializar();
 		componentes();
-		añadirComponentes();
+		aÒadirComponentes();
 		eventos();
 
 		valoresComboBoxCategorias();
-		valoresComboBoxAños();
+		valoresComboBoxAÒos();
 		valoresComoboBoxDuraciones();
 		valoresComboBoxPrecios();
 		valoresComboBoxCantidad();
@@ -134,6 +136,7 @@ public class PanelAdministrador extends JPanel {
 		textPaneMostrarDescripcion = new JTextPane();
 		LabelFondo = new JLabel();
 		chckbxNovedad = new JCheckBox("Novedad");
+		btnNotificaciones = new JButton("NOTIFICACIONES");
 	}
 
 	private void componentes() {
@@ -216,9 +219,12 @@ public class PanelAdministrador extends JPanel {
 		LabelFondo.setOpaque(true);
 		LabelFondo.setBounds(12, 67, 1056, 146);
 		chckbxNovedad.setBounds(154, 571, 113, 25);
+		btnNotificaciones.setHorizontalAlignment(SwingConstants.LEFT);
+		btnNotificaciones.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnNotificaciones.setBounds(388, 13, 139, 41);
 	}
 
-	private void añadirComponentes() {
+	private void aÒadirComponentes() {
 		setSize(anchuraPanel, alturaPanel);
 		setBackground(Color.DARK_GRAY);
 		setLayout(null);
@@ -244,6 +250,7 @@ public class PanelAdministrador extends JPanel {
 		add(chckbxNovedad);
 		add(btnAadirNuevaNoticia);
 		add(btnAadirNuevoPrximo);
+		add(btnNotificaciones);
 
 		scrollPane_3.setViewportView(textPaneMostrarDescripcion);
 		scrollPane.setViewportView(table);
@@ -280,7 +287,7 @@ public class PanelAdministrador extends JPanel {
 		});
 		btnInsertarNuevaPelcula.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Antes de insertar hay que comprobar si los campos están
+				// Antes de insertar hay que comprobar si los campos est·n
 				// correctos:
 				boolean camposCorrectos = true;
 				if (textFieldNombrePelicula.getText().equals("")) {
@@ -293,7 +300,7 @@ public class PanelAdministrador extends JPanel {
 				if (camposCorrectos == true) {
 					insertarNuevaPeliculaEnLaBD();
 				} else {
-					JOptionPane.showMessageDialog(null, "¡LOS CAMPOS ESTÁN INCOMPLETOS!", "¡ERROR!",
+					JOptionPane.showMessageDialog(null, "°LOS CAMPOS EST¡N INCOMPLETOS!", "°ERROR!",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -319,16 +326,16 @@ public class PanelAdministrador extends JPanel {
 						String apellidos = (String) tm.getValueAt(table.getSelectedRow(), 1);
 						String fechaNacimiento = tm.getValueAt(table.getSelectedRow(), 2).toString();
 						int opcion = JOptionPane.showConfirmDialog(null,
-								"øDesea eliminar al cliente: " + cliente + " ?");
-						// La opciÛn 0 es un SI:
+								"¯Desea eliminar al cliente: " + cliente + " ?");
+						// La opci€n 0 es un SI:
 						if (opcion == 0) {
 							eliminarCliente(cliente, apellidos, fechaNacimiento);
-							// La opciÛn 1 es un NO:
+							// La opci€n 1 es un NO:
 						} else if (opcion == 1) {
 							JOptionPane.showMessageDialog(null, "El cliente: " + cliente + " no ha sido eliminado.");
 							// Sino es igual a CANCELAR:
 						} else {
-							JOptionPane.showMessageDialog(null, "OperaciÛn cancelada.");
+							JOptionPane.showMessageDialog(null, "Operaci€n cancelada.");
 						}
 					}
 				}
@@ -337,7 +344,7 @@ public class PanelAdministrador extends JPanel {
 		});
 		table.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent mouseEvent) {
-				// Si se clicka dos veces en la tabla se expendirá ocupando todo
+				// Si se clicka dos veces en la tabla se expendir· ocupando todo
 				// el panel! :D
 				if (mouseEvent.getClickCount() >= 2) {
 					if (isExpanded == false) {
@@ -362,7 +369,7 @@ public class PanelAdministrador extends JPanel {
 				// Ahora tenemos que conseguir una imane a subir a la bd:
 				if (jF1.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
 
-					// Obtenemos ruta de la imágen:
+					// Obtenemos ruta de la im·gen:
 					ruta = jF1.getSelectedFile().toPath();
 
 					// Guardamos imagen para introeducir en bd:
@@ -393,7 +400,7 @@ public class PanelAdministrador extends JPanel {
 				if (noticia != null) {
 					try {
 						if (collector.setNoticia(noticia) != false) {
-							JOptionPane.showMessageDialog(null, "Noticia guardada con éxito.");
+							JOptionPane.showMessageDialog(null, "Noticia guardada con Èxito.");
 						} else {
 							JOptionPane.showMessageDialog(null, "Error al guardar noticia.", "ERRRO!",
 									JOptionPane.ERROR_MESSAGE);
@@ -411,7 +418,7 @@ public class PanelAdministrador extends JPanel {
 				if (estreno != null) {
 					try {
 						if (collector.setProximoEstreno(estreno) != false) {
-							JOptionPane.showMessageDialog(null, "Estreno guardado con éxito.");
+							JOptionPane.showMessageDialog(null, "Estreno guardado con Èxito.");
 						} else {
 							JOptionPane.showMessageDialog(null, "Error al guardar estreno.", "ERRRO!",
 									JOptionPane.ERROR_MESSAGE);
@@ -423,6 +430,36 @@ public class PanelAdministrador extends JPanel {
 				}
 			}
 		});
+		btnNotificaciones.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mostrarNotificacionesAlquileres();
+				peliculasEnTabla = false;
+				peliculasAlquiladasEnTabla = false;
+				peliculasDescripcionEnTabla = false;
+				clientesDescripcionEnTabla = false;
+			}
+		});
+	}
+
+	private void mostrarNotificacionesAlquileres() {
+		tableModel = new DefaultTableModel();
+		columnasTabla(3);
+		List<NotificarAlquiler> arrayNotificacionesAlquileres = new ArrayList<NotificarAlquiler>();
+		try {
+			arrayNotificacionesAlquileres = collector.obtenerNotificacionesAlquileres(arrayNotificacionesAlquileres);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for (int i = 0; i < arrayNotificacionesAlquileres.size(); i++) {
+			tableModel.addRow(new Object[] { "[" + (i + 1) + "]",
+					arrayNotificacionesAlquileres.get(i).getFechaNotificacion().toString(), "ALQUILER", "SI", "SI",
+					"NO" });
+		}
+
+		// Introducimos el modelo en la tabla:
+		table.setModel(tableModel);
+		resaltarColumnas(table, 6, new int[] { 0, 1, 2, 3, 4 }, true, new int[] { 3, 4 });
 	}
 
 	private void valoresComboBoxCategorias() {
@@ -432,8 +469,8 @@ public class PanelAdministrador extends JPanel {
 		}
 	}
 
-	private void valoresComboBoxAños() {
-		// Introducimos años desde 2017-1900:
+	private void valoresComboBoxAÒos() {
+		// Introducimos aÒos desde 2017-1900:
 		for (int i = 2017; i > 1900; i--) {
 			comboBoxAnyo.addItem(i);
 		}
@@ -469,7 +506,7 @@ public class PanelAdministrador extends JPanel {
 	}
 
 	/**
-	 * Método para insertar nueva película:
+	 * MÈtodo para insertar nueva pelÌcula:
 	 */
 	private void insertarNuevaPeliculaEnLaBD() {
 		if (imagenSubida == true) {
@@ -482,12 +519,12 @@ public class PanelAdministrador extends JPanel {
 			String categoria = (String) comboBoxCategoria.getSelectedItem();
 			int cantidad = (int) comboBoxCantidad.getSelectedItem();
 
-			// Finalmente guardamos la película en la base de datos:
+			// Finalmente guardamos la pelÌcula en la base de datos:
 			try {
 				if (collector.insertarPelicula(nombre, duracion, descripcion.getBytes(), anyo, precio, categoria,
 						cantidad, imagen, chckbxNovedad.isSelected()) == true) {
 					JOptionPane.showMessageDialog(null,
-							"La película: " + nombre + " ha sido insertada correctamente en la base de datos.");
+							"La pelÌcula: " + nombre + " ha sido insertada correctamente en la base de datos.");
 				}
 			} catch (HeadlessException e) {
 				// TODO Auto-generated catch block
@@ -497,7 +534,7 @@ public class PanelAdministrador extends JPanel {
 				e.printStackTrace();
 			}
 		} else {
-			JOptionPane.showMessageDialog(null, "NO HAS ELEGIDO NINGUNA IMÁGEN PARA LA PELÍCULA...");
+			JOptionPane.showMessageDialog(null, "NO HAS ELEGIDO NINGUNA IM¡GEN PARA LA PELÕCULA...");
 		}
 	}
 
@@ -510,7 +547,7 @@ public class PanelAdministrador extends JPanel {
 			tableModel.addColumn("NOMBRE");
 			tableModel.addColumn("DURACION");
 			tableModel.addColumn("DESCRIPCION");
-			tableModel.addColumn("AÑO");
+			tableModel.addColumn("A—O");
 			tableModel.addColumn("CATEGORIA");
 			tableModel.addColumn("DISPONIBLES");
 			tableModel.addColumn("PRECIO");
@@ -524,8 +561,15 @@ public class PanelAdministrador extends JPanel {
 		} else if (i == 2) {
 			tableModel.addColumn("FECHA DE ALQUILER");
 			tableModel.addColumn("FECHA DE DEVOLUCION");
-			tableModel.addColumn("Nº CLIENTE");
-			tableModel.addColumn("Nº INVENTARIO");
+			tableModel.addColumn("N∫ CLIENTE");
+			tableModel.addColumn("N∫ INVENTARIO");
+		} else if (i == 3) {
+			tableModel.addColumn("NOTIFICACI”N");
+			tableModel.addColumn("FECHA");
+			tableModel.addColumn("TIPO");
+			tableModel.addColumn("CORRECTO");
+			tableModel.addColumn("COMPRADO");
+			tableModel.addColumn("DEVUELTO");
 		}
 	}
 
@@ -536,6 +580,7 @@ public class PanelAdministrador extends JPanel {
 	private boolean clientesDescripcionEnTabla = false;
 	private JLabel LabelFondo;
 	private JCheckBox chckbxNovedad;
+	private JButton btnNotificaciones;
 
 	private void mostrarPeliculas() {
 		tableModel = new DefaultTableModel();
@@ -648,7 +693,7 @@ public class PanelAdministrador extends JPanel {
 	}
 
 	/*
-	 * MÈtodo que eliminar un cliente y sus correspondientes relacinones de la base
+	 * M»todo que eliminar un cliente y sus correspondientes relacinones de la base
 	 * de datos del programa:
 	 */
 	private void eliminarCliente(String nombre, String apellidos, String fechaNacimiento) {
@@ -684,7 +729,7 @@ public class PanelAdministrador extends JPanel {
 	}
 
 	/**
-	 * Método para pasar bytes a string:
+	 * MÈtodo para pasar bytes a string:
 	 * 
 	 * @param _bytes
 	 * @return
