@@ -35,10 +35,12 @@ import org.junit.Test;
 
 import junit.framework.JUnit4TestAdapter;
 import videoclub.client.main.Client;
+import videoclub.client.utiles.Estadisticas;
 import videoclub.server.collector.ICollector;
 import videoclub.server.collector.ServerCollector;
 import videoclub.server.jdo.Alquiler;
 import videoclub.server.jdo.Amigo;
+import videoclub.server.jdo.Categoria;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Direccion;
 import videoclub.server.jdo.Imagen;
@@ -131,7 +133,8 @@ public class RMICollectorTest {
 				String name = "//127.0.0.1:1099/RMICollectorTest";
 				Logger.getLogger(RMIServerRunnable.class.getName()).log(Level.INFO, " * TestServer name: " + name);
 				try {
-					// Insercción de datos "videoclubTEST database, datanuclesTEST.properties":
+					// Insercción de datos "videoclubTEST database,
+					// datanuclesTEST.properties":
 					collector = new ServerCollector(false);
 					Naming.rebind(name, collector);
 				} catch (RemoteException re) {
@@ -376,7 +379,8 @@ public class RMICollectorTest {
 	// Registro de usuarios en paralelo:
 	private int invocacion = 0;
 
-	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 300, 800 }) // LENTO PERO
+	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 300, 800 }) // LENTO
+																									// PERO
 	@Test // SEGURO
 	public void registroUsuariosTest() {
 		try {
@@ -401,12 +405,13 @@ public class RMICollectorTest {
 			Logger.getLogger(getClass().getName()).log(Level.WARNING, ex.getMessage());
 		}
 	}
-	
+
 	@PerfTest(threads = 100, duration = 60000, rampUp = 1000, warmUp = 9000)
 	public void inicioSesionIncorrecto2Test() throws RemoteException {
 		try {
 			assertFalse(collector.login("amUser4", "1235231"));
-			Logger.getLogger(getClass().getName()).log(Level.INFO, " # INICIO SESION TEST INCORRECTO (duration = 60000)");
+			Logger.getLogger(getClass().getName()).log(Level.INFO,
+					" # INICIO SESION TEST INCORRECTO (duration = 60000)");
 		} catch (Exception ex) {
 			Logger.getLogger(getClass().getName()).log(Level.WARNING, ex.getMessage());
 		}
@@ -417,7 +422,8 @@ public class RMICollectorTest {
 	public void inicioSesionIncorrecto3Test() throws RemoteException {
 		try {
 			assertFalse(collector.login("amUser4", "13245234"));
-			Logger.getLogger(getClass().getName()).log(Level.INFO, " # INICIO SESION TEST INCORRECTO (max = 50, average = 20)");
+			Logger.getLogger(getClass().getName()).log(Level.INFO,
+					" # INICIO SESION TEST INCORRECTO (max = 50, average = 20)");
 		} catch (Exception ex) {
 			Logger.getLogger(getClass().getName()).log(Level.WARNING, ex.getMessage());
 		}
@@ -427,26 +433,29 @@ public class RMICollectorTest {
 	public void inicioSesionIncorrecto4Test() throws RemoteException {
 		try {
 			assertFalse(collector.login("amUser4", "52345234"));
-			Logger.getLogger(getClass().getName()).log(Level.INFO, " # INICIO SESION TEST INCORRECTO (throughput = 20...)");
+			Logger.getLogger(getClass().getName()).log(Level.INFO,
+					" # INICIO SESION TEST INCORRECTO (throughput = 20...)");
 		} catch (Exception ex) {
 			Logger.getLogger(getClass().getName()).log(Level.WARNING, ex.getMessage());
 		}
 	}
-	
+
 	private int testCrearEstrenosIndex = 0;
+
 	/**
-	 * Función para crear estrenos con una duración y un maximo y mínimo indicados:
+	 * Función para crear estrenos con una duración y un maximo y mínimo
+	 * indicados:
+	 * 
 	 * @throws RemoteException
 	 */
 	@Test
 	@PerfTest(duration = 4000, invocations = 10, threads = 1)
 	@Required(max = 50, average = 20)
 	public void testCrearEstrenos() throws RemoteException {
-		for(int i = 0; i<5; i++)
-		{
-			assertTrue(collector.setProximoEstreno("Estreno nº ["+testCrearEstrenosIndex+"] a las: "+new Date()));
+		for (int i = 0; i < 5; i++) {
+			assertTrue(collector.setProximoEstreno("Estreno nº [" + testCrearEstrenosIndex + "] a las: " + new Date()));
 			testCrearEstrenosIndex++;
-		}		
+		}
 	}
 
 	private int clientInvocados = 0;
@@ -473,6 +482,52 @@ public class RMICollectorTest {
 			client.remoteClient.end();
 			obtenerTodo();
 		}
+	}
+
+	/**
+	 * Test para comprobar los metodos de la clase "Estadisticas":
+	 * 
+	 * @throws ParseException
+	 */
+	@Test
+	public void testStats() throws ParseException {
+		/** Primero creamos alquileres **/
+		List<Alquiler> alquileres = new ArrayList<Alquiler>();
+		/** Creamoms un cliente **/
+		Cliente cliente = new Cliente("Aitor", "Urquijo", new SimpleDateFormat("yyyy-MM-dd").parse("1997-5-15"),
+				new Direccion("santoto", "bilbao", "españa"));
+
+		List<Pelicula> peliculas = new ArrayList<Pelicula>();
+		/** Creamos 100 peliculas **/
+		for (int i = 0; i < 100; i++) {
+			peliculas.add(new Pelicula("Pelicula nombre [" + i + "]", 100,
+					new String("Descripcion pelicula nombre [" + i + "]").getBytes(), 1996, 5F,
+					new Categoria("Comedia"), new Imagen("nombre imagen", new String("PHOTO").getBytes())));
+		}
+
+		List<Inventario> inventarios = new ArrayList<Inventario>();
+		/** Creamos 1inventarios a partir de las 100 peliculas **/
+
+		for (Pelicula pelicula : peliculas) {
+			inventarios.add(new Inventario(100, pelicula));
+		}
+
+		/** Creamos alquileres a partir de los 100 inventarios **/
+		for (Inventario inventario : inventarios) {
+			alquileres.add(new Alquiler(new SimpleDateFormat("yyyy-MM-dd").parse("2018-5-11"),
+					new SimpleDateFormat("yyyy-MM-dd").parse("2018-5-28"), cliente, inventario));
+		}
+
+		/** Comprobamos las funciones de las estadisticas **/
+		Estadisticas estadisticas = new Estadisticas();
+		/** Comprobamos que haya 100 alquileres con nuestro cliente **/
+		assertEquals(estadisticas.getCountClienteAlquiler(alquileres, cliente), "100");
+		/**
+		 * Comprobamos que haya 100 generos de comedia con la pelicula index = 0
+		 **/
+		assertEquals(estadisticas.getCountGeneroPelicula(alquileres, peliculas.get(0)), "100");
+		/** Comprobamos que solo haya 1 alquiler con la pelicula inxex = 0 **/
+		assertEquals(estadisticas.getCountPeliculaAlquilada(alquileres, peliculas.get(0)), "1");
 	}
 
 	public void obtenerTodo() throws RemoteException {
@@ -582,10 +637,10 @@ public class RMICollectorTest {
 	}
 
 	/**
-	 * Con esta método compruebo el Status code de la respuesta que recibo al hacer
-	 * la petición EJM: 200 OK 300 Multiple Choices 301 Moved Permanently 305 Use
-	 * Proxy 400 Bad Request 403 Forbidden 404 Not Found 500 Internal Server Error
-	 * 502 Bad Gateway 503 Service Unavailable
+	 * Con esta método compruebo el Status code de la respuesta que recibo al
+	 * hacer la petición EJM: 200 OK 300 Multiple Choices 301 Moved Permanently
+	 * 305 Use Proxy 400 Bad Request 403 Forbidden 404 Not Found 500 Internal
+	 * Server Error 502 Bad Gateway 503 Service Unavailable
 	 * 
 	 * @param url
 	 * @return Status Code
@@ -603,9 +658,9 @@ public class RMICollectorTest {
 	}
 
 	/**
-	 * Con este método devuelvo un objeto de la clase Document con el contenido del
-	 * HTML de la web que me permitirá parsearlo con los métodos de la librelia
-	 * JSoup
+	 * Con este método devuelvo un objeto de la clase Document con el contenido
+	 * del HTML de la web que me permitirá parsearlo con los métodos de la
+	 * librelia JSoup
 	 * 
 	 * @param url
 	 * @return Documento con el HTML
