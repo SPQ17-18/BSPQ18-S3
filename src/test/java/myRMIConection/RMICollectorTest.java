@@ -530,6 +530,55 @@ public class RMICollectorTest {
 		assertEquals(estadisticas.getCountPeliculaAlquilada(alquileres, peliculas.get(0)), "1");
 	}
 
+	/**
+	 * Test para comprobar los metodos de la clase "Estadisticas" con una
+	 * duración determinada:
+	 * (FALLO ASEGURADO)
+	 * @throws ParseException
+	 */
+	@Test
+	@PerfTest(duration = 40)
+	public void testStatsDuration() throws ParseException {
+		/** Primero creamos alquileres **/
+		List<Alquiler> alquileres = new ArrayList<Alquiler>();
+		/** Creamoms un cliente **/
+		Cliente cliente = new Cliente("Aitor", "Urquijo", new SimpleDateFormat("yyyy-MM-dd").parse("1997-5-15"),
+				new Direccion("santoto", "bilbao", "españa"));
+
+		List<Pelicula> peliculas = new ArrayList<Pelicula>();
+		/** Creamos 10000 peliculas **/
+		for (int i = 0; i < 10000; i++) {
+			peliculas.add(new Pelicula("Pelicula nombre [" + i + "]", 100,
+					new String("Descripcion pelicula nombre [" + i + "]").getBytes(), 1996, 5F,
+					new Categoria("Comedia"), new Imagen("nombre imagen", new String("PHOTO").getBytes())));
+		}
+
+		List<Inventario> inventarios = new ArrayList<Inventario>();
+		/** Creamos 1inventarios a partir de las 10000 peliculas **/
+
+		for (Pelicula pelicula : peliculas) {
+			inventarios.add(new Inventario(100, pelicula));
+		}
+
+		/** Creamos alquileres a partir de los 10000 inventarios **/
+		for (Inventario inventario : inventarios) {
+			alquileres.add(new Alquiler(new SimpleDateFormat("yyyy-MM-dd").parse("2018-5-11"),
+					new SimpleDateFormat("yyyy-MM-dd").parse("2018-5-28"), cliente, inventario));
+		}
+
+		/** Comprobamos las funciones de las estadisticas **/
+		Estadisticas estadisticas = new Estadisticas();
+		/** Comprobamos que haya 10000 alquileres con nuestro cliente **/
+		assertEquals(estadisticas.getCountClienteAlquiler(alquileres, cliente), "10000");
+		/**
+		 * Comprobamos que haya 10000 generos de comedia con la pelicula index =
+		 * 0
+		 **/
+		assertEquals(estadisticas.getCountGeneroPelicula(alquileres, peliculas.get(0)), "10000");
+		/** Comprobamos que solo haya 1 alquiler con la pelicula inxex = 0 **/
+		assertEquals(estadisticas.getCountPeliculaAlquilada(alquileres, peliculas.get(0)), "1");
+	}
+
 	public void obtenerTodo() throws RemoteException {
 
 		arrayClientes = new ArrayList<Cliente>();
