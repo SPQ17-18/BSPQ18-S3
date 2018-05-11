@@ -432,6 +432,22 @@ public class RMICollectorTest {
 			Logger.getLogger(getClass().getName()).log(Level.WARNING, ex.getMessage());
 		}
 	}
+	
+	private int testCrearEstrenosIndex = 0;
+	/**
+	 * Función para crear estrenos con una duración y un maximo y mínimo indicados:
+	 * @throws RemoteException
+	 */
+	@Test
+	@PerfTest(duration = 4000, invocations = 10, threads = 1)
+	@Required(max = 50, average = 20)
+	public void testCrearEstrenos() throws RemoteException {
+		for(int i = 0; i<5; i++)
+		{
+			assertTrue(collector.setProximoEstreno("Estreno nº ["+testCrearEstrenosIndex+"] a las: "+new Date()));
+			testCrearEstrenosIndex++;
+		}		
+	}
 
 	private int clientInvocados = 0;
 

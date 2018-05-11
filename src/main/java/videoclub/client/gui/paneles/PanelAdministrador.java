@@ -37,6 +37,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import videoclub.client.gui.ventanas.ClientEstadisticasFrame;
 import videoclub.client.utiles.Resaltador;
 import videoclub.server.collector.ICollector;
 import videoclub.server.jdo.Alquiler;
@@ -137,6 +138,7 @@ public class PanelAdministrador extends JPanel {
 		LabelFondo = new JLabel();
 		chckbxNovedad = new JCheckBox("Novedad");
 		btnNotificaciones = new JButton("NOTIFICACIONES");
+		btnEstadisticas = new JButton("ESTADISTICAS");
 	}
 
 	private void componentes() {
@@ -219,9 +221,10 @@ public class PanelAdministrador extends JPanel {
 		LabelFondo.setOpaque(true);
 		LabelFondo.setBounds(12, 67, 1056, 146);
 		chckbxNovedad.setBounds(154, 571, 113, 25);
-		btnNotificaciones.setHorizontalAlignment(SwingConstants.LEFT);
 		btnNotificaciones.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnNotificaciones.setBounds(388, 13, 139, 41);
+		btnEstadisticas.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnEstadisticas.setBounds(541, 14, 139, 41);
 	}
 
 	private void aÒadirComponentes() {
@@ -251,11 +254,11 @@ public class PanelAdministrador extends JPanel {
 		add(btnAadirNuevaNoticia);
 		add(btnAadirNuevoPrximo);
 		add(btnNotificaciones);
-
+		add(btnEstadisticas);
+		
 		scrollPane_3.setViewportView(textPaneMostrarDescripcion);
 		scrollPane.setViewportView(table);
 		scrollPane_1.setViewportView(table_1);
-
 	}
 
 	private void eventos() {
@@ -439,6 +442,12 @@ public class PanelAdministrador extends JPanel {
 				clientesDescripcionEnTabla = false;
 			}
 		});
+		btnEstadisticas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ClientEstadisticasFrame clientEstadisticasFrame = new ClientEstadisticasFrame(collector);
+				clientEstadisticasFrame.setVisible(true);
+			}
+		});
 	}
 
 	private void mostrarNotificacionesAlquileres() {
@@ -581,6 +590,7 @@ public class PanelAdministrador extends JPanel {
 	private JLabel LabelFondo;
 	private JCheckBox chckbxNovedad;
 	private JButton btnNotificaciones;
+	private JButton btnEstadisticas;
 
 	private void mostrarPeliculas() {
 		tableModel = new DefaultTableModel();
