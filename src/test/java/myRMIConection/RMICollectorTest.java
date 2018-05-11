@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.databene.contiperf.PerfTest;
+import org.databene.contiperf.Required;
 import org.databene.contiperf.junit.ContiPerfRule;
 import org.databene.contiperf.timer.RandomTimer;
 import org.jsoup.Connection.Response;
@@ -394,8 +395,39 @@ public class RMICollectorTest {
 	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 300, 800 })
 	public void inicioSesionIncorrectoTest() throws RemoteException {
 		try {
-			assertFalse(collector.login("DGP04", "111111"));
+			assertFalse(collector.login("DGP04", "1234566"));
 			Logger.getLogger(getClass().getName()).log(Level.INFO, " # INICIO SESION TEST INCORRECTO");
+		} catch (Exception ex) {
+			Logger.getLogger(getClass().getName()).log(Level.WARNING, ex.getMessage());
+		}
+	}
+	
+	@PerfTest(threads = 100, duration = 60000, rampUp = 1000, warmUp = 9000)
+	public void inicioSesionIncorrecto2Test() throws RemoteException {
+		try {
+			assertFalse(collector.login("amUser4", "1235231"));
+			Logger.getLogger(getClass().getName()).log(Level.INFO, " # INICIO SESION TEST INCORRECTO (duration = 60000)");
+		} catch (Exception ex) {
+			Logger.getLogger(getClass().getName()).log(Level.WARNING, ex.getMessage());
+		}
+	}
+
+	@PerfTest(duration = 400, invocations = 100, threads = 10)
+	@Required(max = 50, average = 20)
+	public void inicioSesionIncorrecto3Test() throws RemoteException {
+		try {
+			assertFalse(collector.login("amUser4", "13245234"));
+			Logger.getLogger(getClass().getName()).log(Level.INFO, " # INICIO SESION TEST INCORRECTO (max = 50, average = 20)");
+		} catch (Exception ex) {
+			Logger.getLogger(getClass().getName()).log(Level.WARNING, ex.getMessage());
+		}
+	}
+
+	@Required(throughput = 20, average = 50, median = 45, max = 2000, totalTime = 5000, percentile90 = 3000, percentile95 = 5000, percentile99 = 10000)
+	public void inicioSesionIncorrecto4Test() throws RemoteException {
+		try {
+			assertFalse(collector.login("amUser4", "52345234"));
+			Logger.getLogger(getClass().getName()).log(Level.INFO, " # INICIO SESION TEST INCORRECTO (throughput = 20...)");
 		} catch (Exception ex) {
 			Logger.getLogger(getClass().getName()).log(Level.WARNING, ex.getMessage());
 		}
