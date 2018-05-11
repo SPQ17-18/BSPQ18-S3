@@ -83,7 +83,7 @@ public class PanelAdministrador extends JPanel {
 	private JTable table_1;
 	private JScrollPane scrollPane_1;
 
-	private ICollector collector; // Collector implementado desde "ClienfFrame"
+	private ICollector collector; // Collector implementado desde el "ClienfFrame"
 	private JComboBox<Integer> comboBoxCantidad;
 
 	private int anchuraInicialTabla = 1056;
