@@ -48,101 +48,107 @@
 <tr>  <td class="numLine">&nbsp;15</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> videoclub.server.jdo.Noticia;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;16</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> videoclub.server.jdo.Opinion;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> videoclub.server.jdo.NotificarAlquiler;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;17</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> videoclub.server.jdo.Pelicula;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> videoclub.server.jdo.Opinion;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;18</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> videoclub.server.jdo.PeliculaFavorita;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> videoclub.server.jdo.Pelicula;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;19</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> videoclub.server.jdo.PeliculaPendiente;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> videoclub.server.jdo.PeliculaFavorita;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;20</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> videoclub.server.jdo.PeliculaVista;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> videoclub.server.jdo.PeliculaPendiente;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;21</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> videoclub.server.jdo.ProximoEstreno;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> videoclub.server.jdo.PeliculaVista;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;22</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> videoclub.server.jdo.Recomendacion;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> videoclub.server.jdo.ProximoEstreno;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;23</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> videoclub.server.jdo.Usuario;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> videoclub.server.jdo.Recomendacion;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;24</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> videoclub.server.jdo.Usuario;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;25</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="keyword">public</span> <span class="keyword">interface</span> ICollector <span class="keyword">extends</span> IRemoteObservable {</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;26</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        List&lt;ProximoEstreno&gt; obtenerProximosEstrenos(List&lt;ProximoEstreno&gt; arrayProximosEstrenos) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="keyword">public</span> <span class="keyword">interface</span> ICollector <span class="keyword">extends</span> IRemoteObservable {</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;27</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> setProximoEstreno(String pelicula) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> setNotificacionAlquiler(Date fechaNotificacion) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;28</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        List&lt;Noticia&gt; obtenerNoticias(List&lt;Noticia&gt; arrayNoticias) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        List&lt;NotificarAlquiler&gt; obtenerNotificacionesAlquileres(List&lt;NotificarAlquiler&gt; arrayNotificacionesAlquileres) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;29</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> setNoticia(String noticia) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        List&lt;ProximoEstreno&gt; obtenerProximosEstrenos(List&lt;ProximoEstreno&gt; arrayProximosEstrenos) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;30</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        List&lt;Opinion&gt; obtenerOpiniones(List&lt;Opinion&gt; arrayOpiniones) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> setProximoEstreno(String pelicula) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;31</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> setOpinion(Pelicula pelicula, Usuario user, String opinion) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        List&lt;Noticia&gt; obtenerNoticias(List&lt;Noticia&gt; arrayNoticias) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;32</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        List&lt;PeliculaVista&gt; obtenerPeliculasVistas(List&lt;PeliculaVista&gt; arrayPeliculasVistas) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> setNoticia(String noticia) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;33</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        List&lt;PeliculaPendiente&gt; obtenerPeliculasPendientes(List&lt;PeliculaPendiente&gt; arrayPeliculasPendientes) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        List&lt;Opinion&gt; obtenerOpiniones(List&lt;Opinion&gt; arrayOpiniones) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;34</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> setPeliculaPendiente(Pelicula pelicula, Cliente cliente) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> setOpinion(Pelicula pelicula, Usuario user, String opinion) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;35</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        List&lt;PeliculaFavorita&gt; obtenerPeliculasFavoritas(List&lt;PeliculaFavorita&gt; arrayPeliculasFavoritas) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        List&lt;PeliculaVista&gt; obtenerPeliculasVistas(List&lt;PeliculaVista&gt; arrayPeliculasVistas) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;36</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> setPeliculaFavorita(Pelicula pelicula, Cliente cliente) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        List&lt;PeliculaPendiente&gt; obtenerPeliculasPendientes(List&lt;PeliculaPendiente&gt; arrayPeliculasPendientes) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;37</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="keyword">void</span> conectarUsuario() <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> setPeliculaPendiente(Pelicula pelicula, Cliente cliente) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;38</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="keyword">void</span> desconectarUsuario(String usuario) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        List&lt;PeliculaFavorita&gt; obtenerPeliculasFavoritas(List&lt;PeliculaFavorita&gt; arrayPeliculasFavoritas) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;39</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        List&lt;Alquiler&gt; obtenerPeliculasAlquiladas(List&lt;Alquiler&gt; arrayPeliculasAlquiladas) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> setPeliculaFavorita(Pelicula pelicula, Cliente cliente) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;40</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> setPeliculaVista(Pelicula pelicula, Cliente cliente) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">void</span> conectarUsuario() <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;41</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> eliminarCliente(String nombre, String apellidos, String fechaNacimiento) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">void</span> desconectarUsuario(String usuario) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;42</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="keyword">void</span> broadcastMessage(Object[] mensaje)  <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        List&lt;Alquiler&gt; obtenerPeliculasAlquiladas(List&lt;Alquiler&gt; arrayPeliculasAlquiladas) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;43</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> setRecomendacion(String usuario, String amigo, Pelicula pelicula)  <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> setPeliculaVista(Pelicula pelicula, Cliente cliente) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;44</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        List&lt;Recomendacion&gt; obtenerRecomendaciones(List&lt;Recomendacion&gt; arrayRecomendaciones)  <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> eliminarCliente(String nombre, String apellidos, String fechaNacimiento) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;45</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        List&lt;Amigo&gt; obtenerAmigos(List&lt;Amigo&gt; arrayAmigos) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">void</span> broadcastMessage(Object[] mensaje)  <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;46</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> setAmigo(String usuario, String amigo) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> setRecomendacion(String usuario, String amigo, Pelicula pelicula)  <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;47</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        List&lt;Usuario&gt; obtenerUsuariosConectados () <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        List&lt;Recomendacion&gt; obtenerRecomendaciones(List&lt;Recomendacion&gt; arrayRecomendaciones)  <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;48</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        List&lt;Usuario&gt; obtenerUsuarios (List&lt;Usuario&gt; arrayUsuarios) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        List&lt;Amigo&gt; obtenerAmigos(List&lt;Amigo&gt; arrayAmigos) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;49</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        List&lt;Alquiler&gt; obtenerAlquileres (List&lt;Alquiler&gt; arrayAlquileres) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> setAmigo(String usuario, String amigo) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;50</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        List&lt;Mensaje&gt; obtenerMensajes (List&lt;Mensaje&gt; arrayMensajes) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        List&lt;Usuario&gt; obtenerUsuariosConectados () <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;51</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> setMensaje(Mensaje mensaje) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        List&lt;Usuario&gt; obtenerUsuarios (List&lt;Usuario&gt; arrayUsuarios) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;52</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        List&lt;Cliente&gt; obtenerClientes(List&lt;Cliente&gt; arrayClientes) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        List&lt;Alquiler&gt; obtenerAlquileres (List&lt;Alquiler&gt; arrayAlquileres) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;53</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        List&lt;Inventario&gt; obtenerInventarios(List&lt;Inventario&gt; arrayInventarios) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        List&lt;Mensaje&gt; obtenerMensajes (List&lt;Mensaje&gt; arrayMensajes) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;54</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> alquilarPelicula(Alquiler alquiler) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> setMensaje(Mensaje mensaje) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;55</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        Cliente getCliente() <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        List&lt;Cliente&gt; obtenerClientes(List&lt;Cliente&gt; arrayClientes) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;56</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        Usuario getUsuario() <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        List&lt;Inventario&gt; obtenerInventarios(List&lt;Inventario&gt; arrayInventarios) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;57</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        List&lt;Pelicula&gt; obtenerPeliculas(List&lt;Pelicula&gt; arrayPeliculas) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> alquilarPelicula(Alquiler alquiler) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;58</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        List&lt;Pelicula&gt; obtenerPeliculasNuevas(List&lt;Pelicula&gt; arrayPeliculas) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        Cliente getCliente() <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;59</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> insertarPelicula(String nombre, <span class="keyword">int</span> duracion, <span class="keyword">byte</span>[] descripcion, <span class="keyword">int</span> anyo, <span class="keyword">float</span> precio, String categoria,<span class="keyword">int</span> cantidad, Imagen imagen, <span class="keyword">boolean</span> novedad) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        Usuario getUsuario() <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;60</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> login(String nombreUsuario, String contraseña) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        List&lt;Pelicula&gt; obtenerPeliculas(List&lt;Pelicula&gt; arrayPeliculas) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;61</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> registerUser(String nombreUsuario, String contraseña, String correo, String nombre, String apellidos, Date fechaNacimiento, String calle, String ciudad, String pais) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;        List&lt;Pelicula&gt; obtenerPeliculasNuevas(List&lt;Pelicula&gt; arrayPeliculas) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;62</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> insertarPelicula(String nombre, <span class="keyword">int</span> duracion, <span class="keyword">byte</span>[] descripcion, <span class="keyword">int</span> anyo, <span class="keyword">float</span> precio, String categoria,<span class="keyword">int</span> cantidad, Imagen imagen, <span class="keyword">boolean</span> novedad) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;63</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> login(String nombreUsuario, String contraseña) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;64</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> registerUser(String nombreUsuario, String contraseña, String correo, String nombre, String apellidos, Date fechaNacimiento, String calle, String ciudad, String pais) <span class="keyword">throws</span> RemoteException;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;65</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 2.1.1 on 9/05/18 18:06.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 2.1.1 on 13/05/18 19:57.</div>
 </body>
 </html>

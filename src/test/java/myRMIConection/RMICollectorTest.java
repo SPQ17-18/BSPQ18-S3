@@ -59,15 +59,15 @@ import videoclub.server.jdo.Usuario;
 
 public class RMICollectorTest {
 	@Rule
-	public ContiPerfRule contiPerfRule = new ContiPerfRule();
+	public /** Debe ser público **/
+	ContiPerfRule contiPerfRule = new ContiPerfRule();
+
 	private String[] arg = { "127.0.0.1", "1099", "RMICollectorTest" };
 	private static String cwd = RMICollectorTest.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 	private static Thread rmiRegistryThread = null;
 	private static Thread rmiServerThread = null;
-	public static ICollector collector;
-	public String url = "http://www.imdb.com/list/ls025439193/";
-	public String urlWeb = "http://www.imdb.com";
-
+	private static ICollector collector;
+	private String url = "http://www.imdb.com/list/ls025439193/";
 	private List<Direccion> arrayDirecciones = null;
 	private List<Cliente> arrayClientes = null;
 	private List<Usuario> arrayUsuarios = null;
@@ -376,12 +376,11 @@ public class RMICollectorTest {
 		Logger.getLogger(getClass().getName()).log(Level.INFO, " # ESTRENOS CREADOS!");
 	}
 
-	// Registro de usuarios en paralelo:
+	// Registro de usuarios en serie:
 	private int invocacion = 0;
 
-	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 300, 800 }) // LENTO
-																									// PERO
-	@Test // SEGURO
+	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 30, 80 })
+	@Test
 	public void registroUsuariosTest() {
 		try {
 			collector.registerUser("DGP1" + invocacion, "123451" + invocacion, "DGP@opendeusto.es" + invocacion,
@@ -394,9 +393,9 @@ public class RMICollectorTest {
 		}
 	}
 
-	// Consultas paralelas de inicio de sesión incorrectas:
+	// Consultas en serie de inicio de sesión incorrectas:
 	@Test
-	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 300, 800 })
+	@PerfTest(invocations = 20, threads = 1, timer = RandomTimer.class, timerParams = { 30, 80 })
 	public void inicioSesionIncorrectoTest() throws RemoteException {
 		try {
 			assertFalse(collector.login("DGP04", "1234566"));
@@ -406,7 +405,7 @@ public class RMICollectorTest {
 		}
 	}
 
-	@PerfTest(threads = 100, duration = 60000, rampUp = 1000, warmUp = 9000)
+	@PerfTest(threads = 100, duration = 60)
 	public void inicioSesionIncorrecto2Test() throws RemoteException {
 		try {
 			assertFalse(collector.login("amUser4", "1235231"));
@@ -429,7 +428,7 @@ public class RMICollectorTest {
 		}
 	}
 
-	@Required(throughput = 20, average = 50, median = 45, max = 2000, totalTime = 5000, percentile90 = 3000, percentile95 = 5000, percentile99 = 10000)
+	@Required(throughput = 20, average = 50, median = 45, max = 200, totalTime = 500)
 	public void inicioSesionIncorrecto4Test() throws RemoteException {
 		try {
 			assertFalse(collector.login("amUser4", "52345234"));
@@ -443,8 +442,7 @@ public class RMICollectorTest {
 	private int testCrearEstrenosIndex = 0;
 
 	/**
-	 * Función para crear estrenos con una duración y un maximo y mínimo
-	 * indicados:
+	 * Función para crear estrenos con una duración y un maximo y mínimo indicados:
 	 * 
 	 * @throws RemoteException
 	 */
@@ -469,17 +467,17 @@ public class RMICollectorTest {
 				"Bilbao" + invocacion, "España" + invocacion);
 		Client client = new Client(false);
 		client.start(arg);
-		client.collector
+		client.getCollector()
 				.broadcastMessage(new Object[] { "FECHA: " + new SimpleDateFormat("yyyy-MM-dd").parse("2018-05-9")
 						+ "[CLIENT " + clientInvocados + "]: Hola soy el cliente nº " + clientInvocados });
-		client.collector.conectarUsuario();
-		client.collector.desconectarUsuario("DGP");
+		client.getCollector().conectarUsuario();
+		client.getCollector().desconectarUsuario("DGP");
 		Logger.getLogger(getClass().getName()).log(Level.INFO, " # testRMIApp CLIENT [" + clientInvocados + "]");
 		assertTrue(true);
 		clientInvocados++;
 		if (clientInvocados >= 100) {
 			assertEquals(String.valueOf(collector.countRemoteObservers()), "100");
-			client.remoteClient.end();
+			client.getRemoteClient().end();
 			obtenerTodo();
 		}
 	}
@@ -521,19 +519,19 @@ public class RMICollectorTest {
 		/** Comprobamos las funciones de las estadisticas **/
 		Estadisticas estadisticas = new Estadisticas();
 		/** Comprobamos que haya 100 alquileres con nuestro cliente **/
-		assertEquals(estadisticas.getCountClienteAlquiler(alquileres, cliente), "100");
+		assertEquals(String.valueOf(estadisticas.getCountClienteAlquiler(alquileres, cliente)), "100");
 		/**
 		 * Comprobamos que haya 100 generos de comedia con la pelicula index = 0
 		 **/
-		assertEquals(estadisticas.getCountGeneroPelicula(alquileres, peliculas.get(0)), "100");
+		assertEquals(String.valueOf(estadisticas.getCountGeneroPelicula(alquileres, peliculas.get(0))), "100");
 		/** Comprobamos que solo haya 1 alquiler con la pelicula inxex = 0 **/
-		assertEquals(estadisticas.getCountPeliculaAlquilada(alquileres, peliculas.get(0)), "1");
+		assertEquals(String.valueOf(estadisticas.getCountPeliculaAlquilada(alquileres, peliculas.get(0))), "1");
 	}
 
 	/**
-	 * Test para comprobar los metodos de la clase "Estadisticas" con una
-	 * duración determinada:
-	 * (FALLO ASEGURADO)
+	 * Test para comprobar los metodos de la clase "Estadisticas" con una duración
+	 * determinada: (FALLO ASEGURADO)
+	 * 
 	 * @throws ParseException
 	 */
 	@Test
@@ -569,14 +567,13 @@ public class RMICollectorTest {
 		/** Comprobamos las funciones de las estadisticas **/
 		Estadisticas estadisticas = new Estadisticas();
 		/** Comprobamos que haya 10000 alquileres con nuestro cliente **/
-		assertEquals(estadisticas.getCountClienteAlquiler(alquileres, cliente), "10000");
+		assertEquals(String.valueOf(estadisticas.getCountClienteAlquiler(alquileres, cliente)), "10000");
 		/**
-		 * Comprobamos que haya 10000 generos de comedia con la pelicula index =
-		 * 0
+		 * Comprobamos que haya 10000 generos de comedia con la pelicula index = 0
 		 **/
-		assertEquals(estadisticas.getCountGeneroPelicula(alquileres, peliculas.get(0)), "10000");
+		assertEquals(String.valueOf(estadisticas.getCountGeneroPelicula(alquileres, peliculas.get(0))), "10000");
 		/** Comprobamos que solo haya 1 alquiler con la pelicula inxex = 0 **/
-		assertEquals(estadisticas.getCountPeliculaAlquilada(alquileres, peliculas.get(0)), "1");
+		assertEquals(String.valueOf(estadisticas.getCountPeliculaAlquilada(alquileres, peliculas.get(0))), "1");
 	}
 
 	public void obtenerTodo() throws RemoteException {
@@ -616,7 +613,7 @@ public class RMICollectorTest {
 		arrayProximosEstrenos = collector.obtenerProximosEstrenos(arrayProximosEstrenos);
 	}
 
-	public byte[] extractBytes(URL url) throws IOException {
+	private byte[] extractBytes(URL url) throws IOException {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 
 		try (InputStream inputStream = url.openStream()) {
@@ -686,15 +683,15 @@ public class RMICollectorTest {
 	}
 
 	/**
-	 * Con esta método compruebo el Status code de la respuesta que recibo al
-	 * hacer la petición EJM: 200 OK 300 Multiple Choices 301 Moved Permanently
-	 * 305 Use Proxy 400 Bad Request 403 Forbidden 404 Not Found 500 Internal
-	 * Server Error 502 Bad Gateway 503 Service Unavailable
+	 * Con esta método compruebo el Status code de la respuesta que recibo al hacer
+	 * la petición EJM: 200 OK 300 Multiple Choices 301 Moved Permanently 305 Use
+	 * Proxy 400 Bad Request 403 Forbidden 404 Not Found 500 Internal Server Error
+	 * 502 Bad Gateway 503 Service Unavailable
 	 * 
 	 * @param url
 	 * @return Status Code
 	 */
-	public int getStatusConnectionCode(String url) {
+	private int getStatusConnectionCode(String url) {
 
 		Response response = null;
 
@@ -707,14 +704,14 @@ public class RMICollectorTest {
 	}
 
 	/**
-	 * Con este método devuelvo un objeto de la clase Document con el contenido
-	 * del HTML de la web que me permitirá parsearlo con los métodos de la
-	 * librelia JSoup
+	 * Con este método devuelvo un objeto de la clase Document con el contenido del
+	 * HTML de la web que me permitirá parsearlo con los métodos de la librelia
+	 * JSoup
 	 * 
 	 * @param url
 	 * @return Documento con el HTML
 	 */
-	public Document getHtmlDocument(String url) {
+	private Document getHtmlDocument(String url) {
 
 		Document doc = null;
 		try {
@@ -733,7 +730,8 @@ public class RMICollectorTest {
 			collector.deleteRemoteObservers();
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getLogger(RMICollectorTest.class.getName()).log(Level.WARNING,
+					"tearDown: assertEquals(String.valueOf(collector.countRemoteObservers()), \"99\");");
 		}
 
 		try {

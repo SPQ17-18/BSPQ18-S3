@@ -50,32 +50,6 @@ public class JDODeleteAllLessPeliculasTest {
 	 * @throws ParseException
 	 */
 	@Test
-	public void testEliminarTodasLasNotificacionesAlquileres() throws ParseException {
-		Logger.getLogger(getClass().getName()).log(Level.INFO, " # ELIMINANDO NOTIFICACIONES DE ALQUILERES...");
-		try {
-			tx.begin();
-			Query<?> q = pm.newQuery(NotificarAlquiler.class);
-			@SuppressWarnings("unchecked")
-			Collection<NotificarAlquiler> list = (Collection<NotificarAlquiler>) q.execute();
-			Iterator<NotificarAlquiler> iterator = list.iterator();
-			while (iterator.hasNext()) {
-				Logger.getLogger(getClass().getName()).log(Level.INFO, iterator.next().toString());
-			}
-			pm.deletePersistentAll(list);
-			tx.commit();
-		} finally {
-			if (tx.isActive()) {
-				tx.rollback();
-			}
-			pm.close();
-		}
-	}
-
-	/**
-	 * 
-	 * @throws ParseException
-	 */
-	@Test
 	public void testEliminarTodasLasNoticias() throws ParseException {
 		Logger.getLogger(getClass().getName()).log(Level.INFO, " # ELIMINANDO NOTICIAS...");
 		try {
@@ -343,7 +317,29 @@ public class JDODeleteAllLessPeliculasTest {
 			Query<?> q = pm.newQuery(Recomendacion.class);
 			@SuppressWarnings("unchecked")
 			Collection<Recomendacion> list = (Collection<Recomendacion>) q.execute();
-			Iterator<Recomendacion> iterator = list.iterator();
+			pm.deletePersistentAll(list);
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
+
+	/**
+	 * 
+	 * @throws ParseException
+	 */
+	@Test
+	public void testEliminarTodasLasNotificacionesAlquileres() throws ParseException {
+		Logger.getLogger(getClass().getName()).log(Level.INFO, " # ELIMINANDO NOTIFICACIONES DE ALQUILERES...");
+		try {
+			tx.begin();
+			Query<?> q = pm.newQuery(NotificarAlquiler.class);
+			@SuppressWarnings("unchecked")
+			Collection<NotificarAlquiler> list = (Collection<NotificarAlquiler>) q.execute();
+			Iterator<NotificarAlquiler> iterator = list.iterator();
 			while (iterator.hasNext()) {
 				Logger.getLogger(getClass().getName()).log(Level.INFO, iterator.next().toString());
 			}

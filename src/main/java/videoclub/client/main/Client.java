@@ -18,9 +18,9 @@ import videoclub.client.observer.ClientRemoteObserver;
 import videoclub.server.collector.ICollector;
 
 public class Client {
-	public ICollector collector;
-	public ClientRemoteObserver remoteClient;
-	public ClientFrame frame;
+	private ICollector collector;
+	private ClientRemoteObserver remoteClient;
+	private ClientFrame frame;
 
 	public Client(boolean inicializarFrame) {
 		if (inicializarFrame == true) {
@@ -40,10 +40,26 @@ public class Client {
 		}
 	}
 
+	public ICollector getCollector() {
+		return collector;
+	}
+
+	public void setCollector(ICollector collector) {
+		this.collector = collector;
+	}
+
+	public ClientRemoteObserver getRemoteClient() {
+		return remoteClient;
+	}
+
+	public void setRemoteClient(ClientRemoteObserver remoteClient) {
+		this.remoteClient = remoteClient;
+	}
+
 	public void start(String[] args) {
 		this.connect2Collector(args);
 		try {
-			this.remoteClient = new ClientRemoteObserver(this.collector, this);
+			this.setRemoteClient(new ClientRemoteObserver(this.collector, this));
 		} catch (RemoteException e) {
 			Logger.getLogger(getClass().getName()).log(Level.WARNING,
 					" # Error creating Remote Donor: " + e.getMessage());
