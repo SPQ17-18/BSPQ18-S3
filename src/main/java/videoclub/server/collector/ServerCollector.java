@@ -1161,6 +1161,26 @@ public class ServerCollector extends UnicastRemoteObject implements ICollector {
 	}
 
 	@Override
+	public List<Categoria> obtenerCategorias(List<Categoria> arrayCategorias) throws RemoteException {
+		// TODO Auto-generated method stub
+		try {
+			tx.begin();
+			@SuppressWarnings("unchecked")
+			Query<Categoria> q = pm.newQuery("SELECT FROM " + Categoria.class.getName());
+			List<Categoria> categorias = (List<Categoria>) q.executeList();
+			for (Categoria categoria : categorias) {
+				arrayCategorias.add(categoria);
+			}
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return arrayCategorias;
+	}
+
+	@Override
 	public List<Usuario> obtenerUsuariosConectados() throws RemoteException {
 		// TODO Auto-generated method stub
 		return this.usuariosConectados;

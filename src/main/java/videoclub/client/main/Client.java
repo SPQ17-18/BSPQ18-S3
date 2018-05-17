@@ -63,7 +63,6 @@ public class Client {
 		} catch (RemoteException e) {
 			Logger.getLogger(getClass().getName()).log(Level.WARNING,
 					" # Error creating Remote Donor: " + e.getMessage());
-			e.printStackTrace();
 		}
 	}
 
@@ -78,7 +77,6 @@ public class Client {
 		} catch (Exception e) {
 			Logger.getLogger(getClass().getName()).log(Level.WARNING,
 					" *# Error connecting to Donation Collector: " + e.getMessage());
-			e.printStackTrace();
 		}
 	}
 
@@ -157,7 +155,6 @@ public class Client {
 			client.start(args);
 		} catch (Exception e) {
 			Logger.getLogger(Client.class.getName()).log(Level.WARNING, " # Error starting Client: " + e.getMessage());
-			e.printStackTrace();
 		}
 	}
 }

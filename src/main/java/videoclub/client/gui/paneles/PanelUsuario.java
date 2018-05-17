@@ -1,7 +1,6 @@
 package videoclub.client.gui.paneles;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -43,6 +42,7 @@ import videoclub.client.utiles.Temas;
 import videoclub.client.utiles.UrlToImage;
 import videoclub.server.collector.ICollector;
 import videoclub.server.jdo.Alquiler;
+import videoclub.server.jdo.Categoria;
 import videoclub.server.jdo.Cliente;
 import videoclub.server.jdo.Imagen;
 import videoclub.server.jdo.Pelicula;
@@ -781,9 +781,15 @@ public class PanelUsuario extends JPanel {
 	}
 
 	private void valoresComboBoxCategorias() {
-		String[] arrayCategorias = new String[] { "Infantil", "Comedia", "Thriller", "Miedo", "Clasica", "Musical" };
-		for (int i = 0; i < arrayCategorias.length; i++) {
-			comboBoxGenero.addItem(arrayCategorias[i]);
+		// Obtenemos categorias de la base de datos:
+		List<Categoria> arrayCategorias = new ArrayList<Categoria>();
+		try {
+			arrayCategorias = collector.obtenerCategorias(arrayCategorias);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+		}
+		for (Categoria categoria : arrayCategorias) {
+			comboBoxGenero.addItem(categoria.getNombre());
 		}
 	}
 

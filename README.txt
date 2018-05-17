@@ -73,5 +73,12 @@ cobertura:cobertura, instruments, Tests, and Generates a Cobertura Report.
 3. Run the CheckStyle plugin: mvn checkstyle:checkstyle
 4. Run the JDepend plugin: mvn jdepend:generate
 5. Run the Dashboard plugin: mvn dashboard:dashboard
+-----------------------------------------------------------
+
+DOXYGEN WIZARD: doxywizard.
+
+-mvn doxygen:report
+-mvn validate
+-mvn clean
 
 

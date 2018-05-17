@@ -15,10 +15,6 @@ import videoclub.client.gui.paneles.PanelRegistro;
 import videoclub.client.gui.paneles.PanelUsuario;
 import videoclub.client.main.Client;
 import videoclub.server.collector.ICollector;
-import videoclub.server.jdo.Cliente;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.rmi.RemoteException;
 
 public class ClientFrame extends JFrame {
 
@@ -115,6 +111,8 @@ public class ClientFrame extends JFrame {
 		panelUsuario = new PanelUsuario(this.collector);
 		// Cargamos el panel en el scrollPane: contenedorDePaneles
 		contenedorDePaneles.setViewportView(panelUsuario);
+		// Mostraremos todo cuando haya cargado:
+		this.setVisible(true);
 	}
 
 	// Método para cargar el panel del administrador:
@@ -130,5 +128,4 @@ public class ClientFrame extends JFrame {
 		// Cargamos el panel en el scrollPane: contenedorDePaneles
 		contenedorDePaneles.setViewportView(panelRegistro);
 	}
-
 }

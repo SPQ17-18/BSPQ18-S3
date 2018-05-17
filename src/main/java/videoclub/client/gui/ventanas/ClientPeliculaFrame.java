@@ -68,6 +68,7 @@ public class ClientPeliculaFrame extends JFrame {
 	// de video
 	private boolean band = true;
 	private boolean trailer = false;
+	private String fileName;
 
 	public ClientPeliculaFrame(Pelicula pelicula, boolean trailer) {
 		this.pelicula = pelicula;
@@ -79,9 +80,13 @@ public class ClientPeliculaFrame extends JFrame {
 		eventos();
 
 		if (trailer == false) {
-			file = new File("C:\\SoftLabs\\SPQ_GitHub\\Peliculas\\Completas\\" + pelicula.getNombre() + ".mp4");
+			// Nombre del file:
+			fileName = "Peliculas\\Completas\\" + pelicula.getNombre() + ".mp4";
+			file = new File("C:\\SoftLabs\\SPQ_GitHub\\BSPQ-S3-GITHUB\\BSPQ18-S3\\src\\main\\resources\\" + fileName);
 		} else {
-			file = new File("C:\\SoftLabs\\SPQ_GitHub\\Peliculas\\Trailers\\" + pelicula.getNombre() + ".mp4");
+			// Nombre del file:
+			fileName = "Peliculas\\Trailers\\" + pelicula.getNombre() + ".mp4";
+			file = new File("C:\\SoftLabs\\SPQ_GitHub\\BSPQ-S3-GITHUB\\BSPQ18-S3\\src\\main\\resources\\" + fileName);
 		}
 		btnPlay.doClick();
 	}

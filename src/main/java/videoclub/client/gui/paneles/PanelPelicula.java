@@ -237,14 +237,21 @@ public class PanelPelicula extends JPanel {
 				/* Create and display the form */
 				java.awt.EventQueue.invokeLater(new Runnable() {
 					public void run() {
-						File file = new File(
-								"C:\\SoftLabs\\SPQ_GitHub\\Peliculas\\Completas\\" + peliculaAVer.getNombre() + ".mp4");
-						if (file.exists()) {
-							new ClientPeliculaFrame(peliculaAVer, false).setVisible(true);
-							guardarPeliculaComoVista();                                                                           
-						} else {
-							JOptionPane.showMessageDialog(null,
-									"Lo sentimos, ahora mismo no tenemos actualizada la pelÃcula.");
+						// Nombre del file:
+						String fileName = "Peliculas\\Completas\\" + peliculaAVer.getNombre() + ".mp4";
+						try {
+							File file = new File(
+									"C:\\SoftLabs\\SPQ_GitHub\\BSPQ-S3-GITHUB\\BSPQ18-S3\\src\\main\\resources\\"
+											+ fileName);
+							if (file.exists()) {
+								new ClientPeliculaFrame(peliculaAVer, true).setVisible(true);
+								guardarPeliculaComoVista();
+							} else {
+								JOptionPane.showMessageDialog(null,
+										"Lo sentimos, ahora mismo no tenemos actualizada la película.");
+							}
+						} catch (NullPointerException n1) {
+							JOptionPane.showMessageDialog(null, "La película no existe!.");
 						}
 					}
 				});
@@ -252,12 +259,19 @@ public class PanelPelicula extends JPanel {
 		});
 		btnTrailer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				File file = new File(
-						"C:\\SoftLabs\\SPQ_GitHub\\Peliculas\\Trailers\\" + peliculaAVer.getNombre() + ".mp4");
-				if (file.exists()) {
-					new ClientPeliculaFrame(peliculaAVer, true).setVisible(true);
-				} else {
-					JOptionPane.showMessageDialog(null, "Lo sentimos, ahora mismo no tenemos actualizada la pelÌcula.");
+				// Nombre del file:
+				String fileName = "Peliculas\\Trailers\\" + peliculaAVer.getNombre() + ".mp4";
+				try {
+					File file = new File(
+							"C:\\SoftLabs\\SPQ_GitHub\\BSPQ-S3-GITHUB\\BSPQ18-S3\\src\\main\\resources\\" + fileName);
+					if (file.exists()) {
+						new ClientPeliculaFrame(peliculaAVer, true).setVisible(true);
+					} else {
+						JOptionPane.showMessageDialog(null,
+								"Lo sentimos, ahora mismo no tenemos actualizada la película.");
+					}
+				} catch (NullPointerException n1) {
+					JOptionPane.showMessageDialog(null, "La película no existe!.");
 				}
 			}
 		});
@@ -332,6 +346,7 @@ public class PanelPelicula extends JPanel {
 		}
 		return dev;
 	}
+
 	/**
 	 * MÈtodo para guardar la pelÌcula que se est· viendo en la base de datos como
 	 * pelÌcula ya vista:
@@ -369,7 +384,7 @@ public class PanelPelicula extends JPanel {
 			}
 		}
 	}
-	
+
 	/**
 	 * Método para pasar bytes a string:
 	 * 
@@ -421,7 +436,7 @@ public class PanelPelicula extends JPanel {
 			mostrarPeliculaAAlquilar();
 		}
 	}
-	
+
 	/**
 	 * MÈtodo para guardar la opiniÛn de la pelÌcula ya vista:
 	 */
