@@ -1,0 +1,6 @@
+<map id="videoclub.server.jdo.Alquiler.Alquiler" name="videoclub.server.jdo.Alquiler.Alquiler">
+<area shape="rect" id="node2" href="$classvideoclub_1_1server_1_1jdo_1_1_alquiler.html#ad63a4dd5284d8360ad949ad1876f4732" title="videoclub.server.jdo.Alquiler.set\lCliente" alt="" coords="239,5,441,47"/>
+<area shape="rect" id="node3" href="$classvideoclub_1_1server_1_1jdo_1_1_alquiler.html#a14bfe2c8c1f1634282532472d87536df" title="videoclub.server.jdo.Alquiler.set\lFecha_alquiler" alt="" coords="239,71,441,112"/>
+<area shape="rect" id="node4" href="$classvideoclub_1_1server_1_1jdo_1_1_alquiler.html#a26eae0e497970d2dcb081cb1bacb1fbf" title="videoclub.server.jdo.Alquiler.set\lFecha_devolucion" alt="" coords="239,136,441,177"/>
+<area shape="rect" id="node5" href="$classvideoclub_1_1server_1_1jdo_1_1_alquiler.html#ad2d5b77f2df51968195ec1a68015841c" title="videoclub.server.jdo.Alquiler.set\lInventario" alt="" coords="239,201,441,243"/>
+</map>

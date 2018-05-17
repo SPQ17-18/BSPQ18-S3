@@ -1,0 +1,7 @@
+<map id="videoclub.client.gui.paneles.PanelUsuario.guardarPeliculaEnFavoritos" name="videoclub.client.gui.paneles.PanelUsuario.guardarPeliculaEnFavoritos">
+<area shape="rect" id="node2" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula.html#a38d5e78cb3c4fd179c9e545a2e3cfc07" title="videoclub.server.jdo.Pelicula.get\lNombre" alt="" coords="324,5,531,47"/>
+<area shape="rect" id="node3" href="$interfacevideoclub_1_1server_1_1collector_1_1_i_collector.html#a939db2969579f32fb460ac9ad2e9b7bd" title="videoclub.server.collector.\lICollector.obtenerPeliculasFavoritas" alt="" coords="313,71,541,112"/>
+<area shape="rect" id="node4" href="$classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a6da7e0e479a18470bb66f6f006c4f31f" title="videoclub.server.jdo.Cliente.get\lNombre" alt="" coords="327,136,527,177"/>
+<area shape="rect" id="node5" href="$classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a1c0fdb0148342077eb674a57b75837ae" title="videoclub.server.jdo.Cliente.get\lApellidos" alt="" coords="327,201,527,243"/>
+<area shape="rect" id="node6" href="$interfacevideoclub_1_1server_1_1collector_1_1_i_collector.html#aec09a7d401b80dbf07e18793b992b81c" title="videoclub.server.collector.\lICollector.setPeliculaFavorita" alt="" coords="333,267,522,308"/>
+</map>

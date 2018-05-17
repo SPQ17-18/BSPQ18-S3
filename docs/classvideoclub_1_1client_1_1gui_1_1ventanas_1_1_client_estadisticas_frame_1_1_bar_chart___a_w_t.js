@@ -1,0 +1,4 @@
+var classvideoclub_1_1client_1_1gui_1_1ventanas_1_1_client_estadisticas_frame_1_1_bar_chart___a_w_t =
+[
+    [ "BarChart_AWT", "classvideoclub_1_1client_1_1gui_1_1ventanas_1_1_client_estadisticas_frame_1_1_bar_chart___a_w_t.html#a9afb960472d416169b5443d11eefea90", null ]
+];

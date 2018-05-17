@@ -1,0 +1,15 @@
+<map id="videoclub.server.jdo.Pelicula.getNombre" name="videoclub.server.jdo.Pelicula.getNombre">
+<area shape="rect" id="node2" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_usuario.html#af0c9f4f65e8d6213def98cd210bbc589" title="videoclub.client.gui.paneles.\lPanelUsuario.guardarPeliculaEnFavoritos" alt="" coords="267,9,527,50"/>
+<area shape="rect" id="node4" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_usuario.html#ae218a9b348d60c532a4102ee5118a7d6" title="videoclub.client.gui.paneles.\lPanelUsuario.guardarPeliculaEnPendientes" alt="" coords="260,74,533,115"/>
+<area shape="rect" id="node5" href="$classvideoclub_1_1client_1_1gui_1_1ventanas_1_1_client_pelicula_frame.html#a11b1e6166a8c1d06104695434b084c12" title="videoclub.client.gui.ventanas.\lClientPeliculaFrame.ClientPeliculaFrame" alt="" coords="267,139,526,181"/>
+<area shape="rect" id="node6" href="$classvideoclub_1_1client_1_1utiles_1_1_estadisticas.html#ae514db34b29700dd876c2a2a7c8ffe67" title="videoclub.client.utiles.\lEstadisticas.getCountPelicula\lAlquilada" alt="" coords="299,205,495,261"/>
+<area shape="rect" id="node7" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula.html#ad71b4b1bc1e11e55718757d9f4c29de3" title="videoclub.server.jdo.Pelicula.to\lString" alt="" coords="297,286,496,327"/>
+<area shape="rect" id="node3" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_usuario_1_1_pop_up_action_listener.html#a62b2377f0cb62641dc311df6238cedc7" title="videoclub.client.gui.paneles.\lPanelUsuario.PopUpActionListener.action\lPerformed" alt="" coords="581,5,845,61"/>
+<area shape="rect" id="node8" href="$classvideoclub_1_1server_1_1jdo_1_1_inventario.html#afa63eb12da8951e1c19659cd724a9d09" title="videoclub.server.jdo.Inventario.to\lString" alt="" coords="610,90,817,131"/>
+<area shape="rect" id="node9" href="$classvideoclub_1_1server_1_1jdo_1_1_novedad.html#a1927d0b8cb25c291191e0ebab1b4c900" title="videoclub.server.jdo.Novedad.to\lString" alt="" coords="612,155,815,197"/>
+<area shape="rect" id="node10" href="$classvideoclub_1_1server_1_1jdo_1_1_opinion.html#a360d8fb35e0e7bf27dd63cd1650ca4e5" title="videoclub.server.jdo.Opinion.to\lString" alt="" coords="615,221,812,262"/>
+<area shape="rect" id="node11" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula_favorita.html#ac0ee2d057a5b2de9066922f8a151b30c" title="videoclub.server.jdo.Pelicula\lFavorita.toString" alt="" coords="621,286,805,327"/>
+<area shape="rect" id="node12" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula_pendiente.html#a108be5449898cae283644193e4e1873c" title="videoclub.server.jdo.Pelicula\lPendiente.toString" alt="" coords="621,351,805,393"/>
+<area shape="rect" id="node13" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula_vista.html#a758022cb11553653cfa85ec102febb42" title="videoclub.server.jdo.Pelicula\lVista.toString" alt="" coords="621,417,805,458"/>
+<area shape="rect" id="node14" href="$classvideoclub_1_1server_1_1jdo_1_1_recomendacion.html#ac4ccd570e5e8b1bf798a932f44204f1b" title="videoclub.server.jdo.Recomendacion.to\lString" alt="" coords="590,482,837,523"/>
+</map>

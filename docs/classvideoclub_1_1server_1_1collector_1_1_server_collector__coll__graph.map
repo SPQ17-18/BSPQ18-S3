@@ -1,0 +1,4 @@
+<map id="videoclub.server.collector.ServerCollector" name="videoclub.server.collector.ServerCollector">
+<area shape="rect" id="node3" href="$interfacevideoclub_1_1server_1_1collector_1_1_i_collector.html" title="videoclub.server.collector.\lICollector" alt="" coords="179,169,349,211"/>
+<area shape="rect" id="node4" href="$interfacevideoclub_1_1observer_1_1_r_m_i_1_1_i_remote_observable.html" title="videoclub.observer.RMI.IRemote\lObservable" alt="" coords="161,80,367,121"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="videoclub.observer.RMI.RemoteObservable.notifyRemoteObserversUsuarioDesconectado" name="videoclub.observer.RMI.RemoteObservable.notifyRemoteObserversUsuarioDesconectado">
+<area shape="rect" id="node2" href="$classvideoclub_1_1server_1_1collector_1_1_server_collector.html#ae71f0a239d22edbb69c5c6cbadfae49a" title="videoclub.server.collector.\lServerCollector.desconectarUsuario" alt="" coords="277,5,505,47"/>
+<area shape="rect" id="node3" href="$classvideoclub_1_1server_1_1collector_1_1_server_collector.html#a4c01cceb8f038fd05cdace9f168af0eb" title="videoclub.server.collector.\lServerCollector.conectarUsuario" alt="" coords="288,71,495,112"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="videoclub.server.jdo.Cliente.Cliente" name="videoclub.server.jdo.Cliente.Cliente">
+<area shape="rect" id="node2" href="$classvideoclub_1_1server_1_1jdo_1_1_cliente.html#af4b88e7390f774d47099acdf571e397a" title="videoclub.server.jdo.Cliente.set\lApellidos" alt="" coords="236,5,436,47"/>
+<area shape="rect" id="node3" href="$classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a113640f855f77cc48e08c3a26ed96ea7" title="videoclub.server.jdo.Cliente.set\lDireccion" alt="" coords="236,71,436,112"/>
+<area shape="rect" id="node4" href="$classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a6765f5c12554e871e791a5cbd79030ea" title="videoclub.server.jdo.Cliente.set\lFecha_nacimiento" alt="" coords="236,136,436,177"/>
+<area shape="rect" id="node5" href="$classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a3f0d4d03152a16d3c2d9a8d323acf882" title="videoclub.server.jdo.Cliente.set\lNombre" alt="" coords="236,201,436,243"/>
+</map>

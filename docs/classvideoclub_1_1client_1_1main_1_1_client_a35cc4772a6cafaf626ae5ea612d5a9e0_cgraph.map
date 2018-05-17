@@ -1,0 +1,8 @@
+<map id="videoclub.client.main.Client.notifyUsuarioConectado" name="videoclub.client.main.Client.notifyUsuarioConectado">
+<area shape="rect" id="node2" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_amigos_usuarios.html#a46811614d33b70f7fee6539d09dacd8e" title="videoclub.client.gui.paneles.\lPanelAmigosUsuarios.mostrarAmigos" alt="" coords="271,71,514,112"/>
+<area shape="rect" id="node6" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_amigos_usuarios.html#aab7a8466c51859168d7bf69b9a0589be" title="videoclub.client.gui.paneles.\lPanelAmigosUsuarios.mostrarUsuarios" alt="" coords="268,136,517,177"/>
+<area shape="rect" id="node3" href="$interfacevideoclub_1_1server_1_1collector_1_1_i_collector.html#a18dc485a7da338fafd38e5fa779d7d1d" title="videoclub.server.collector.\lICollector.obtenerAmigos" alt="" coords="601,5,772,47"/>
+<area shape="rect" id="node4" href="$interfacevideoclub_1_1server_1_1collector_1_1_i_collector.html#a8c1cbbdf1908829517e8e9a40ba9d1ee" title="videoclub.server.collector.\lICollector.obtenerUsuariosConectados" alt="" coords="565,136,808,177"/>
+<area shape="rect" id="node5" href="$classvideoclub_1_1server_1_1jdo_1_1_usuario.html#a068e470a09d444a46c59540695a3060b" title="videoclub.server.jdo.Usuario.get\lNombreUsuario" alt="" coords="585,71,789,112"/>
+<area shape="rect" id="node7" href="$interfacevideoclub_1_1server_1_1collector_1_1_i_collector.html#a40eb8f2b984d92d8d0c2a3544185689c" title="videoclub.server.collector.\lICollector.obtenerUsuarios" alt="" coords="599,201,774,243"/>
+</map>

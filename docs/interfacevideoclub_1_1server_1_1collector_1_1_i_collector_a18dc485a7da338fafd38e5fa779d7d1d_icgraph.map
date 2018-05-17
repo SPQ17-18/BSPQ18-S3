@@ -1,0 +1,8 @@
+<map id="videoclub.server.collector.ICollector.obtenerAmigos" name="videoclub.server.collector.ICollector.obtenerAmigos">
+<area shape="rect" id="node2" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_amigos_usuarios.html#a46811614d33b70f7fee6539d09dacd8e" title="videoclub.client.gui.paneles.\lPanelAmigosUsuarios.mostrarAmigos" alt="" coords="224,71,467,112"/>
+<area shape="rect" id="node3" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_amigos_usuarios.html#a710f7f193914da317a756a606091a198" title="videoclub.client.gui.paneles.\lPanelAmigosUsuarios.PanelAmigosUsuarios" alt="" coords="515,5,797,47"/>
+<area shape="rect" id="node4" href="$classvideoclub_1_1client_1_1main_1_1_client.html#a21bb050b7d93d6819c71ebb0cfdb4b76" title="videoclub.client.main.Client.notify\lUsuarioDesconectado" alt="" coords="549,71,763,112"/>
+<area shape="rect" id="node6" href="$classvideoclub_1_1client_1_1main_1_1_client.html#a35cc4772a6cafaf626ae5ea612d5a9e0" title="videoclub.client.main.Client.notify\lUsuarioConectado" alt="" coords="549,140,763,181"/>
+<area shape="rect" id="node5" href="$classvideoclub_1_1client_1_1observer_1_1_client_remote_observer.html#aad503298d9859c0f33f6d4418329bf14" title="videoclub.client.observer.\lClientRemoteObserver.updateUsuario\lDesconecatdo" alt="" coords="845,59,1084,115"/>
+<area shape="rect" id="node7" href="$classvideoclub_1_1client_1_1observer_1_1_client_remote_observer.html#a0b3160f12eb72dd309e646825b09e1d6" title="videoclub.client.observer.\lClientRemoteObserver.updateUsuario\lConectado" alt="" coords="845,139,1084,195"/>
+</map>

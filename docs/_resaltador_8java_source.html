@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.14"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>VideoClub: Fichero Fuente src/main/java/videoclub/client/utiles/Resaltador.java</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+  $(document).ready(initResizable);
+/* @license-end */</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="black_film_roll_logo_png_by_bssindex-d9uh0mm.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">VideoClub
+   </div>
+   <div id="projectbrief">Documentación VideoClub</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.8.14 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Buscar');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('_resaltador_8java_source.html','');});
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">Resaltador.java</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="_resaltador_8java.html">Ir a la documentación de este archivo.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">package </span>videoclub.client.utiles;</div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span> java.awt.Color;</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">import</span> java.awt.Component;</div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">import</span> javax.swing.JTable;</div><div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">import</span> javax.swing.SwingConstants;</div><div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">import</span> javax.swing.table.DefaultTableCellRenderer;</div><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">import</span> javax.swing.table.TableCellRenderer;</div><div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div><div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="classvideoclub_1_1client_1_1utiles_1_1_resaltador.html">   11</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classvideoclub_1_1client_1_1utiles_1_1_resaltador.html">Resaltador</a> <span class="keyword">implements</span> TableCellRenderer {</div><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keyword">private</span> <span class="keywordtype">boolean</span> resaltado;</div><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keyword">private</span> <span class="keywordtype">boolean</span> columnaModificable;</div><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">private</span> <span class="keywordtype">int</span>[] columna;</div><div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="classvideoclub_1_1client_1_1utiles_1_1_resaltador.html#a5f5183b6652af118a5b216b8760ab050">   15</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">final</span> DefaultTableCellRenderer <a class="code" href="classvideoclub_1_1client_1_1utiles_1_1_resaltador.html#a5f5183b6652af118a5b216b8760ab050">DEFAULT_RENDERER</a> = <span class="keyword">new</span> DefaultTableCellRenderer();</div><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div><div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="classvideoclub_1_1client_1_1utiles_1_1_resaltador.html#a807cc3f18bd2aa8c5be88ac581426174">   22</a></span>&#160;    <span class="keyword">public</span> <a class="code" href="classvideoclub_1_1client_1_1utiles_1_1_resaltador.html#a807cc3f18bd2aa8c5be88ac581426174">Resaltador</a>(<span class="keywordtype">boolean</span> resaltado, <span class="keywordtype">boolean</span> columnaModificable, <span class="keywordtype">int</span>[] columna) {</div><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        this.resaltado = resaltado;</div><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        this.columnaModificable = columnaModificable;</div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        this.columna = columna;</div><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    }</div><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    @Override</div><div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classvideoclub_1_1client_1_1utiles_1_1_resaltador.html#a342a71e800cd577e56fd76a7601a27c6">   29</a></span>&#160;    <span class="keyword">public</span> Component <a class="code" href="classvideoclub_1_1client_1_1utiles_1_1_resaltador.html#a342a71e800cd577e56fd76a7601a27c6">getTableCellRendererComponent</a>(JTable table, Object value, <span class="keywordtype">boolean</span> isSelected, <span class="keywordtype">boolean</span> hasFocus,</div><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            <span class="keywordtype">int</span> row, <span class="keywordtype">int</span> column) {</div><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="comment">// Obtenemos la celda que se esta renderizando</span></div><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        Component c = <a class="code" href="classvideoclub_1_1client_1_1utiles_1_1_resaltador.html#a5f5183b6652af118a5b216b8760ab050">DEFAULT_RENDERER</a>.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);</div><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <a class="code" href="classvideoclub_1_1client_1_1utiles_1_1_resaltador.html#a5f5183b6652af118a5b216b8760ab050">DEFAULT_RENDERER</a>.setHorizontalAlignment(SwingConstants.CENTER);</div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="comment">// Solo marcaremos las columnas que quieran ser reslatadas:</span></div><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keywordflow">if</span> (resaltado == <span class="keyword">true</span>) {</div><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            <span class="keywordflow">if</span> (isSelected == <span class="keyword">true</span>) {</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                c.setBackground(Color.GREEN);</div><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                c.setForeground(Color.BLACK);</div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            } <span class="keywordflow">else</span> {</div><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                c.setBackground(Color.darkGray);</div><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                c.setForeground(Color.GREEN);</div><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            }</div><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; columna.length; i++) {</div><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                <span class="keywordflow">if</span> (columnaModificable == <span class="keyword">true</span> &amp;&amp; columna[i] == column) {</div><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                    c.setBackground(Color.GREEN);</div><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                    c.setForeground(Color.RED);</div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                }</div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            }</div><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        }</div><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordflow">return</span> c;</div><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    }</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div><div class="ttc" id="classvideoclub_1_1client_1_1utiles_1_1_resaltador_html_a5f5183b6652af118a5b216b8760ab050"><div class="ttname"><a href="classvideoclub_1_1client_1_1utiles_1_1_resaltador.html#a5f5183b6652af118a5b216b8760ab050">videoclub.client.utiles.Resaltador.DEFAULT_RENDERER</a></div><div class="ttdeci">final DefaultTableCellRenderer DEFAULT_RENDERER</div><div class="ttdef"><b>Definition:</b> <a href="_resaltador_8java_source.html#l00015">Resaltador.java:15</a></div></div>
+<div class="ttc" id="classvideoclub_1_1client_1_1utiles_1_1_resaltador_html_a807cc3f18bd2aa8c5be88ac581426174"><div class="ttname"><a href="classvideoclub_1_1client_1_1utiles_1_1_resaltador.html#a807cc3f18bd2aa8c5be88ac581426174">videoclub.client.utiles.Resaltador.Resaltador</a></div><div class="ttdeci">Resaltador(boolean resaltado, boolean columnaModificable, int[] columna)</div><div class="ttdef"><b>Definition:</b> <a href="_resaltador_8java_source.html#l00022">Resaltador.java:22</a></div></div>
+<div class="ttc" id="classvideoclub_1_1client_1_1utiles_1_1_resaltador_html_a342a71e800cd577e56fd76a7601a27c6"><div class="ttname"><a href="classvideoclub_1_1client_1_1utiles_1_1_resaltador.html#a342a71e800cd577e56fd76a7601a27c6">videoclub.client.utiles.Resaltador.getTableCellRendererComponent</a></div><div class="ttdeci">Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)</div><div class="ttdef"><b>Definition:</b> <a href="_resaltador_8java_source.html#l00029">Resaltador.java:29</a></div></div>
+<div class="ttc" id="classvideoclub_1_1client_1_1utiles_1_1_resaltador_html"><div class="ttname"><a href="classvideoclub_1_1client_1_1utiles_1_1_resaltador.html">videoclub.client.utiles.Resaltador</a></div><div class="ttdef"><b>Definition:</b> <a href="_resaltador_8java_source.html#l00011">Resaltador.java:11</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_5eb159725f84c66aafd839904a4acdd0.html">main</a></li><li class="navelem"><a class="el" href="dir_fd3f6763802dee1ad875f6c80eac0bda.html">java</a></li><li class="navelem"><a class="el" href="dir_b4673fa59cb85127cd4e0aa5f0e829e4.html">videoclub</a></li><li class="navelem"><a class="el" href="dir_5e1fa2655a9cec8c03491a455dccd80c.html">client</a></li><li class="navelem"><a class="el" href="dir_14368a299be7b4931b8c147299282cc9.html">utiles</a></li><li class="navelem"><a class="el" href="_resaltador_8java.html">Resaltador.java</a></li>
+    <li class="footer">Generado el Jueves, 17 de Mayo de 2018 19:49:43 para VideoClub por
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
+</body>
+</html>

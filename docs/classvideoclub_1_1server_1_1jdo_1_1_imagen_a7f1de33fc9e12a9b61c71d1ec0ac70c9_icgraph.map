@@ -1,0 +1,12 @@
+<map id="videoclub.server.jdo.Imagen.getNombre" name="videoclub.server.jdo.Imagen.getNombre">
+<area shape="rect" id="node2" href="$classvideoclub_1_1server_1_1collector_1_1_server_collector.html#a26724d67325960cbeb241bdaec1104a3" title="videoclub.server.collector.\lServerCollector.insertarPelicula" alt="" coords="256,136,459,177"/>
+<area shape="rect" id="node3" href="$classvideoclub_1_1server_1_1jdo_1_1_imagen.html#a8f9e6eb37dae1b23bb1bec6633240c53" title="videoclub.server.jdo.Imagen.to\lString" alt="" coords="260,201,455,243"/>
+<area shape="rect" id="node4" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula.html#ad71b4b1bc1e11e55718757d9f4c29de3" title="videoclub.server.jdo.Pelicula.to\lString" alt="" coords="507,201,705,243"/>
+<area shape="rect" id="node5" href="$classvideoclub_1_1server_1_1jdo_1_1_inventario.html#afa63eb12da8951e1c19659cd724a9d09" title="videoclub.server.jdo.Inventario.to\lString" alt="" coords="773,5,980,47"/>
+<area shape="rect" id="node6" href="$classvideoclub_1_1server_1_1jdo_1_1_novedad.html#a1927d0b8cb25c291191e0ebab1b4c900" title="videoclub.server.jdo.Novedad.to\lString" alt="" coords="775,71,978,112"/>
+<area shape="rect" id="node7" href="$classvideoclub_1_1server_1_1jdo_1_1_opinion.html#a360d8fb35e0e7bf27dd63cd1650ca4e5" title="videoclub.server.jdo.Opinion.to\lString" alt="" coords="778,136,975,177"/>
+<area shape="rect" id="node8" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula_favorita.html#ac0ee2d057a5b2de9066922f8a151b30c" title="videoclub.server.jdo.Pelicula\lFavorita.toString" alt="" coords="785,201,969,243"/>
+<area shape="rect" id="node9" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula_pendiente.html#a108be5449898cae283644193e4e1873c" title="videoclub.server.jdo.Pelicula\lPendiente.toString" alt="" coords="785,267,969,308"/>
+<area shape="rect" id="node10" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula_vista.html#a758022cb11553653cfa85ec102febb42" title="videoclub.server.jdo.Pelicula\lVista.toString" alt="" coords="785,332,969,373"/>
+<area shape="rect" id="node11" href="$classvideoclub_1_1server_1_1jdo_1_1_recomendacion.html#ac4ccd570e5e8b1bf798a932f44204f1b" title="videoclub.server.jdo.Recomendacion.to\lString" alt="" coords="753,397,1000,439"/>
+</map>

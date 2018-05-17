@@ -1,0 +1,4 @@
+<map id="videoclub.client.gui.paneles.PanelAmigosUsuarios.mostrarUsuarios" name="videoclub.client.gui.paneles.PanelAmigosUsuarios.mostrarUsuarios">
+<area shape="rect" id="node2" href="$interfacevideoclub_1_1server_1_1collector_1_1_i_collector.html#a40eb8f2b984d92d8d0c2a3544185689c" title="videoclub.server.collector.\lICollector.obtenerUsuarios" alt="" coords="337,5,511,47"/>
+<area shape="rect" id="node3" href="$interfacevideoclub_1_1server_1_1collector_1_1_i_collector.html#a8c1cbbdf1908829517e8e9a40ba9d1ee" title="videoclub.server.collector.\lICollector.obtenerUsuariosConectados" alt="" coords="303,71,545,112"/>
+</map>

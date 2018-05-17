@@ -1,0 +1,5 @@
+<map id="videoclub.server.jdo.Mensaje.Mensaje" name="videoclub.server.jdo.Mensaje.Mensaje">
+<area shape="rect" id="node2" href="$classvideoclub_1_1server_1_1jdo_1_1_mensaje.html#a3544d233bb013a05973c205924aee4e7" title="videoclub.server.jdo.Mensaje.set\lUsuario" alt="" coords="244,5,453,47"/>
+<area shape="rect" id="node3" href="$classvideoclub_1_1server_1_1jdo_1_1_mensaje.html#af59a7ea84580056a6d78bf4a1983f6a0" title="videoclub.server.jdo.Mensaje.set\lMensaje" alt="" coords="244,71,453,112"/>
+<area shape="rect" id="node4" href="$classvideoclub_1_1server_1_1jdo_1_1_mensaje.html#a13eb379ae4731002360b11028c30c0c2" title="videoclub.server.jdo.Mensaje.set\lFecha" alt="" coords="244,136,453,177"/>
+</map>

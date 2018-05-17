@@ -1,0 +1,4 @@
+<map id="videoclub.server.collector.ICollector.setPeliculaFavorita" name="videoclub.server.collector.ICollector.setPeliculaFavorita">
+<area shape="rect" id="node2" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_usuario.html#af0c9f4f65e8d6213def98cd210bbc589" title="videoclub.client.gui.paneles.\lPanelUsuario.guardarPeliculaEnFavoritos" alt="" coords="243,13,503,54"/>
+<area shape="rect" id="node3" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_usuario_1_1_pop_up_action_listener.html#a62b2377f0cb62641dc311df6238cedc7" title="videoclub.client.gui.paneles.\lPanelUsuario.PopUpActionListener.action\lPerformed" alt="" coords="551,5,815,61"/>
+</map>

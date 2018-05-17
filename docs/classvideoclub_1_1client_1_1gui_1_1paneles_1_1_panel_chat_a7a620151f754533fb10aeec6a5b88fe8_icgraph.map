@@ -1,0 +1,4 @@
+<map id="videoclub.client.gui.paneles.PanelChat.addNewMessage" name="videoclub.client.gui.paneles.PanelChat.addNewMessage">
+<area shape="rect" id="node2" href="$classvideoclub_1_1client_1_1main_1_1_client.html#a8e84e09e1f223962699ad67e61a1751f" title="videoclub.client.main.Client.notify\lMessage" alt="" coords="239,13,453,54"/>
+<area shape="rect" id="node3" href="$classvideoclub_1_1client_1_1observer_1_1_client_remote_observer.html#a21a9ec7974df41e497761d9e8c2d1e9b" title="videoclub.client.observer.\lClientRemoteObserver.updateChat\lMessages" alt="" coords="501,5,723,61"/>
+</map>

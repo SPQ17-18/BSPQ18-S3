@@ -1,0 +1,10 @@
+<map id="Representación gráfica de la clase" name="Representación gráfica de la clase">
+<area shape="rect" id="node2" href="$classvideoclub_1_1client_1_1gui_1_1ventanas_1_1_client_alquiler_frame.html" title="videoclub.client.gui.ventanas.\lClientAlquilerFrame" alt="" coords="119,5,309,47"/>
+<area shape="rect" id="node3" href="$classvideoclub_1_1client_1_1gui_1_1ventanas_1_1_client_estadisticas_frame.html" title="videoclub.client.gui.ventanas.\lClientEstadisticasFrame" alt="" coords="119,71,309,112"/>
+<area shape="rect" id="node4" href="$classvideoclub_1_1client_1_1gui_1_1ventanas_1_1_client_frame.html" title="videoclub.client.gui.ventanas.\lClientFrame" alt="" coords="119,136,309,177"/>
+<area shape="rect" id="node5" href="$classvideoclub_1_1client_1_1gui_1_1ventanas_1_1_client_opiniones_frame.html" title="videoclub.client.gui.ventanas.\lClientOpinionesFrame" alt="" coords="119,201,309,243"/>
+<area shape="rect" id="node6" href="$classvideoclub_1_1client_1_1gui_1_1ventanas_1_1_client_pelicula_frame.html" title="videoclub.client.gui.ventanas.\lClientPeliculaFrame" alt="" coords="119,267,309,308"/>
+<area shape="rect" id="node7" href="$classvideoclub_1_1client_1_1gui_1_1ventanas_1_1_client_recomendacion_frame.html" title="videoclub.client.gui.ventanas.\lClientRecomendacionFrame" alt="" coords="119,332,309,373"/>
+<area shape="rect" id="node8" href="$classvideoclub_1_1client_1_1utiles_1_1_swing_worker_progress.html" title="videoclub.client.utiles.\lSwingWorkerProgress" alt="" coords="139,397,289,439"/>
+<area shape="rect" id="node9" href="$classvideoclub_1_1server_1_1gui_1_1_server_frame.html" title="videoclub.server.gui.Server\lFrame" alt="" coords="127,463,301,504"/>
+</map>

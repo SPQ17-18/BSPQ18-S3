@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.14"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>VideoClub: Fichero Fuente src/main/java/videoclub/observer/RMI/RemoteObservable.java</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+  $(document).ready(initResizable);
+/* @license-end */</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="black_film_roll_logo_png_by_bssindex-d9uh0mm.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">VideoClub
+   </div>
+   <div id="projectbrief">Documentación VideoClub</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.8.14 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Buscar');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('_remote_observable_8java_source.html','');});
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">RemoteObservable.java</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="_remote_observable_8java.html">Ir a la documentación de este archivo.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">package </span>videoclub.observer.RMI;</div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span> java.rmi.RemoteException;</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">import</span> java.util.ArrayList;</div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">import</span> java.util.List;</div><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">import</span> java.util.logging.Level;</div><div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">import</span> java.util.logging.Logger;</div><div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div><div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html">    9</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html">RemoteObservable</a> {</div><div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">private</span> List&lt;IRemoteObserver&gt; remoteObservers;</div><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div><div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#abc14ec2aa695fdd77467b7669b236379">   16</a></span>&#160;    <span class="keyword">public</span> <a class="code" href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#abc14ec2aa695fdd77467b7669b236379">RemoteObservable</a>() {</div><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        this.remoteObservers = <span class="keyword">new</span> ArrayList&lt;IRemoteObserver&gt;();</div><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    }</div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div><div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#a713b4ebedc3b4947b6f0b8694134983a">   20</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keywordtype">void</span> <a class="code" href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#a713b4ebedc3b4947b6f0b8694134983a">addRemoteObserver</a>(<a class="code" href="interfacevideoclub_1_1observer_1_1_r_m_i_1_1_i_remote_observer.html">IRemoteObserver</a> observer) {</div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        this.remoteObservers.add(observer);</div><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        Logger.getLogger(getClass().getName()).log(Level.INFO, observer.toString());</div><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    }</div><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div><div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#a8e2d956c17adfacf6d8649d68528e619">   25</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keywordtype">void</span> <a class="code" href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#a8e2d956c17adfacf6d8649d68528e619">deleteRemoteObserver</a>(<a class="code" href="interfacevideoclub_1_1observer_1_1_r_m_i_1_1_i_remote_observer.html">IRemoteObserver</a> observer) {</div><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        this.remoteObservers.remove(observer);</div><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    }</div><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div><div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#a7aabe804d561dc5ee894d400dc15e312">   29</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keywordtype">void</span> <a class="code" href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#a7aabe804d561dc5ee894d400dc15e312">deleteRemoteObservers</a>() {</div><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        this.remoteObservers.clear();</div><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    }</div><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div><div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#ad63e2e1237c50047c2addf6266e41bb1">   33</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keywordtype">int</span> <a class="code" href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#ad63e2e1237c50047c2addf6266e41bb1">countRemoteObservers</a>() {</div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordflow">return</span> this.remoteObservers.size();</div><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    }</div><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div><div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#ac51aba555815cdc4ff4ab3525d4d3205">   37</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keywordtype">void</span> <a class="code" href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#ac51aba555815cdc4ff4ab3525d4d3205">notifyRemoteObserversChatMessages</a>(Object arg) <span class="keywordflow">throws</span> RemoteException {</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="interfacevideoclub_1_1observer_1_1_r_m_i_1_1_i_remote_observer.html">IRemoteObserver</a> observer : remoteObservers) {</div><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            observer.updateChatMessages(arg);</div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        }</div><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    }</div><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div><div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#ae2b4cb424b353b70ff95edb6cd2b6071">   43</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keywordtype">void</span> <a class="code" href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#ae2b4cb424b353b70ff95edb6cd2b6071">notifyRemoteObserversUsuarioDesconectado</a>() throws RemoteException {</div><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="interfacevideoclub_1_1observer_1_1_r_m_i_1_1_i_remote_observer.html">IRemoteObserver</a> observer : remoteObservers) {</div><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            observer.updateUsuarioDesconecatdo();</div><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        }</div><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div><div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#ae01bdb6b659828195df7d897373a5815">   49</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keywordtype">void</span> <a class="code" href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#ae01bdb6b659828195df7d897373a5815">notifyRemoteObserversUsuarioConectado</a>() throws RemoteException {</div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="interfacevideoclub_1_1observer_1_1_r_m_i_1_1_i_remote_observer.html">IRemoteObserver</a> observer : remoteObservers) {</div><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            observer.updateUsuarioDesconecatdo();</div><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        }</div><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="comment">/*</span></div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">     * INSTRUCTIONS: - The remote server will keep a reference to a RemoteObservable</span></div><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">     * object (this class) to which will delegate every subscription and call when</span></div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">     * updates are needed. The RemoteObservable object will not inherit any remote</span></div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">     * interface because it&#39;s not a remote object.</span></div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">     */</span></div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div><div class="ttc" id="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable_html_ae2b4cb424b353b70ff95edb6cd2b6071"><div class="ttname"><a href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#ae2b4cb424b353b70ff95edb6cd2b6071">videoclub.observer.RMI.RemoteObservable.notifyRemoteObserversUsuarioDesconectado</a></div><div class="ttdeci">synchronized void notifyRemoteObserversUsuarioDesconectado()</div><div class="ttdef"><b>Definition:</b> <a href="_remote_observable_8java_source.html#l00043">RemoteObservable.java:43</a></div></div>
+<div class="ttc" id="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable_html_ac51aba555815cdc4ff4ab3525d4d3205"><div class="ttname"><a href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#ac51aba555815cdc4ff4ab3525d4d3205">videoclub.observer.RMI.RemoteObservable.notifyRemoteObserversChatMessages</a></div><div class="ttdeci">synchronized void notifyRemoteObserversChatMessages(Object arg)</div><div class="ttdef"><b>Definition:</b> <a href="_remote_observable_8java_source.html#l00037">RemoteObservable.java:37</a></div></div>
+<div class="ttc" id="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable_html"><div class="ttname"><a href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html">videoclub.observer.RMI.RemoteObservable</a></div><div class="ttdef"><b>Definition:</b> <a href="_remote_observable_8java_source.html#l00009">RemoteObservable.java:9</a></div></div>
+<div class="ttc" id="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable_html_ae01bdb6b659828195df7d897373a5815"><div class="ttname"><a href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#ae01bdb6b659828195df7d897373a5815">videoclub.observer.RMI.RemoteObservable.notifyRemoteObserversUsuarioConectado</a></div><div class="ttdeci">synchronized void notifyRemoteObserversUsuarioConectado()</div><div class="ttdef"><b>Definition:</b> <a href="_remote_observable_8java_source.html#l00049">RemoteObservable.java:49</a></div></div>
+<div class="ttc" id="interfacevideoclub_1_1observer_1_1_r_m_i_1_1_i_remote_observer_html"><div class="ttname"><a href="interfacevideoclub_1_1observer_1_1_r_m_i_1_1_i_remote_observer.html">videoclub.observer.RMI.IRemoteObserver</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_remote_observer_8java_source.html#l00006">IRemoteObserver.java:6</a></div></div>
+<div class="ttc" id="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable_html_ad63e2e1237c50047c2addf6266e41bb1"><div class="ttname"><a href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#ad63e2e1237c50047c2addf6266e41bb1">videoclub.observer.RMI.RemoteObservable.countRemoteObservers</a></div><div class="ttdeci">synchronized int countRemoteObservers()</div><div class="ttdef"><b>Definition:</b> <a href="_remote_observable_8java_source.html#l00033">RemoteObservable.java:33</a></div></div>
+<div class="ttc" id="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable_html_a8e2d956c17adfacf6d8649d68528e619"><div class="ttname"><a href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#a8e2d956c17adfacf6d8649d68528e619">videoclub.observer.RMI.RemoteObservable.deleteRemoteObserver</a></div><div class="ttdeci">synchronized void deleteRemoteObserver(IRemoteObserver observer)</div><div class="ttdef"><b>Definition:</b> <a href="_remote_observable_8java_source.html#l00025">RemoteObservable.java:25</a></div></div>
+<div class="ttc" id="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable_html_a713b4ebedc3b4947b6f0b8694134983a"><div class="ttname"><a href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#a713b4ebedc3b4947b6f0b8694134983a">videoclub.observer.RMI.RemoteObservable.addRemoteObserver</a></div><div class="ttdeci">synchronized void addRemoteObserver(IRemoteObserver observer)</div><div class="ttdef"><b>Definition:</b> <a href="_remote_observable_8java_source.html#l00020">RemoteObservable.java:20</a></div></div>
+<div class="ttc" id="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable_html_a7aabe804d561dc5ee894d400dc15e312"><div class="ttname"><a href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#a7aabe804d561dc5ee894d400dc15e312">videoclub.observer.RMI.RemoteObservable.deleteRemoteObservers</a></div><div class="ttdeci">synchronized void deleteRemoteObservers()</div><div class="ttdef"><b>Definition:</b> <a href="_remote_observable_8java_source.html#l00029">RemoteObservable.java:29</a></div></div>
+<div class="ttc" id="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable_html_abc14ec2aa695fdd77467b7669b236379"><div class="ttname"><a href="classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observable.html#abc14ec2aa695fdd77467b7669b236379">videoclub.observer.RMI.RemoteObservable.RemoteObservable</a></div><div class="ttdeci">RemoteObservable()</div><div class="ttdef"><b>Definition:</b> <a href="_remote_observable_8java_source.html#l00016">RemoteObservable.java:16</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_5eb159725f84c66aafd839904a4acdd0.html">main</a></li><li class="navelem"><a class="el" href="dir_fd3f6763802dee1ad875f6c80eac0bda.html">java</a></li><li class="navelem"><a class="el" href="dir_b4673fa59cb85127cd4e0aa5f0e829e4.html">videoclub</a></li><li class="navelem"><a class="el" href="dir_9a94c8efa6f5680ad1d5addc1d862a15.html">observer</a></li><li class="navelem"><a class="el" href="dir_d58ef0960e76c160375f4cd5083a98ec.html">RMI</a></li><li class="navelem"><a class="el" href="_remote_observable_8java.html">RemoteObservable.java</a></li>
+    <li class="footer">Generado el Jueves, 17 de Mayo de 2018 19:49:43 para VideoClub por
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
+</body>
+</html>

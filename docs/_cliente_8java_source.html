@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.14"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>VideoClub: Fichero Fuente src/main/java/videoclub/server/jdo/Cliente.java</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+  $(document).ready(initResizable);
+/* @license-end */</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="black_film_roll_logo_png_by_bssindex-d9uh0mm.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">VideoClub
+   </div>
+   <div id="projectbrief">Documentación VideoClub</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.8.14 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Buscar');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('_cliente_8java_source.html','');});
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">Cliente.java</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="_cliente_8java.html">Ir a la documentación de este archivo.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">package </span>videoclub.server.jdo;</div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span> java.util.Date;</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">import</span> javax.jdo.annotations.PersistenceCapable;</div><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div><div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;@PersistenceCapable</div><div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html">    8</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html">Cliente</a> <span class="keyword">implements</span> java.io.Serializable {</div><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keywordtype">long</span> serialVersionUID = 1L;</div><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keyword">private</span> String nombre;</div><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">private</span> String apellidos;</div><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">private</span> Date fecha_nacimiento;</div><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keyword">private</span> <a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_direccion.html">Direccion</a> direccion;</div><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div><div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a49cbe37c88ce4a16d390b50cc3c3610c">   18</a></span>&#160;    <span class="keyword">public</span> <a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a49cbe37c88ce4a16d390b50cc3c3610c">Cliente</a>(String nombre, String apellidos, Date fecha_nacimiento, <a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_direccion.html">Direccion</a> direccion) {</div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        this.<a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#af4b88e7390f774d47099acdf571e397a">setApellidos</a>(apellidos);</div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        this.<a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a113640f855f77cc48e08c3a26ed96ea7">setDireccion</a>(direccion);</div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        this.<a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a6765f5c12554e871e791a5cbd79030ea">setFecha_nacimiento</a>(fecha_nacimiento);</div><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        this.<a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a3f0d4d03152a16d3c2d9a8d323acf882">setNombre</a>(nombre);</div><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    }</div><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div><div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a6da7e0e479a18470bb66f6f006c4f31f">   25</a></span>&#160;    <span class="keyword">public</span> String <a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a6da7e0e479a18470bb66f6f006c4f31f">getNombre</a>() {</div><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keywordflow">return</span> nombre;</div><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    }</div><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div><div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a3f0d4d03152a16d3c2d9a8d323acf882">   29</a></span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a3f0d4d03152a16d3c2d9a8d323acf882">setNombre</a>(String nombre) {</div><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        this.nombre = nombre;</div><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    }</div><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div><div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a1c0fdb0148342077eb674a57b75837ae">   33</a></span>&#160;    <span class="keyword">public</span> String <a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a1c0fdb0148342077eb674a57b75837ae">getApellidos</a>() {</div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordflow">return</span> apellidos;</div><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    }</div><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div><div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#af4b88e7390f774d47099acdf571e397a">   37</a></span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#af4b88e7390f774d47099acdf571e397a">setApellidos</a>(String apellidos) {</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        this.apellidos = apellidos;</div><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    }</div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div><div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#ab10f53e300bd4ce3ebeb1103c41b7de4">   41</a></span>&#160;    <span class="keyword">public</span> Date <a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#ab10f53e300bd4ce3ebeb1103c41b7de4">getFecha_nacimiento</a>() {</div><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keywordflow">return</span> fecha_nacimiento;</div><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    }</div><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div><div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a6765f5c12554e871e791a5cbd79030ea">   45</a></span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a6765f5c12554e871e791a5cbd79030ea">setFecha_nacimiento</a>(Date fecha_nacimiento) {</div><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        this.fecha_nacimiento = fecha_nacimiento;</div><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div><div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a3e91849e8e79702848fd4d3e2f491943">   49</a></span>&#160;    <span class="keyword">public</span> <a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_direccion.html">Direccion</a> <a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a3e91849e8e79702848fd4d3e2f491943">getDireccion</a>() {</div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordflow">return</span> direccion;</div><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    }</div><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div><div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a113640f855f77cc48e08c3a26ed96ea7">   53</a></span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a113640f855f77cc48e08c3a26ed96ea7">setDireccion</a>(<a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_direccion.html">Direccion</a> direccion) {</div><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        this.direccion = direccion;</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    @Override</div><div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#af17e8e12b642e5515e30ace27b30a4be">   58</a></span>&#160;    <span class="keyword">public</span> String <a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#af17e8e12b642e5515e30ace27b30a4be">toString</a>() {</div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Cliente [getNombre()=&quot;</span> + <a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a6da7e0e479a18470bb66f6f006c4f31f">getNombre</a>() + <span class="stringliteral">&quot;, getApellidos()=&quot;</span> + <a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a1c0fdb0148342077eb674a57b75837ae">getApellidos</a>() + <span class="stringliteral">&quot;, getFecha_nacimiento()=&quot;</span></div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                + <a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#ab10f53e300bd4ce3ebeb1103c41b7de4">getFecha_nacimiento</a>() + <span class="stringliteral">&quot;, getDireccion()=&quot;</span> + <a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a3e91849e8e79702848fd4d3e2f491943">getDireccion</a>().<a class="code" href="classvideoclub_1_1server_1_1jdo_1_1_direccion.html#a65df514ea548eb0a1fd0254f8dbfb3ee">toString</a>() + <span class="stringliteral">&quot;]&quot;</span>;</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    }</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}</div><div class="ttc" id="classvideoclub_1_1server_1_1jdo_1_1_cliente_html_a1c0fdb0148342077eb674a57b75837ae"><div class="ttname"><a href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a1c0fdb0148342077eb674a57b75837ae">videoclub.server.jdo.Cliente.getApellidos</a></div><div class="ttdeci">String getApellidos()</div><div class="ttdef"><b>Definition:</b> <a href="_cliente_8java_source.html#l00033">Cliente.java:33</a></div></div>
+<div class="ttc" id="classvideoclub_1_1server_1_1jdo_1_1_cliente_html_a6765f5c12554e871e791a5cbd79030ea"><div class="ttname"><a href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a6765f5c12554e871e791a5cbd79030ea">videoclub.server.jdo.Cliente.setFecha_nacimiento</a></div><div class="ttdeci">void setFecha_nacimiento(Date fecha_nacimiento)</div><div class="ttdef"><b>Definition:</b> <a href="_cliente_8java_source.html#l00045">Cliente.java:45</a></div></div>
+<div class="ttc" id="classvideoclub_1_1server_1_1jdo_1_1_cliente_html_a49cbe37c88ce4a16d390b50cc3c3610c"><div class="ttname"><a href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a49cbe37c88ce4a16d390b50cc3c3610c">videoclub.server.jdo.Cliente.Cliente</a></div><div class="ttdeci">Cliente(String nombre, String apellidos, Date fecha_nacimiento, Direccion direccion)</div><div class="ttdef"><b>Definition:</b> <a href="_cliente_8java_source.html#l00018">Cliente.java:18</a></div></div>
+<div class="ttc" id="classvideoclub_1_1server_1_1jdo_1_1_cliente_html_a113640f855f77cc48e08c3a26ed96ea7"><div class="ttname"><a href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a113640f855f77cc48e08c3a26ed96ea7">videoclub.server.jdo.Cliente.setDireccion</a></div><div class="ttdeci">void setDireccion(Direccion direccion)</div><div class="ttdef"><b>Definition:</b> <a href="_cliente_8java_source.html#l00053">Cliente.java:53</a></div></div>
+<div class="ttc" id="classvideoclub_1_1server_1_1jdo_1_1_cliente_html"><div class="ttname"><a href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html">videoclub.server.jdo.Cliente</a></div><div class="ttdef"><b>Definition:</b> <a href="_cliente_8java_source.html#l00008">Cliente.java:8</a></div></div>
+<div class="ttc" id="classvideoclub_1_1server_1_1jdo_1_1_cliente_html_ab10f53e300bd4ce3ebeb1103c41b7de4"><div class="ttname"><a href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#ab10f53e300bd4ce3ebeb1103c41b7de4">videoclub.server.jdo.Cliente.getFecha_nacimiento</a></div><div class="ttdeci">Date getFecha_nacimiento()</div><div class="ttdef"><b>Definition:</b> <a href="_cliente_8java_source.html#l00041">Cliente.java:41</a></div></div>
+<div class="ttc" id="classvideoclub_1_1server_1_1jdo_1_1_cliente_html_a6da7e0e479a18470bb66f6f006c4f31f"><div class="ttname"><a href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a6da7e0e479a18470bb66f6f006c4f31f">videoclub.server.jdo.Cliente.getNombre</a></div><div class="ttdeci">String getNombre()</div><div class="ttdef"><b>Definition:</b> <a href="_cliente_8java_source.html#l00025">Cliente.java:25</a></div></div>
+<div class="ttc" id="classvideoclub_1_1server_1_1jdo_1_1_cliente_html_af4b88e7390f774d47099acdf571e397a"><div class="ttname"><a href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#af4b88e7390f774d47099acdf571e397a">videoclub.server.jdo.Cliente.setApellidos</a></div><div class="ttdeci">void setApellidos(String apellidos)</div><div class="ttdef"><b>Definition:</b> <a href="_cliente_8java_source.html#l00037">Cliente.java:37</a></div></div>
+<div class="ttc" id="classvideoclub_1_1server_1_1jdo_1_1_cliente_html_a3e91849e8e79702848fd4d3e2f491943"><div class="ttname"><a href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a3e91849e8e79702848fd4d3e2f491943">videoclub.server.jdo.Cliente.getDireccion</a></div><div class="ttdeci">Direccion getDireccion()</div><div class="ttdef"><b>Definition:</b> <a href="_cliente_8java_source.html#l00049">Cliente.java:49</a></div></div>
+<div class="ttc" id="classvideoclub_1_1server_1_1jdo_1_1_cliente_html_af17e8e12b642e5515e30ace27b30a4be"><div class="ttname"><a href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#af17e8e12b642e5515e30ace27b30a4be">videoclub.server.jdo.Cliente.toString</a></div><div class="ttdeci">String toString()</div><div class="ttdef"><b>Definition:</b> <a href="_cliente_8java_source.html#l00058">Cliente.java:58</a></div></div>
+<div class="ttc" id="classvideoclub_1_1server_1_1jdo_1_1_cliente_html_a3f0d4d03152a16d3c2d9a8d323acf882"><div class="ttname"><a href="classvideoclub_1_1server_1_1jdo_1_1_cliente.html#a3f0d4d03152a16d3c2d9a8d323acf882">videoclub.server.jdo.Cliente.setNombre</a></div><div class="ttdeci">void setNombre(String nombre)</div><div class="ttdef"><b>Definition:</b> <a href="_cliente_8java_source.html#l00029">Cliente.java:29</a></div></div>
+<div class="ttc" id="classvideoclub_1_1server_1_1jdo_1_1_direccion_html"><div class="ttname"><a href="classvideoclub_1_1server_1_1jdo_1_1_direccion.html">videoclub.server.jdo.Direccion</a></div><div class="ttdef"><b>Definition:</b> <a href="_direccion_8java_source.html#l00006">Direccion.java:6</a></div></div>
+<div class="ttc" id="classvideoclub_1_1server_1_1jdo_1_1_direccion_html_a65df514ea548eb0a1fd0254f8dbfb3ee"><div class="ttname"><a href="classvideoclub_1_1server_1_1jdo_1_1_direccion.html#a65df514ea548eb0a1fd0254f8dbfb3ee">videoclub.server.jdo.Direccion.toString</a></div><div class="ttdeci">String toString()</div><div class="ttdef"><b>Definition:</b> <a href="_direccion_8java_source.html#l00046">Direccion.java:46</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_5eb159725f84c66aafd839904a4acdd0.html">main</a></li><li class="navelem"><a class="el" href="dir_fd3f6763802dee1ad875f6c80eac0bda.html">java</a></li><li class="navelem"><a class="el" href="dir_b4673fa59cb85127cd4e0aa5f0e829e4.html">videoclub</a></li><li class="navelem"><a class="el" href="dir_683a186263a3dd8f4c8bb5ba229e4aef.html">server</a></li><li class="navelem"><a class="el" href="dir_74af822bf94ef960b111bfc81d462ce8.html">jdo</a></li><li class="navelem"><a class="el" href="_cliente_8java.html">Cliente.java</a></li>
+    <li class="footer">Generado el Jueves, 17 de Mayo de 2018 19:49:43 para VideoClub por
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
+</body>
+</html>

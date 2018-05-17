@@ -1,0 +1,21 @@
+<map id="Representación gráfica de la clase" name="Representación gráfica de la clase">
+<area shape="rect" id="node2" href="$classvideoclub_1_1server_1_1jdo_1_1_alquiler.html" title="videoclub.server.jdo.Alquiler" alt="" coords="167,5,349,32"/>
+<area shape="rect" id="node3" href="$classvideoclub_1_1server_1_1jdo_1_1_amigo.html" title="videoclub.server.jdo.Amigo" alt="" coords="171,56,345,83"/>
+<area shape="rect" id="node4" href="$classvideoclub_1_1server_1_1jdo_1_1_categoria.html" title="videoclub.server.jdo.Categoria" alt="" coords="161,107,355,133"/>
+<area shape="rect" id="node5" href="$classvideoclub_1_1server_1_1jdo_1_1_cliente.html" title="videoclub.server.jdo.Cliente" alt="" coords="169,157,347,184"/>
+<area shape="rect" id="node6" href="$classvideoclub_1_1server_1_1jdo_1_1_direccion.html" title="videoclub.server.jdo.Direccion" alt="" coords="162,208,354,235"/>
+<area shape="rect" id="node7" href="$classvideoclub_1_1server_1_1jdo_1_1_imagen.html" title="videoclub.server.jdo.Imagen" alt="" coords="168,259,348,285"/>
+<area shape="rect" id="node8" href="$classvideoclub_1_1server_1_1jdo_1_1_inventario.html" title="videoclub.server.jdo.Inventario" alt="" coords="162,309,354,336"/>
+<area shape="rect" id="node9" href="$classvideoclub_1_1server_1_1jdo_1_1_mensaje.html" title="videoclub.server.jdo.Mensaje" alt="" coords="165,360,351,387"/>
+<area shape="rect" id="node10" href="$classvideoclub_1_1server_1_1jdo_1_1_noticia.html" title="videoclub.server.jdo.Noticia" alt="" coords="169,411,347,437"/>
+<area shape="rect" id="node11" href="$classvideoclub_1_1server_1_1jdo_1_1_notificar_alquiler.html" title="videoclub.server.jdo.Notificar\lAlquiler" alt="" coords="165,462,351,503"/>
+<area shape="rect" id="node12" href="$classvideoclub_1_1server_1_1jdo_1_1_novedad.html" title="videoclub.server.jdo.Novedad" alt="" coords="165,528,351,555"/>
+<area shape="rect" id="node13" href="$classvideoclub_1_1server_1_1jdo_1_1_opinion.html" title="videoclub.server.jdo.Opinion" alt="" coords="167,579,349,605"/>
+<area shape="rect" id="node14" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula.html" title="videoclub.server.jdo.Pelicula" alt="" coords="166,629,350,656"/>
+<area shape="rect" id="node15" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula_favorita.html" title="videoclub.server.jdo.Pelicula\lFavorita" alt="" coords="166,681,350,722"/>
+<area shape="rect" id="node16" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula_pendiente.html" title="videoclub.server.jdo.Pelicula\lPendiente" alt="" coords="166,746,350,787"/>
+<area shape="rect" id="node17" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula_vista.html" title="videoclub.server.jdo.Pelicula\lVista" alt="" coords="166,811,350,853"/>
+<area shape="rect" id="node18" href="$classvideoclub_1_1server_1_1jdo_1_1_proximo_estreno.html" title="videoclub.server.jdo.Proximo\lEstreno" alt="" coords="165,877,351,918"/>
+<area shape="rect" id="node19" href="$classvideoclub_1_1server_1_1jdo_1_1_recomendacion.html" title="videoclub.server.jdo.Recomendacion" alt="" coords="143,943,373,969"/>
+<area shape="rect" id="node20" href="$classvideoclub_1_1server_1_1jdo_1_1_usuario.html" title="videoclub.server.jdo.Usuario" alt="" coords="167,993,349,1020"/>
+</map>

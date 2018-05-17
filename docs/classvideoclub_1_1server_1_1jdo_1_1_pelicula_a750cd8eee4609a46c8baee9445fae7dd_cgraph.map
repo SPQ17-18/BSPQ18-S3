@@ -1,0 +1,9 @@
+<map id="videoclub.server.jdo.Pelicula.Pelicula" name="videoclub.server.jdo.Pelicula.Pelicula">
+<area shape="rect" id="node2" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula.html#a3537675529ff675a680967a9de677251" title="videoclub.server.jdo.Pelicula.setAnyo" alt="" coords="241,5,477,32"/>
+<area shape="rect" id="node3" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula.html#a7a3c03b5bb4149bcaaaace1f89f803c1" title="videoclub.server.jdo.Pelicula.set\lCategoria" alt="" coords="256,57,463,98"/>
+<area shape="rect" id="node4" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula.html#aac79fd488d7317d11dac7f467a028556" title="videoclub.server.jdo.Pelicula.set\lDescripcion" alt="" coords="256,122,463,163"/>
+<area shape="rect" id="node5" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula.html#a3fc401abfd28747d50f70ddc8eb19600" title="videoclub.server.jdo.Pelicula.set\lDuracion" alt="" coords="256,187,463,229"/>
+<area shape="rect" id="node6" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula.html#a537cc2f254b56790ca4938f44342b05c" title="videoclub.server.jdo.Pelicula.set\lImage" alt="" coords="256,253,463,294"/>
+<area shape="rect" id="node7" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula.html#a1a9817f77dffc89128332584717265b3" title="videoclub.server.jdo.Pelicula.set\lNombre" alt="" coords="256,318,463,359"/>
+<area shape="rect" id="node8" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula.html#a2aa936b6616c065908c5f4cc57797e2e" title="videoclub.server.jdo.Pelicula.set\lPrecio" alt="" coords="256,383,463,425"/>
+</map>

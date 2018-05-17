@@ -1,0 +1,10 @@
+<map id="Representación gráfica de la clase" name="Representación gráfica de la clase">
+<area shape="rect" id="node2" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_administrador.html" title="videoclub.client.gui.paneles.\lPanelAdministrador" alt="" coords="115,5,299,47"/>
+<area shape="rect" id="node3" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_amigos_usuarios.html" title="videoclub.client.gui.paneles.\lPanelAmigosUsuarios" alt="" coords="115,71,299,112"/>
+<area shape="rect" id="node4" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_calendario.html" title="videoclub.client.gui.paneles.\lPanelCalendario" alt="" coords="115,136,299,177"/>
+<area shape="rect" id="node5" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_chat.html" title="videoclub.client.gui.paneles.\lPanelChat" alt="" coords="115,201,299,243"/>
+<area shape="rect" id="node6" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_iniciar_sesion.html" title="videoclub.client.gui.paneles.\lPanelIniciarSesion" alt="" coords="115,267,299,308"/>
+<area shape="rect" id="node7" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_pelicula.html" title="videoclub.client.gui.paneles.\lPanelPelicula" alt="" coords="115,332,299,373"/>
+<area shape="rect" id="node8" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_registro.html" title="videoclub.client.gui.paneles.\lPanelRegistro" alt="" coords="115,397,299,439"/>
+<area shape="rect" id="node9" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_usuario.html" title="videoclub.client.gui.paneles.\lPanelUsuario" alt="" coords="115,463,299,504"/>
+</map>

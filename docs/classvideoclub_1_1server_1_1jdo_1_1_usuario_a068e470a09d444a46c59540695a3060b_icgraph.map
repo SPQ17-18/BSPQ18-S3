@@ -1,0 +1,16 @@
+<map id="videoclub.server.jdo.Usuario.getNombreUsuario" name="videoclub.server.jdo.Usuario.getNombreUsuario">
+<area shape="rect" id="node2" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_amigos_usuarios.html#a46811614d33b70f7fee6539d09dacd8e" title="videoclub.client.gui.paneles.\lPanelAmigosUsuarios.mostrarAmigos" alt="" coords="257,71,500,112"/>
+<area shape="rect" id="node8" href="$classvideoclub_1_1client_1_1main_1_1_client.html#a14f0a33868ba5a244dc789bdf51b2406" title="videoclub.client.main.Client.set\lFrame" alt="" coords="278,136,479,177"/>
+<area shape="rect" id="node9" href="$classvideoclub_1_1server_1_1collector_1_1_server_collector.html#a277ba0029c8f017f9fb0dff171bca717" title="videoclub.server.collector.\lServerCollector.registerUser" alt="" coords="287,201,470,243"/>
+<area shape="rect" id="node10" href="$classvideoclub_1_1server_1_1collector_1_1_server_collector.html#af28cab0477dffc963f5ddc748ff87635" title="videoclub.server.collector.\lServerCollector.login" alt="" coords="293,267,464,308"/>
+<area shape="rect" id="node11" href="$classvideoclub_1_1server_1_1collector_1_1_server_collector.html#a149219b8f134e2232c8c63545c1494a9" title="videoclub.server.collector.\lServerCollector.setMensaje" alt="" coords="289,332,469,373"/>
+<area shape="rect" id="node12" href="$classvideoclub_1_1server_1_1collector_1_1_server_collector.html#a9bf47ea74aeb500e9ee4ae79f4025e3b" title="videoclub.server.collector.\lServerCollector.setAmigo" alt="" coords="293,397,464,439"/>
+<area shape="rect" id="node13" href="$classvideoclub_1_1server_1_1jdo_1_1_usuario.html#a0d12ec9afbb342844006d535d921a8b9" title="videoclub.server.jdo.Usuario.to\lString" alt="" coords="280,463,477,504"/>
+<area shape="rect" id="node3" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_amigos_usuarios.html#a710f7f193914da317a756a606091a198" title="videoclub.client.gui.paneles.\lPanelAmigosUsuarios.PanelAmigosUsuarios" alt="" coords="548,5,831,47"/>
+<area shape="rect" id="node4" href="$classvideoclub_1_1client_1_1main_1_1_client.html#a21bb050b7d93d6819c71ebb0cfdb4b76" title="videoclub.client.main.Client.notify\lUsuarioDesconectado" alt="" coords="582,71,797,112"/>
+<area shape="rect" id="node6" href="$classvideoclub_1_1client_1_1main_1_1_client.html#a35cc4772a6cafaf626ae5ea612d5a9e0" title="videoclub.client.main.Client.notify\lUsuarioConectado" alt="" coords="582,143,797,184"/>
+<area shape="rect" id="node5" href="$classvideoclub_1_1client_1_1observer_1_1_client_remote_observer.html#aad503298d9859c0f33f6d4418329bf14" title="videoclub.client.observer.\lClientRemoteObserver.updateUsuario\lDesconecatdo" alt="" coords="879,59,1117,115"/>
+<area shape="rect" id="node7" href="$classvideoclub_1_1client_1_1observer_1_1_client_remote_observer.html#a0b3160f12eb72dd309e646825b09e1d6" title="videoclub.client.observer.\lClientRemoteObserver.updateUsuario\lConectado" alt="" coords="879,139,1117,195"/>
+<area shape="rect" id="node14" href="$classvideoclub_1_1server_1_1jdo_1_1_opinion.html#a360d8fb35e0e7bf27dd63cd1650ca4e5" title="videoclub.server.jdo.Opinion.to\lString" alt="" coords="591,429,788,471"/>
+<area shape="rect" id="node15" href="$classvideoclub_1_1server_1_1jdo_1_1_recomendacion.html#ac4ccd570e5e8b1bf798a932f44204f1b" title="videoclub.server.jdo.Recomendacion.to\lString" alt="" coords="566,495,813,536"/>
+</map>

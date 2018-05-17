@@ -1,0 +1,8 @@
+<map id="Representación gráfica de la clase" name="Representación gráfica de la clase">
+<area shape="rect" id="node2" href="$interfacevideoclub_1_1observer_1_1_r_m_i_1_1_i_remote_observable.html" title="videoclub.observer.RMI.IRemote\lObservable" alt="" coords="120,123,327,164"/>
+<area shape="rect" id="node5" href="$interfacevideoclub_1_1observer_1_1_r_m_i_1_1_i_remote_observer.html" title="videoclub.observer.RMI.IRemote\lObserver" alt="" coords="120,5,327,47"/>
+<area shape="rect" id="node3" href="$interfacevideoclub_1_1server_1_1collector_1_1_i_collector.html" title="videoclub.server.collector.\lICollector" alt="" coords="391,123,561,164"/>
+<area shape="rect" id="node4" href="$classvideoclub_1_1server_1_1collector_1_1_server_collector.html" title="videoclub.server.collector.\lServerCollector" alt="" coords="625,96,796,137"/>
+<area shape="rect" id="node6" href="$classvideoclub_1_1observer_1_1_r_m_i_1_1_remote_observer.html" title="videoclub.observer.RMI.Remote\lObserver" alt="" coords="375,5,577,47"/>
+<area shape="rect" id="node7" href="$classvideoclub_1_1client_1_1observer_1_1_client_remote_observer.html" title="videoclub.client.observer.\lClientRemoteObserver" alt="" coords="627,5,794,47"/>
+</map>

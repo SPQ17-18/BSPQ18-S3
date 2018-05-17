@@ -1,0 +1,4 @@
+<map id="videoclub.client.utiles.Estadisticas.getCountGeneroPelicula" name="videoclub.client.utiles.Estadisticas.getCountGeneroPelicula">
+<area shape="rect" id="node2" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula.html#a131e13476f23f495c33a17bf844404f1" title="videoclub.server.jdo.Pelicula.get\lCategoria" alt="" coords="296,5,503,47"/>
+<area shape="rect" id="node3" href="$classvideoclub_1_1server_1_1jdo_1_1_categoria.html#a51339236fc44ffc49d99ea3395bb3a95" title="videoclub.server.jdo.Categoria.get\lNombre" alt="" coords="292,71,507,112"/>
+</map>

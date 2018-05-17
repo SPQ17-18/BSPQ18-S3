@@ -1,0 +1,7 @@
+<map id="videoclub.client.gui.ventanas.ClientFrame" name="videoclub.client.gui.ventanas.ClientFrame">
+<area shape="rect" id="node3" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_usuario.html" title="videoclub.client.gui.paneles.\lPanelUsuario" alt="" coords="661,132,845,173"/>
+<area shape="rect" id="node5" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_chat.html" title="videoclub.client.gui.paneles.\lPanelChat" alt="" coords="325,132,509,173"/>
+<area shape="rect" id="node11" href="$classvideoclub_1_1client_1_1gui_1_1paneles_1_1_panel_amigos_usuarios.html" title="videoclub.client.gui.paneles.\lPanelAmigosUsuarios" alt="" coords="325,5,509,47"/>
+<area shape="rect" id="node8" href="$classvideoclub_1_1server_1_1jdo_1_1_usuario.html" title="videoclub.server.jdo.Usuario" alt="" coords="326,259,509,286"/>
+<area shape="rect" id="node10" href="$classvideoclub_1_1server_1_1jdo_1_1_pelicula.html" title="videoclub.server.jdo.Pelicula" alt="" coords="325,205,509,231"/>
+</map>
